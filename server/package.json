@@ -1,19 +1,22 @@
 {
-  "name": "y",
+  "name": "Resume App API",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/pillious/resume-app.git"
   },
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/pillious/resume-app/issues"
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "mongoose": "^6.2.10"
   },
-  "homepage": "https://github.com/pillious/resume-app#readme"
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
 }
