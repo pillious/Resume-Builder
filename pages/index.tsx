@@ -1,7 +1,8 @@
 import type { NextPage } from "next";
+import ResumeEditor from "../components/ResumeEditor/ResumeEditor";
 
 const Home: NextPage = () => {
-    return <div className="text-3xl font-bold underline">Test</div>;
+    return <ResumeEditor />;
 };
 
 export default Home;
