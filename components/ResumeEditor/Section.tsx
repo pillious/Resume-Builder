@@ -1,19 +1,41 @@
-const Section: React.FC = () => {
-    const content = {
-        title: "Header #1",
-        items: [
-            "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolor impedit iste ",
-            "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolor impedit iste sapiente reiciendi erum corrupti recusandae placeat corporis?",
-        ],
-    };
+import React, { useState } from "react";
+import Card from "@mui/material/Card";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import classes from "./Section.module.css";
+import AddListItem from "./AddListItem";
 
-    return <div>
-        <h1>{content.title}</h1>
-        <ul>
-            <li>{content.items[0]}</li>
-            <li>{content.items[1]}</li>
-        </ul>
-    </div>;
+interface IProps {
+    title: string;
+    items: string[];
+}
+
+const Section: React.FC<IProps> = (props) => {
+    const [isHovering, setIsHovering] = useState(false);
+
+    return (
+        <Card
+            className={classes.Card}
+            onMouseOver={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
+        >
+            <h1 className={classes.title}>{props.title}</h1>
+            {props.items.length > 0 && (
+                <Card elevation={2}>
+                    <List className={classes.List}>
+                        {props.items.map((text, idx) => (
+                            <ListItem key={idx} disablePadding>
+                                <ListItemText primary={text} />
+                            </ListItem>
+                        ))}
+                    </List>
+                </Card>
+            )}
+            <div className={classes.hover_for_content}></div>
+            <AddListItem addItem={() => {}} isHovering={isHovering} />
+        </Card>
+    );
 };
 
 export default Section;

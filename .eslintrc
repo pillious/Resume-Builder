@@ -1,0 +1,16 @@
+{
+    // parser: "@typescript-eslint/parser",
+    "extends": [
+        "eslint:recommended",
+        "plugin:storybook/recommended",
+        "prettier",
+        "next/core-web-vitals",
+        "next"
+        // "next/babel",
+        // "plugin:@typescript-eslint/recommended",
+    ],
+    "rules": {
+        "react/jsx-uses-react": "off",
+        "react/react-in-jsx-scope": "off"
+    }
+}

@@ -1,7 +1,7 @@
 .add_section {
-    --hoverable-default-color: rgb(200, 200, 200);
+    --default-color: #90caf9;
+    --hover-color: #1976d2;
 
-    padding-top: 1rem;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -17,31 +17,31 @@
 .add_section span:nth-child(odd) {
     height: 0.125rem;
     width: 50%;
-    background: #000;
+    background: var(--hover-color);
     transition: inherit;
 }
 
 .add_section span:nth-child(2) {
     width: 3rem;
     height: 3rem;
-    color: #000;
+    color: var(--hover-color);
     transition: inherit;
 }
 
 @media (hover: hover) {
     .add_section span:nth-child(odd) {
-        background-color: var(--hoverable-default-color);
+        background-color: var(--default-color);
     }
 
     .add_section:hover span:nth-child(odd) {
-        background-color: #000;
+        background-color: var(--hover-color);
     }
 
     .add_section span:nth-child(2) {
-        color: var(--hoverable-default-color);
+        color: var(--default-color);
     }
 
     .add_section:hover span:nth-child(2) {
-        color: #000;
+        color: var(--hover-color);
     }
 }

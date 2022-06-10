@@ -1,0 +1,23 @@
+.Card {
+    margin: 1rem;
+    padding: 1rem;
+}
+
+.List {
+    padding: 1rem;
+}
+
+.title {
+    margin: 0 0 1rem 0;
+    font-size: 1.75rem;
+}
+
+.hover_for_content {
+    width: 100%;
+    height: 1rem;
+    visibility: hidden;
+}
+
+.add_item_wrapper:hover {
+    visibility: visible;
+}

@@ -1,17 +1,23 @@
-import Tooltip from "../UI/Tooltip";
-import { MdAddCircleOutline } from "react-icons/md";
+import React from "react";
+import Fab from "@mui/material/Fab";
+import Tooltip from "@mui/material/Tooltip";
+import AddIcon from "@mui/icons-material/Add";
 import classes from "./AddSection.module.css";
 
-const AddSection: React.FC = () => {
-    const clickHandler = () => {}
+interface IProps {
+    addSection: () => void;
+}
 
+const AddSection: React.FC<IProps> = (props) => {
     return (
-        <Tooltip text="Create Section" direction="bottom">
-            <div className={classes.add_section} onClick={clickHandler}>
+        <Tooltip title="Create Section" placement="bottom" arrow>
+            <div className={classes.add_section} onClick={props.addSection}>
                 {/* Don't remove the empty elements. CSS selectors operate upon these. */}
                 <span />
                 <span>
-                    <MdAddCircleOutline size="100%" />
+                    <Fab color="primary" size="medium" aria-label="add section">
+                        <AddIcon />
+                    </Fab>
                 </span>
                 <span />
             </div>
