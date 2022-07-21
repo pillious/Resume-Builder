@@ -1,5 +1,6 @@
 .section {
     height: 100%;
-    width: 50%;
+    /* width: 50%; */
+    width: 75%;
     border: 1px solid steelblue;
 }

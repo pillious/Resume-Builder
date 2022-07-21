@@ -2,13 +2,16 @@ import React, { useState } from "react";
 import Card from "@mui/material/Card";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
 import classes from "./Section.module.css";
 import AddListItem from "./AddListItem";
+import Input from "@mui/material/Input";
+import MyInput from "../UI/Input";
 
 interface IProps {
+    id: number;
     title: string;
     items: string[];
+    addItem: (idx: number) => void;
 }
 
 const Section: React.FC<IProps> = (props) => {
@@ -26,14 +29,20 @@ const Section: React.FC<IProps> = (props) => {
                     <List className={classes.List}>
                         {props.items.map((text, idx) => (
                             <ListItem key={idx} disablePadding>
-                                <ListItemText primary={text} />
+                                <Input disableUnderline />
                             </ListItem>
                         ))}
                     </List>
                 </Card>
             )}
+
             <div className={classes.hover_for_content}></div>
-            <AddListItem addItem={() => {}} isHovering={isHovering} />
+            <AddListItem
+                addItem={() => props.addItem(props.id)}
+                isHovering={isHovering}
+            />
+
+            <MyInput />
         </Card>
     );
 };

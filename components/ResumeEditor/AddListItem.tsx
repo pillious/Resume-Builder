@@ -17,6 +17,7 @@ const AddListItem: React.FC<IProps> = (props) => {
                         variant="outlined"
                         size="small"
                         startIcon={<AddIcon />}
+                        onClick={props.addItem}
                     >
                         Add Item
                     </Button>
