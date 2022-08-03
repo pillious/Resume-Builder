@@ -1,3 +1,5 @@
+* use SWR for data fetching (comes preinstalled as dependency w nextjs)
+
 Ideas (TODO):
 1) MUI skeleton for loading states.
 2) MUI speed dial for toolbar.

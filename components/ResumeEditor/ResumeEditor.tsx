@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import AddSection from "./AddSection";
 import classes from "./ResumeEditor.module.css";
 import Section from "./Section";
+import Toolbox from "./Toolbox";
 
 // const test_content = {
 //     title: "Header #1",
@@ -38,6 +39,7 @@ const ResumeEditor: React.FC = () => {
 
     return (
         <section className={classes.section}>
+            <Toolbox />
             {sections.map((section, idx) => (
                 <Section
                     key={idx}

@@ -1,5 +1,7 @@
 .section {
+    position: relative;
     height: 100%;
     width: 50vw;
     border-right: 1px solid steelblue;
+    overflow-y: scroll;
 }
