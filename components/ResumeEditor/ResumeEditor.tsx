@@ -17,10 +17,10 @@ interface ISections {
 }
 
 const ResumeEditor: React.FC = () => {
-    // const [sections, setSections] = useState([]);
     const [sections, setSections] = useState<ISections[]>([]);
 
     const addSection = () =>
+        // TEMP setup
         setSections(() => [
             ...sections,
             {

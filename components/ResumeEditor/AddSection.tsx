@@ -15,7 +15,19 @@ const AddSection: React.FC<IProps> = (props) => {
                 {/* Don't remove the empty elements. CSS selectors operate upon these. */}
                 <span />
                 <span>
-                    <Fab color="primary" size="medium" aria-label="add section">
+                    <Fab
+                        sx={[
+                            { backgroundColor: "#78baf0" },
+                            {
+                                "&:hover": {
+                                    backgroundColor: "#1976d2",
+                                },
+                            },
+                        ]}
+                        color="primary"
+                        size="medium"
+                        aria-label="add section"
+                    >
                         <AddIcon />
                     </Fab>
                 </span>

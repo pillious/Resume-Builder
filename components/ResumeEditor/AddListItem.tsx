@@ -5,21 +5,21 @@ import classes from "./AddListItem.module.css";
 
 interface IProps {
     addItem: () => void;
-    isHovering: boolean;
+    hidden?: boolean;
 }
 
-const AddListItem: React.FC<IProps> = (props) => {
+const AddListItem: React.FC<IProps> = ({ addItem, hidden = false }) => {
     return (
         <>
-            {props.isHovering === true && (
+            {hidden === false && (
                 <div className={classes.wrapper}>
                     <Button
                         variant="outlined"
                         size="small"
                         startIcon={<AddIcon />}
-                        onClick={props.addItem}
+                        onClick={addItem}
                     >
-                        Add Item
+                        <span className={classes.btn_text}>Add Item</span>
                     </Button>
                 </div>
             )}
