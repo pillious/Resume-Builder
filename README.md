@@ -1,4 +1,6 @@
 * use SWR for data fetching (comes preinstalled as dependency w nextjs)
+* JSON response format (https://google.github.io/styleguide/jsoncstyleguide.xml)
+ - either contains a data or error key (if both, error takes precedence)
 
 Ideas (TODO):
 1) MUI skeleton for loading states.

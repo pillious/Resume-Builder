@@ -4,26 +4,12 @@ import classes from "./ResumeEditor.module.css";
 import Section from "./Section";
 import Toolbox from "./Toolbox";
 
-import useSWR from "swr";
-import fetcher from "../../utils/fetcher";
-
-// const test_content = {
-//     title: "Header #1",
-//     items: [
-//         "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolor impedit iste ",
-//         "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolor impedit iste sapiente reiciendi erum corrupti recusandae placeat corporis?",
-//     ],
-// };
-
 interface ISections {
     title: string;
     items: string[];
 }
 
 const ResumeEditor: React.FC = () => {
-    const { data } = useSWR("/api/getFile", fetcher);
-    console.log(data);
-
     const [sections, setSections] = useState<ISections[]>([]);
 
     const addSection = () =>

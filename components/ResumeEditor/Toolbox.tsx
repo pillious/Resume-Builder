@@ -3,6 +3,8 @@ import Box from "@mui/material/Box";
 import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
+import ConstructionIcon from '@mui/icons-material/Construction';
+import CloseIcon from "@mui/icons-material/Close";
 import FileCopyIcon from "@mui/icons-material/FileCopyOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import PrintIcon from "@mui/icons-material/Print";
@@ -30,7 +32,12 @@ const Toolbox: React.FC = () => {
             <SpeedDial
                 ariaLabel="Resume editor toolbar"
                 sx={{ position: "absolute", bottom: 8, right: 8 }}
-                icon={<SpeedDialIcon />}
+                icon={
+                    <SpeedDialIcon
+                        icon={<ConstructionIcon />}
+                        openIcon={<CloseIcon />}
+                    />
+                }
             >
                 {actions.map((action) => (
                     <SpeedDialAction
