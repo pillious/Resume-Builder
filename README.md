@@ -8,7 +8,12 @@ Ideas (TODO):
 3) Override ctrl+s -> saves file
 
 
+VSCODE fonts:
+1) file system: size: 13px, line height: 22px, font: Segoe WP Semibold, fontweight: 600
+Segoe UI: https://gist.github.com/AndrewCraswell/106143d1bb5d4162689b9e1d89a2d0fb
 
+Screen size:
+1) google docs -> default width = 816px;
 
 
 

@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import FileModel from "../../models/FileModel.model";
 import dbConnect from "../../utils/database";
 // import { Document } from "mongoose";
-import { ResponseSuccess, ResponseError } from "../../custom2";
+import { ResponseSuccess, ResponseError } from "../../custom2.d";
 
 const handler = async (
     req: NextApiRequest,

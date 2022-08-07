@@ -3,7 +3,7 @@ import FileModel from "../../models/FileModel.model";
 import dbConnect from "../../utils/database";
 // import { Document } from "mongoose";
 import guid from "../../utils/guid";
-import { ResponseSuccess, ResponseError } from "../../custom2";
+import { ResponseSuccess, ResponseError } from "../../custom2.d";
 
 const handler = async (
     req: NextApiRequest,

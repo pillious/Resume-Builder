@@ -9,11 +9,16 @@ import TerminalIcon from "@mui/icons-material/Terminal";
 import LogoDevIcon from "@mui/icons-material/LogoDev";
 import CreateButton from "./CreateButton";
 import FileSystemButton from "./FileSystemButton";
+import { Tooltip } from "@mui/material";
 
 const iconSize = 32;
 const drawerWidth = 48;
 
-const HomeView: React.FC = () => {
+interface IProps {
+    openFileSystem: () => void;
+}
+
+const HomeView: React.FC<IProps> = ({ openFileSystem }) => {
     return (
         <Box sx={{ display: "flex" }}>
             <Drawer
@@ -45,23 +50,28 @@ const HomeView: React.FC = () => {
 
                     <CreateButton />
 
-                    <FileSystemButton />
+                    <FileSystemButton open={openFileSystem} />
 
                     <ListItem disablePadding>
-                        <ListItemButton
-                            sx={{ margin: "2rem 0 0 0", padding: "0.5rem 0" }}
-                        >
-                            <ListItemIcon
-                                sx={{ transform: "translateX(0.5rem)" }}
+                        <Tooltip title="Terminal" placement="right">
+                            <ListItemButton
+                                sx={{
+                                    margin: "2rem 0 0 0",
+                                    padding: "0.5rem 0",
+                                }}
                             >
-                                <TerminalIcon sx={{ fontSize: iconSize }} />
-                            </ListItemIcon>
-                        </ListItemButton>
+                                <ListItemIcon
+                                    sx={{ transform: "translateX(0.5rem)" }}
+                                >
+                                    <TerminalIcon sx={{ fontSize: iconSize }} />
+                                </ListItemIcon>
+                            </ListItemButton>
+                        </Tooltip>
                     </ListItem>
                 </List>
             </Drawer>
         </Box>
     );
-}
+};
 
 export default HomeView;

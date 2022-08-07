@@ -26,3 +26,14 @@ export type ResponseError = {
         message: unknown | string;
     };
 };
+
+// Sidebar views
+export enum ActiveView {
+    HomeView = 0,
+    FileSystemView = 1,
+}
+
+// Tells TypeScript that the font filetypes are valid import modules.
+// declare module "*.ttf";
+// declare module "*.woff";
+// declare module "*.woff2";

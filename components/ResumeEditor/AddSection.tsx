@@ -16,14 +16,6 @@ const AddSection: React.FC<IProps> = (props) => {
                 <span />
                 <span>
                     <Fab
-                        sx={[
-                            { backgroundColor: "#78baf0" },
-                            {
-                                "&:hover": {
-                                    backgroundColor: "#1976d2",
-                                },
-                            },
-                        ]}
                         color="primary"
                         size="medium"
                         aria-label="add section"

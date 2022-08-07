@@ -1,5 +1,5 @@
 import { Schema, model, models } from "mongoose";
-import { ISection, IFile} from "../custom2";
+import { ISection, IFile} from "../custom2.d";
 
 const sectionSchema = new Schema<ISection>({
     name: { type: String, required: true },

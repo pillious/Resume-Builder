@@ -44,12 +44,4 @@
     .add_section:hover span:nth-child(odd) {
         background-color: var(--hover-color);
     }
-
-    .add_section span:nth-child(2) {
-        color: var(--default-color);
-    }
-
-    .add_section:hover span:nth-child(2) {
-        color: var(--hover-color);
-    }
 }

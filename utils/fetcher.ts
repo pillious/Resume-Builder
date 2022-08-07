@@ -7,7 +7,7 @@
 //     return res.json();
 // }
 
-import { ResponseError, ResponseSuccess } from "../custom2";
+import { ResponseError, ResponseSuccess } from "../custom2.d";
 
 export default async function fetcher(
     url: RequestInfo,
