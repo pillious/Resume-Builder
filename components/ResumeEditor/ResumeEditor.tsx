@@ -1,4 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { useEffect } from "react";
+import { IFile } from "../../custom2";
+import useResumeById from "../../hooks/use-resume-by-id";
+import AppContext from "../../store/AppContext";
 import AddSection from "./AddSection";
 import classes from "./ResumeEditor.module.css";
 import Section from "./Section";
@@ -10,8 +14,22 @@ interface ISections {
 }
 
 const ResumeEditor: React.FC = () => {
+    const [resume, setResume] = useState<IFile | null>(null);
+
+    const ctx = useContext(AppContext);
+    const { data } = useResumeById(ctx.activeResumeId);
+
+    // TODO: display resume 
+    useEffect(() => {
+        if (data != null) {
+            console.log(data);
+            setResume(data);
+        }
+    }, [data]);
+
     const [sections, setSections] = useState<ISections[]>([]);
 
+    // TODO: REWRITE
     const addSection = () =>
         // TEMP setup
         setSections(() => [
@@ -22,6 +40,7 @@ const ResumeEditor: React.FC = () => {
             },
         ]);
 
+    // TODO: REWRITE
     const addItem = (idx: number) =>
         setSections(() => {
             const state = [...sections];

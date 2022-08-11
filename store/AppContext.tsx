@@ -7,14 +7,16 @@ interface IProps {
 
 interface IAppContext {
     activeResumeId: string | null;
-    onActiveResumeChange?: (id: string) => void;
+    onActiveResumeChange: (id: string) => void;
     fileIds: string[];
-    onFileIdsChange?: (ids: string | string[]) => void;
+    onFileIdsChange: (ids: string | string[]) => void;
 }
 
 const defaultValues: IAppContext = {
     activeResumeId: null,
+    onActiveResumeChange: () => ({}),
     fileIds: [],
+    onFileIdsChange: () => ({}),
 };
 
 const AppContext = createContext<IAppContext>(defaultValues);
@@ -49,3 +51,5 @@ export const AppContextProvider: React.FC<IProps> = (props) => {
         </AppContext.Provider>
     );
 };
+
+export default AppContext;

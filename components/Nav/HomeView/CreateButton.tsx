@@ -14,6 +14,7 @@ const CreateButton: React.FC = () => {
         try {
             const resp: ResponseSuccess | ResponseError = await fetcher(
                 "/api/createResume",
+                "",
                 { method: "POST" }
             );
             mutate("/api/getResumes"); // tell all SWRs with this key to revalidate

@@ -11,8 +11,9 @@ import { ResponseError, ResponseSuccess } from "../custom2.d";
 
 export default async function fetcher(
     url: RequestInfo,
+    queryParams = "",
     body?: RequestInit
 ): Promise<ResponseSuccess | ResponseError> {
-    const res = await fetch(url, body);
+    const res = await fetch(`${url}${queryParams}`, body);
     return await res.json();
 }
