@@ -9,10 +9,10 @@ import Input from "@mui/material/Input";
 // import MyInput from "../UI/Input";
 
 interface IProps {
-    id: number;
+    id: string;
     title: string;
     items: string[];
-    addItem: (idx: number) => void;
+    addItem: (sectionId: string) => void;
 }
 
 const Section: React.FC<IProps> = (props) => {
@@ -25,7 +25,7 @@ const Section: React.FC<IProps> = (props) => {
             {props.items.length > 0 && (
                 <Card elevation={2}>
                     <List className={classes.List}>
-                        {props.items.map((text, idx) => (
+                        {props.items.map((item, idx) => (
                             <div
                                 key={idx}
                                 className={classes.list_item_wrapper}
@@ -47,6 +47,7 @@ const Section: React.FC<IProps> = (props) => {
                                 >
                                     <Input
                                         sx={{ width: "100%" }}
+                                        defaultValue={item}
                                         placeholder="Type here. . ."
                                         multiline
                                         disableUnderline
