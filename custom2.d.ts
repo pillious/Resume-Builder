@@ -11,13 +11,20 @@ export interface IFile {
     id: string; // nanoid
 }
 
-// API response objects
+// API
 export type ResponseSuccess = {
-    // data: Record<string, unknown>;
-    data: {
-        files?: IFile[];
-        file?: IFile;
-    };
+    data: FileResponseData | AcknowledgementResponseData;
+};
+
+export type FileResponseData = {
+    files?: IFile[];
+    file?: IFile;
+};
+
+export type AcknowledgementResponseData = {
+    acknowledged: boolean;
+    matchedCount: number;
+    modifiedCount: number;
 };
 
 export type ResponseError = {

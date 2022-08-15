@@ -8,9 +8,16 @@ const handler = async (
     res: NextApiResponse<ResponseSuccess | ResponseError>
 ) => {
     try {
-        await dbConnect();
-        const doc = await FileModel.findOne({id: req.query.id});
-        res.status(200).json({ data: { file: doc } });
+        switch (req.method) {
+            case "GET": {
+                await dbConnect();
+                const doc = await FileModel.findOne({ id: req.query.id });
+                res.status(200).json({ data: { file: doc } });
+                break;
+            }
+            default:
+                throw new Error(`${req.method} is not allowed`)
+        }
     } catch (ex) {
         console.log(ex);
         res.status(500).json({ error: { code: 500, message: ex } });

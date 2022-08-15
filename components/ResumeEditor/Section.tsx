@@ -3,9 +3,11 @@ import Card from "@mui/material/Card";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
+import DeleteOutlineIcon from "@mui/icons-material/Delete";
 import classes from "./Section.module.css";
 import AddListItem from "./AddListItem";
-import Input from "@mui/material/Input";
+// import Input from "@mui/material/Input";
+import Textarea from "../UI/Textarea";
 // import MyInput from "../UI/Input";
 
 interface IProps {
@@ -13,6 +15,8 @@ interface IProps {
     title: string;
     items: string[];
     addItem: (sectionId: string) => void;
+    deleteItem: (sectionId: string, itemIdx: number) => void;
+    deleteSection: (sectionId: string) => void;
 }
 
 const Section: React.FC<IProps> = (props) => {
@@ -20,6 +24,19 @@ const Section: React.FC<IProps> = (props) => {
         <Card elevation={0} className={classes.Card}>
             <div className={classes.top}>
                 <h1 className={classes.title}>{props.title}</h1>
+                <DeleteOutlineIcon
+                    sx={{
+                        color: "#ff0000",
+                        "&:hover": {
+                            transform: "scale(1.25)",
+                            cursor: "pointer",
+                        },
+                        transition: "200ms",
+                    }}
+                    onClick={() => {
+                        props.deleteSection(props.id);
+                    }}
+                />
                 <AddListItem addItem={() => props.addItem(props.id)} />
             </div>
             {props.items.length > 0 && (
@@ -30,11 +47,6 @@ const Section: React.FC<IProps> = (props) => {
                                 key={idx}
                                 className={classes.list_item_wrapper}
                             >
-                                <ListItemIcon
-                                    sx={{ color: "#000", minWidth: "unset" }}
-                                >
-                                    &bull;
-                                </ListItemIcon>
                                 <ListItem
                                     sx={[
                                         {
@@ -43,16 +55,22 @@ const Section: React.FC<IProps> = (props) => {
                                             },
                                         },
                                     ]}
+                                    className={classes.list_item}
                                     disablePadding
                                 >
-                                    <Input
+                                    <Textarea
                                         sx={{ width: "100%" }}
                                         defaultValue={item}
                                         placeholder="Type here. . ."
-                                        multiline
-                                        disableUnderline
                                     />
                                 </ListItem>
+                                <ListItemIcon
+                                    sx={{ color: "#000", minWidth: "unset" }}
+                                    className={classes.list_style}
+                                    onClick={() =>
+                                        props.deleteItem(props.id, idx)
+                                    }
+                                ></ListItemIcon>
                             </div>
                         ))}
                     </List>

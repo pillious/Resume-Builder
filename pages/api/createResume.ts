@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import FileModel from "../../models/FileModel.model";
 import dbConnect from "../../utils/database";
-// import { Document } from "mongoose";
 import guid from "../../utils/guid";
 import { ResponseSuccess, ResponseError } from "../../custom2.d";
 

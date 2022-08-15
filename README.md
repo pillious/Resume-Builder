@@ -3,10 +3,17 @@
  - either contains a data or error key (if both, error takes precedence)
 
 Ideas (TODO):
+1) Redesign database: 
+- item -> {id, content, order}
+- section -> {...existing, order}
+
+
 1) MUI skeleton for loading states.
 2) MUI speed dial for toolbar.
 3) Override ctrl+s -> saves file
 
+
+4) try Lato font for file viewer
 
 VSCODE fonts:
 1) file system: size: 13px, line height: 22px, font: Segoe WP Semibold, fontweight: 600

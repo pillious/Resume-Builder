@@ -1,8 +1,9 @@
-import React, { useContext, useReducer, useRef } from "react";
+import React, { useContext, useReducer, useRef, useState } from "react";
 import { useEffect } from "react";
 import { IFile, ISection } from "../../custom2";
 import useResumeById from "../../hooks/use-resume-by-id";
 import AppContext from "../../store/AppContext";
+import fetcher from "../../utils/fetcher";
 import nanoid from "../../utils/guid";
 import AddSection from "./AddSection";
 import classes from "./ResumeEditor.module.css";
@@ -12,7 +13,9 @@ import Toolbox from "./Toolbox";
 type ACTIONTYPE =
     | { type: "setResume"; payload: IFile }
     | { type: "addSection" }
-    | { type: "addItem"; payload: string };
+    | { type: "addItem"; payload: string }
+    | { type: "deleteSection"; payload: string }
+    | { type: "deleteItem"; payload: { sectionId: string; itemIdx: number } };
 
 const resumeReducer = (
     state: IFile | null,
@@ -41,10 +44,47 @@ const resumeReducer = (
                 sections[idx].items.push("");
                 return { ...state, sections };
             }
+            case "deleteSection": {
+                const idx = state.sections.findIndex(
+                    (s) => s.id === action.payload
+                );
+
+                if (idx === -1) return state;
+
+                const sections: ISection[] = JSON.parse(
+                    JSON.stringify(state.sections)
+                );
+                sections.splice(idx, 1);
+
+                return { ...state, sections };
+            }
+            case "deleteItem": {
+                const idx = state.sections.findIndex(
+                    (section) => section.id === action.payload.sectionId
+                );
+
+                if (idx === -1) return state;
+
+                const sections: ISection[] = JSON.parse(
+                    JSON.stringify(state.sections)
+                );
+                sections[idx].items.splice(action.payload.itemIdx, 1);
+
+                return { ...state, sections };
+            }
         }
     }
 
     return state;
+};
+
+// TODO: filter out empty section names
+const cleanseResume = (resume: IFile) => {
+    resume.sections.forEach(
+        (section) =>
+            (section.items = section.items.filter((item) => item.trim() !== ""))
+    );
+    return resume;
 };
 
 const ResumeEditor: React.FC = () => {
@@ -52,74 +92,83 @@ const ResumeEditor: React.FC = () => {
     const { data } = useResumeById(ctx.activeResumeId);
 
     const [resume, dispatch] = useReducer(resumeReducer, data);
+    const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
-    const ref = useRef<HTMLBaseElement>(null);
+    const sectionRef = useRef<HTMLBaseElement>(null);
 
-    // Event listener that overrides save shortcut (ctrl+s)
-    // void -> always evaluates to undefined -> type is essentially <undefined | null>.
-    // const [saveListener, setSaveListener] =
-    //     useState<EventListenerOrEventListenerObject | null>(null);
+    const addSection = () => {
+        dispatch({ type: "addSection" });
+        setHasUnsavedChanges(true);
+    };
+
+    const addItem = (sectionId: string) => {
+        dispatch({ type: "addItem", payload: sectionId });
+        setHasUnsavedChanges(true);
+    };
+
+    const deleteSection = (sectionId: string) => {
+        dispatch({ type: "deleteSection", payload: sectionId });
+        setHasUnsavedChanges(true);
+    };
+
+    const deleteItem = (sectionId: string, itemIdx: number) => {
+        dispatch({ type: "deleteItem", payload: { sectionId, itemIdx } });
+        setHasUnsavedChanges(true);
+    };
 
     useEffect(() => {
         if (data != null) dispatch({ type: "setResume", payload: data });
     }, [data]);
 
-    const addItem = (sectionId: string) => {
-        dispatch({ type: "addItem", payload: sectionId });
-    };
-
-    // const addSaveEventHandler = (event: SyntheticEvent) => {
-    //     if (saveListener === null) {
-    //         // Listen for ctrl+s key combo -> then save focused resume.
-    //         const listener = event.target?.addEventListener(
-    //             "keydown",
-    //             (event) => {
-    //                 if (
-    //                     event instanceof KeyboardEvent &&
-    //                     event.ctrlKey &&
-    //                     event.key === "s"
-    //                 ) {
-    //                     event.preventDefault();
-    //                     event = event as KeyboardEvent;
-    //                     console.log(resume);
-    //                 }
-    //             }
-    //         ) as unknown as EventListenerOrEventListenerObject;
-    //         console.log(listener);
-    //         setSaveListener(listener);
-    //     }
-    // };
-
-    // const removeSaveEventHandler = (event: SyntheticEvent) => {
-    //     console.log(saveListener);
-    //     if (saveListener !== null) {
-    //         console.log(saveListener);
-    //         event.target.removeEventListener("keydown", saveListener);
-    //         setSaveListener(null);
-    //     }
-    // };
-
     useEffect(() => {
+        let identifier: NodeJS.Timeout;
+
+        // override ctrl+s shortcut
         const handleSave = (event: KeyboardEvent) => {
-            console.log("fired");
-            if (event.ctrlKey && event.key === "s") {
+            if (
+                ctx.activeResumeId &&
+                event.ctrlKey &&
+                event.key === "s" &&
+                resume
+            ) {
                 event.preventDefault();
-                console.log(event);
+
+                if (hasUnsavedChanges) {
+                    // set timeout to wait for any last second user inputs to be sent to reducer.
+                    identifier = setTimeout(() => {
+                        const cleansed = cleanseResume(resume);
+                        fetcher("/api/updateResume", "", {
+                            method: "POST",
+
+                            // EX: of 1 update
+                            // TODO: pass an array of updates.
+                            body: JSON.stringify({
+                                type: "item",
+                                fileId: "f34B43",
+                                sectionId: "bj7SfB",
+                                itemIdx: 2,
+                                content: "new string",
+                            }),
+                        });
+                        setHasUnsavedChanges(false);
+                    }, 250);
+                } else {
+                    console.log("No new changes to save.");
+                }
             }
         };
 
-        const target = ref?.current;
-        console.log(target);
+        const target = sectionRef?.current;
         target?.addEventListener("keydown", handleSave);
 
         return () => {
             target?.removeEventListener("keydown", handleSave);
-            console.log("removed");
+            clearTimeout(identifier);
         };
-    }, []);
+    }, [ctx.activeResumeId, resume]);
 
     return (
-        <section className={classes.section} tabIndex={-1} ref={ref}>
+        <section className={classes.section} tabIndex={-1} ref={sectionRef}>
             {ctx.activeResumeId && (
                 <>
                     <Toolbox />
@@ -130,11 +179,11 @@ const ResumeEditor: React.FC = () => {
                             title={section.name}
                             items={section.items || []}
                             addItem={addItem}
+                            deleteItem={deleteItem}
+                            deleteSection={deleteSection}
                         />
                     ))}
-                    <AddSection
-                        addSection={() => dispatch({ type: "addSection" })}
-                    />
+                    <AddSection addSection={addSection} />
                 </>
             )}
         </section>

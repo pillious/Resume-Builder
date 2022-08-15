@@ -9,6 +9,7 @@
 
 .top {
     display: flex;
+    align-items: center;
     gap: 1rem;
 }
 
@@ -19,10 +20,41 @@
 .list_item_wrapper {
     width: 100%;
     display: flex;
+    flex-direction: row-reverse;
     align-items: center;
-    gap: 0.5rem;
+    /* gap: 0.5rem; */
 }
 
 .add_item_wrapper:hover {
     visibility: visible;
+}
+
+.list_style {
+    transition: 1s content;
+    width: calc(6.5px + 0.5rem);
+    cursor: pointer;
+}
+
+.list_style::before {
+    content: "\2022";
+    transition: opacity 250ms ease;
+}
+
+.list_item:focus {
+    border: 2px solid red;
+}
+
+.list_item:hover + .list_style::after,
+.list_style:hover::after {
+    content: "\00d7";
+    scale: 1.5;
+    font-weight: bold;
+    position: absolute;
+    left: 0.875rem;
+    color: red;
+}
+
+.list_item:hover + .list_style::before,
+.list_style:hover::before {
+    opacity: 0;
 }
