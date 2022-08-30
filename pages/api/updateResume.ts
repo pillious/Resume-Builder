@@ -1,32 +1,13 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import { detailedDiff } from "deep-object-diff";
 import FileModel from "../../models/FileModel.model";
 import dbConnect from "../../utils/database";
 import {
     ResponseSuccess,
     ResponseError,
     AcknowledgementResponseData,
+    IFile,
 } from "../../custom2.d";
-
-type BODYTYPE =
-    | undefined
-    | { type: "name"; fileId: string; name: string }
-    | { type: "section"; fileId: string; sectionId: string; name: string }
-    | {
-          type: "item";
-          fileId: string;
-          sectionId: string;
-          itemIdx: number;
-          content: string;
-      };
-
-type FILTERTYPE =
-    | Record<string, never>
-    | { id: string }
-    | { id: string; "section.id": string };
-type UPDATETYPE =
-    | Record<string, never>
-    | { name: string }
-    | { $set: { [key: string]: string } };
 
 const handler = async (
     req: NextApiRequest,
@@ -35,8 +16,40 @@ const handler = async (
     try {
         switch (req.method) {
             case "POST": {
-                const body: BODYTYPE = JSON.parse(req.body);
+                const {
+                    resume,
+                    prevResume,
+                }: { resume: IFile | null; prevResume: IFile | null } =
+                    JSON.parse(req.body);
 
+                if (resume && prevResume) {
+                    // case: prev resume is null (will this case occur?)
+
+                    console.dir(detailedDiff(prevResume, resume), {
+                        depth: 10,
+                    });
+                    console.log("-----------------------");
+
+
+
+                    /**
+                     * added:
+                     * - section: object will contain "name" key
+                     * - item: will not contain "name" key
+                     * - section & item: obj will look like a section obj just save the entire thing.
+                     *
+                     * delete:
+                     * - section
+                     * - item
+                     *
+                     * updated:
+                     * - section
+                     * - item
+                     */
+                }
+
+                res.send({ error: { code: 1, message: "test" } });
+                break;
                 /**
                  * updates:
                  * file name {type: , name: }
@@ -52,50 +65,8 @@ const handler = async (
                  * all items
                  */
 
-                if (body) {
-                    let filter: FILTERTYPE = {},
-                        update: UPDATETYPE = {};
-
-                    switch (body?.type) {
-                        case "name": {
-                            filter = { id: body.fileId };
-                            update = { name: body.name };
-                            break;
-                        }
-                        case "section": {
-                            filter = {
-                                id: body.fileId,
-                                "section.id": body.sectionId,
-                            };
-                            update = { $set: { "sections.$.name": body.name } };
-                            break;
-                        }
-                        case "item": {
-                            filter = {
-                                id: body.fileId,
-                                "section.id": body.sectionId,
-                            };
-                            update = {
-                                $set: {
-                                    [`sections.$.name.${body.itemIdx}`]:
-                                        body.content,
-                                },
-                            };
-                            break;
-                        }
-                    }
-                    console.log(filter, update);
-                    // await dbConnect();
-                    // const resp: AcknowledgementResponseData =
-                    //     await FileModel.updateOne(filter, update);
-                    res.status(200).json({ data: { file: undefined } });
-                    break;
-
-                    // db.files.updateOne({id: "hz6yBL", "sections.id": "39i9UMW"}, {"$set": {"sections.$.name": "new name"}})
-                    // db.files.updateOne({id: "hz6yBL", "sections.id": "39i9UMW"}, {"$set": {"sections.$.items.0": "new name"}})
-                }
-
-                throw new Error("body is undefined");
+                // db.files.updateOne({id: "hz6yBL", "sections.id": "39i9UMW"}, {"$set": {"sections.$.name": "new name"}})
+                // db.files.updateOne({id: "hz6yBL", "sections.id": "39i9UMW"}, {"$set": {"sections.$.items.0": "new name"}})
             }
             default:
                 throw new Error(`${req.method} is not allowed.`);

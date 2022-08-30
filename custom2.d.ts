@@ -1,7 +1,13 @@
 // Schema objects
+
+export interface IItem {
+    content: string,
+    order : number,
+    id: string; // nanoid
+}
 export interface ISection {
     name: string;
-    items: string[];
+    items: IItem[];
     id: string; // nanoid
 }
 

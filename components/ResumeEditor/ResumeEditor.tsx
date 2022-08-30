@@ -1,175 +1,179 @@
-import React, { useContext, useReducer, useRef, useState } from "react";
-import { useEffect } from "react";
-import { IFile, ISection } from "../../custom2";
-import useResumeById from "../../hooks/use-resume-by-id";
-import AppContext from "../../store/AppContext";
-import fetcher from "../../utils/fetcher";
-import nanoid from "../../utils/guid";
+// import React, { useContext, useReducer, useRef, useState, useEffect } from "react";
+import { useRef } from "react";
+// import { cloneDeep } from "lodash";
+// import { IFile } from "../../custom2";
+// import useResumeById from "../../hooks/data/use-resume-by-id";
+// import AppContext from "../../store/AppContext";
+// import fetcher from "../../utils/fetcher";
+// import nanoid from "../../utils/guid";
 import AddSection from "./AddSection";
 import classes from "./ResumeEditor.module.css";
 import Section from "./Section";
 import Toolbox from "./Toolbox";
+// import resumeReducer from "../../store/ResumeReducer";
+import useResumeState from "../../hooks/use-resume-state";
 
-type ACTIONTYPE =
-    | { type: "setResume"; payload: IFile }
-    | { type: "addSection" }
-    | { type: "addItem"; payload: string }
-    | { type: "deleteSection"; payload: string }
-    | { type: "deleteItem"; payload: { sectionId: string; itemIdx: number } };
-
-const resumeReducer = (
-    state: IFile | null,
-    action: ACTIONTYPE
-): IFile | null => {
-    // "setResume" can still occur even if previous state is null.
-    if (action.type === "setResume") {
-        return action.payload;
-    } else if (state != null) {
-        switch (action.type) {
-            case "addSection": {
-                const newSection: ISection = {
-                    name: "New Section",
-                    id: nanoid(),
-                    items: [],
-                };
-                return { ...state, sections: [...state.sections, newSection] };
-            }
-            case "addItem": {
-                const idx = state.sections.findIndex(
-                    (section) => section.id === action.payload
-                );
-                const sections: ISection[] = JSON.parse(
-                    JSON.stringify(state.sections)
-                );
-                sections[idx].items.push("");
-                return { ...state, sections };
-            }
-            case "deleteSection": {
-                const idx = state.sections.findIndex(
-                    (s) => s.id === action.payload
-                );
-
-                if (idx === -1) return state;
-
-                const sections: ISection[] = JSON.parse(
-                    JSON.stringify(state.sections)
-                );
-                sections.splice(idx, 1);
-
-                return { ...state, sections };
-            }
-            case "deleteItem": {
-                const idx = state.sections.findIndex(
-                    (section) => section.id === action.payload.sectionId
-                );
-
-                if (idx === -1) return state;
-
-                const sections: ISection[] = JSON.parse(
-                    JSON.stringify(state.sections)
-                );
-                sections[idx].items.splice(action.payload.itemIdx, 1);
-
-                return { ...state, sections };
-            }
-        }
-    }
-
-    return state;
-};
-
-// TODO: filter out empty section names
-const cleanseResume = (resume: IFile) => {
-    resume.sections.forEach(
-        (section) =>
-            (section.items = section.items.filter((item) => item.trim() !== ""))
-    );
-    return resume;
-};
+// enum ModState {
+//     Add = 0,
+//     Update = 1,
+//     Delete = 2,
+// }
 
 const ResumeEditor: React.FC = () => {
-    const ctx = useContext(AppContext);
-    const { data } = useResumeById(ctx.activeResumeId);
-
-    const [resume, dispatch] = useReducer(resumeReducer, data);
-    const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-
     const sectionRef = useRef<HTMLBaseElement>(null);
 
-    const addSection = () => {
-        dispatch({ type: "addSection" });
-        setHasUnsavedChanges(true);
-    };
+    const {
+        resume,
+        addSection,
+        addItem,
+        updateItemContent,
+        deleteSection,
+        deleteItem,
+    } = useResumeState(sectionRef);
 
-    const addItem = (sectionId: string) => {
-        dispatch({ type: "addItem", payload: sectionId });
-        setHasUnsavedChanges(true);
-    };
+    // const ctx = useContext(AppContext);
+    // const { data } = useResumeById(ctx.activeResumeId);
 
-    const deleteSection = (sectionId: string) => {
-        dispatch({ type: "deleteSection", payload: sectionId });
-        setHasUnsavedChanges(true);
-    };
+    // const [resume, dispatch] = useReducer(resumeReducer, data);
+    // const [prevResume, setPrevResume] = useState<IFile | null>(
+    //     cloneDeep(resume)
+    // );
 
-    const deleteItem = (sectionId: string, itemIdx: number) => {
-        dispatch({ type: "deleteItem", payload: { sectionId, itemIdx } });
-        setHasUnsavedChanges(true);
-    };
+    // const [modList, setModList] = useState<Record<string, ModState>>({});
+    // const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
-    useEffect(() => {
-        if (data != null) dispatch({ type: "setResume", payload: data });
-    }, [data]);
+    // const addSection = () => {
+    //     const id = nanoid();
+    //     dispatch({
+    //         type: "addSection",
+    //         payload: { sectionId: id, name: "New Section" },
+    //     });
+    //     setModList((prevState) => ({ ...prevState, [id]: ModState.Add }));
+    //     setHasUnsavedChanges(true);
+    // };
 
-    useEffect(() => {
-        let identifier: NodeJS.Timeout;
+    // const addItem = (sectionId: string) => {
+    //     const id = nanoid();
+    //     dispatch({
+    //         type: "addItem",
+    //         payload: { sectionId, itemId: id, content: "" },
+    //     });
+    //     setModList((prevState) => ({ ...prevState, [id]: ModState.Add }));
+    //     setHasUnsavedChanges(true);
+    // };
 
-        // override ctrl+s shortcut
-        const handleSave = (event: KeyboardEvent) => {
-            if (
-                ctx.activeResumeId &&
-                event.ctrlKey &&
-                event.key === "s" &&
-                resume
-            ) {
-                event.preventDefault();
+    // const updateItemContent = (
+    //     sectionId: string,
+    //     itemId: string,
+    //     content: string
+    // ) => {
+    //     dispatch({
+    //         type: "updateItemContent",
+    //         payload: { sectionId, itemId, content },
+    //     });
+    //     setModList((prevState) => {
+    //         // if the item was just added, don't change the modification state to "Update".
+    //         if (itemId in prevState && prevState[itemId] !== ModState.Add)
+    //             return { ...prevState, [itemId]: ModState.Update };
+    //         return prevState;
+    //     });
+    //     setHasUnsavedChanges(true);
+    // };
 
-                if (hasUnsavedChanges) {
-                    // set timeout to wait for any last second user inputs to be sent to reducer.
-                    identifier = setTimeout(() => {
-                        const cleansed = cleanseResume(resume);
-                        fetcher("/api/updateResume", "", {
-                            method: "POST",
+    // const deleteSection = (sectionId: string) => {
+    //     dispatch({ type: "deleteSection", payload: sectionId });
+    //     // if the section was just added, just remove the section from the modList.
+    //     setModList((prevState) => {
+    //         if (
+    //             sectionId in prevState &&
+    //             prevState[sectionId] === ModState.Add
+    //         ) {
+    //             const state = { ...prevState };
+    //             delete state[sectionId];
+    //             return state;
+    //         }
+    //         return { ...prevState, [sectionId]: ModState.Delete };
+    //     });
 
-                            // EX: of 1 update
-                            // TODO: pass an array of updates.
-                            body: JSON.stringify({
-                                type: "item",
-                                fileId: "f34B43",
-                                sectionId: "bj7SfB",
-                                itemIdx: 2,
-                                content: "new string",
-                            }),
-                        });
-                        setHasUnsavedChanges(false);
-                    }, 250);
-                } else {
-                    console.log("No new changes to save.");
-                }
-            }
-        };
+    //     setHasUnsavedChanges(true);
+    // };
 
-        const target = sectionRef?.current;
-        target?.addEventListener("keydown", handleSave);
+    // const deleteItem = (sectionId: string, itemId: string) => {
+    //     dispatch({ type: "deleteItem", payload: { sectionId, itemId } });
+    //     setHasUnsavedChanges(true);
+    // };
 
-        return () => {
-            target?.removeEventListener("keydown", handleSave);
-            clearTimeout(identifier);
-        };
-    }, [ctx.activeResumeId, resume]);
+    // useEffect(() => {
+    //     if (data != null) {
+    //         dispatch({ type: "setResume", payload: data });
+    //         setPrevResume(data);
+    //     }
+    // }, [data]);
+
+    // useEffect(() => {
+    //     let identifier: NodeJS.Timeout;
+
+    //     // override ctrl+s shortcut
+    //     const handleSave = (event: KeyboardEvent) => {
+    //         if (
+    //             ctx.activeResumeId &&
+    //             event.ctrlKey &&
+    //             event.key === "s" &&
+    //             resume
+    //         ) {
+    //             event.preventDefault();
+
+    //             if (hasUnsavedChanges) {
+    //                 console.log(prevResume);
+    //                 console.log(resume);
+
+    //                 identifier = setTimeout(async () => {
+    //                     fetcher("/api/updateResume", "", {
+    //                         method: "POST",
+    //                         body: JSON.stringify({ resume, prevResume }),
+    //                     });
+    //                     setHasUnsavedChanges(false);
+    //                     setPrevResume(cloneDeep(resume));
+    //                 }, 250);
+
+    //                 // TODO: redo update reusme -> details are below.
+    //                 // // set timeout to wait for any last second user inputs to be sent to reducer.
+    //                 // identifier = setTimeout(() => {
+    //                 //     // const cleansed = cleanseResume(resume);
+    //                 //     fetcher("/api/updateResume", "", {
+    //                 //         method: "POST",
+
+    //                 //         // an example of a single update
+    //                 //         // TODO: pass an array of updates.
+    //                 //         body: JSON.stringify({
+    //                 //             type: "item",
+    //                 //             fileId: "f34B43",
+    //                 //             sectionId: "bj7SfB",
+    //                 //             itemIdx: 2,
+    //                 //             content: "new string",
+    //                 //         }),
+    //                 //     });
+    //                 //     setHasUnsavedChanges(false);
+    //                 // }, 250);
+    //             } else {
+    //                 console.log("No new changes to save.");
+    //             }
+    //         }
+    //     };
+
+    //     const target = sectionRef?.current;
+    //     target?.addEventListener("keydown", handleSave);
+
+    //     return () => {
+    //         target?.removeEventListener("keydown", handleSave);
+    //         clearTimeout(identifier);
+    //     };
+    // }, [ctx.activeResumeId, resume, prevResume, hasUnsavedChanges]);
 
     return (
         <section className={classes.section} tabIndex={-1} ref={sectionRef}>
-            {ctx.activeResumeId && (
+            {/* {ctx.activeResumeId && ( */}
+            {resume && (
                 <>
                     <Toolbox />
                     {resume?.sections.map((section, idx) => (
@@ -179,6 +183,7 @@ const ResumeEditor: React.FC = () => {
                             title={section.name}
                             items={section.items || []}
                             addItem={addItem}
+                            updateItemContent={updateItemContent}
                             deleteItem={deleteItem}
                             deleteSection={deleteSection}
                         />

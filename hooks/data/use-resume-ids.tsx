@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import fetcher from "../utils/fetcher";
+import fetcher from "../../utils/fetcher";
 
 const useResumeIds = () => {
     const { data, error } = useSWR("/api/getResumeIds", fetcher);

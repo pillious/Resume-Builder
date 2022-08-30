@@ -8,14 +8,20 @@ import classes from "./Section.module.css";
 import AddListItem from "./AddListItem";
 // import Input from "@mui/material/Input";
 import Textarea from "../UI/Textarea";
+import { IItem } from "../../custom2";
 // import MyInput from "../UI/Input";
 
 interface IProps {
     id: string;
     title: string;
-    items: string[];
+    items: IItem[];
     addItem: (sectionId: string) => void;
-    deleteItem: (sectionId: string, itemIdx: number) => void;
+    updateItemContent: (
+        sectionId: string,
+        itemId: string,
+        content: string
+    ) => void;
+    deleteItem: (sectionId: string, itemId: string) => void;
     deleteSection: (sectionId: string) => void;
 }
 
@@ -60,15 +66,22 @@ const Section: React.FC<IProps> = (props) => {
                                 >
                                     <Textarea
                                         sx={{ width: "100%" }}
-                                        defaultValue={item}
+                                        defaultValue={item.content}
                                         placeholder="Type here. . ."
+                                        onChange={(content) => {
+                                            props.updateItemContent(
+                                                props.id,
+                                                item.id,
+                                                content
+                                            );
+                                        }}
                                     />
                                 </ListItem>
                                 <ListItemIcon
                                     sx={{ color: "#000", minWidth: "unset" }}
                                     className={classes.list_style}
                                     onClick={() =>
-                                        props.deleteItem(props.id, idx)
+                                        props.deleteItem(props.id, item.id)
                                     }
                                 ></ListItemIcon>
                             </div>
