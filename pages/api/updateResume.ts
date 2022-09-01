@@ -1,12 +1,14 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { detailedDiff } from "deep-object-diff";
-import FileModel from "../../models/FileModel.model";
-import dbConnect from "../../utils/database";
+// import { detailedDiff } from "deep-object-diff";
+// import FileModel from "../../models/FileModel.model";
+// import dbConnect from "../../utils/database";
 import {
     ResponseSuccess,
     ResponseError,
-    AcknowledgementResponseData,
+    // AcknowledgementResponseData,
     IFile,
+    guid,
+    ModState,
 } from "../../custom2.d";
 
 const handler = async (
@@ -18,35 +20,62 @@ const handler = async (
             case "POST": {
                 const {
                     resume,
-                    prevResume,
-                }: { resume: IFile | null; prevResume: IFile | null } =
+                    modList,
+                }: { resume: IFile | null; modList: Record<guid, ModState> } =
                     JSON.parse(req.body);
 
-                if (resume && prevResume) {
-                    // case: prev resume is null (will this case occur?)
+                console.dir(resume, { depth: 10 });
+                console.log(modList);
 
-                    console.dir(detailedDiff(prevResume, resume), {
-                        depth: 10,
-                    });
-                    console.log("-----------------------");
+                const modListKeys: string[] = [];
+                Object.keys(modList).forEach((k: string) => {
+                    if (k.includes(".")) modListKeys.push(k);
+                    else modListKeys.unshift(k);
+                });
 
+                
 
+                // const section: Record<string, ModState> = {};
+                // let item: Record<string, ModState> = {};
 
-                    /**
-                     * added:
-                     * - section: object will contain "name" key
-                     * - item: will not contain "name" key
-                     * - section & item: obj will look like a section obj just save the entire thing.
-                     *
-                     * delete:
-                     * - section
-                     * - item
-                     *
-                     * updated:
-                     * - section
-                     * - item
-                     */
-                }
+                // for (const k in modList) {
+                //     if (k.includes(".")) item[k] = modList[k];
+                //     else section[k] = modList[k];
+                // }
+
+                // console.log(section, item);
+
+                // const operations: object[] = [];
+
+                // // add, delete, update
+                // for (const k in section) {
+                //     switch (section[k]) {
+                //         case ModState.Add: {
+                //             const section = resume?.sections.find(
+                //                 (s) => s.id === k
+                //             );
+                //             operations.push({
+                //                 updateOne: {
+                //                     filter: { id: k },
+                //                     update: { $push: { sections: section } },
+                //                 },
+                //             });
+
+                //             // item = item.filter((i) =>)
+
+                //             break;
+                //         }
+                //         case ModState.Update: {
+                //             break;
+                //         }
+                //         case ModState.Delete: {
+                //             break;
+
+                //             // remove all item updates too.
+                //         }
+                //     }
+                //     console.log(k);
+                // }
 
                 res.send({ error: { code: 1, message: "test" } });
                 break;

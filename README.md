@@ -4,14 +4,14 @@
 
 Ideas (TODO):
 1) Redesign database: 
-- item -> {id, content, order}
 - section -> {...existing, order}
-
+2) put resume reducer into context, so that commands can be sent from terminal.
+(the terminal will probably only work for the current active resume).
+(terminal cmds: open files, CRUD files, CRUD sections/items, save)
 
 1) MUI skeleton for loading states.
 2) MUI speed dial for toolbar.
 3) Override ctrl+s -> saves file
-
 
 4) try Lato font for file viewer
 

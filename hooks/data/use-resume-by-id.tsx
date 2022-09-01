@@ -1,8 +1,8 @@
 import useSWR from "swr";
-import { IFile } from "../../custom2";
+import { guid, IFile } from "../../custom2";
 import fetcher from "../../utils/fetcher";
 
-const useResumeById = (activeResumeId: string | null) => {
+const useResumeById = (activeResumeId: guid | null) => {
     const { data, error } = useSWR(
         ["/api/getResumeById", `?id=${activeResumeId}`],
         fetcher

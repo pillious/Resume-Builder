@@ -1,22 +1,22 @@
-import { IFile, ISection, IItem } from "../custom2";
+import { IFile, ISection, IItem, guid } from "../custom2";
 
 type ACTIONTYPE =
     | { type: "setResume"; payload: IFile }
-    | { type: "addSection"; payload: { sectionId: string; name: string } }
+    | { type: "addSection"; payload: { sectionId: guid; name: string } }
     | {
           type: "addItem";
-          payload: { sectionId: string; itemId: string; content: string };
+          payload: { sectionId: guid; itemId: guid; content: string };
       }
     | {
           type: "updateItemContent";
-          payload: { sectionId: string; itemId: string; content: string };
+          payload: { sectionId: guid; itemId: guid; content: string };
       }
     | {
           type: "updateItemOrder";
-          payload: { sectionId: string; itemId: string; order: number };
+          payload: { sectionId: guid; itemId: guid; order: number };
       }
     | { type: "deleteSection"; payload: string }
-    | { type: "deleteItem"; payload: { sectionId: string; itemId: string } };
+    | { type: "deleteItem"; payload: { sectionId: guid; itemId: guid } };
 
 const resumeReducer = (
     state: IFile | null,

@@ -8,21 +8,21 @@ import classes from "./Section.module.css";
 import AddListItem from "./AddListItem";
 // import Input from "@mui/material/Input";
 import Textarea from "../UI/Textarea";
-import { IItem } from "../../custom2";
+import { IItem, guid } from "../../custom2";
 // import MyInput from "../UI/Input";
 
 interface IProps {
-    id: string;
+    id: guid;
     title: string;
     items: IItem[];
-    addItem: (sectionId: string) => void;
+    addItem: (sectionId: guid) => void;
     updateItemContent: (
-        sectionId: string,
-        itemId: string,
+        sectionId: guid,
+        itemId: guid,
         content: string
     ) => void;
-    deleteItem: (sectionId: string, itemId: string) => void;
-    deleteSection: (sectionId: string) => void;
+    deleteItem: (sectionId: guid, itemId: guid) => void;
+    deleteSection: (sectionId: guid) => void;
 }
 
 const Section: React.FC<IProps> = (props) => {

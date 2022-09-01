@@ -5,6 +5,7 @@ import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
+import { guid } from "../../../custom2";
 import useResumeIds from "../../../hooks/data/use-resume-ids";
 import FileItem from "./FileItem";
 
@@ -59,7 +60,7 @@ const FileSystemView: React.FC<IProps> = ({ close }) => {
                     <Divider />
 
                     {payload.map(
-                        (file: { name: string; id: string }, idx: number) => (
+                        (file: { name: string; id: guid }, idx: number) => (
                             <FileItem
                                 key={`FileItem-${idx}`}
                                 name={file.name}

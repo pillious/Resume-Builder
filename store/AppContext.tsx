@@ -1,15 +1,16 @@
 import { union } from "lodash";
 import { createContext, useState } from "react";
+import { guid } from "../custom2";
 
 interface IProps {
     children: JSX.Element;
 }
 
 interface IAppContext {
-    activeResumeId: string | null;
-    onActiveResumeChange: (id: string) => void;
-    fileIds: string[];
-    onFileIdsChange: (ids: string | string[]) => void;
+    activeResumeId: guid | null;
+    onActiveResumeChange: (id: guid) => void;
+    fileIds: guid[];
+    onFileIdsChange: (ids: guid | guid[]) => void;
 }
 
 const defaultValues: IAppContext = {
@@ -27,9 +28,9 @@ export const AppContextProvider: React.FC<IProps> = (props) => {
     );
     const [fileIds, setFileIds] = useState(defaultValues.fileIds);
 
-    const updateActiveResumeId = (id: string) => setActiveResumeId(id);
+    const updateActiveResumeId = (id: guid) => setActiveResumeId(id);
 
-    const updateFileIds = (ids: string | string[]) => {
+    const updateFileIds = (ids: guid | guid[]) => {
         if (typeof ids === "string") {
             if (fileIds.indexOf(ids) != -1)
                 setFileIds((prev) => [...prev, ids]);

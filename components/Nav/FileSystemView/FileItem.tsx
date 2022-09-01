@@ -5,13 +5,14 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Typography from "@mui/material/Typography";
 import AppContext from "../../../store/AppContext";
+import { guid } from "../../../custom2";
 
 const iconSize = 20;
 const color = "rgb(50, 50, 50)";
 
 interface IProps {
     name: string;
-    id: string;
+    id: guid;
 }
 
 const FileItem: React.FC<IProps> = ({ name, id }) => {

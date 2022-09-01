@@ -1,17 +1,11 @@
 import { RefObject, useContext, useEffect, useReducer, useState } from "react";
 import { cloneDeep } from "lodash";
-import { IFile } from "../custom2";
+import { IFile, guid, ModState } from "../custom2.d";
 import resumeReducer from "../store/ResumeReducer";
-import { nanoid } from "nanoid";
+import nanoid from "../utils/guid";
 import AppContext from "../store/AppContext";
 import useResumeById from "./data/use-resume-by-id";
 import fetcher from "../utils/fetcher";
-
-enum ModState {
-    Add = 0,
-    Update = 1,
-    Delete = 2,
-}
 
 const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
     const ctx = useContext(AppContext);
@@ -22,8 +16,9 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
         cloneDeep(resume)
     );
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [modList, setModList] = useState<Record<string, ModState>>({});
+    // Contains the ids of the parts of the resume that was changed.
+    // key = id, value = a modstate. (an item is signified as sectionidd.itemid)
+    const [modList, setModList] = useState<Record<guid, ModState>>({});
     const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
     useEffect(() => {
@@ -33,10 +28,9 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
         }
     }, [data]);
 
+    // Save Resume (override ctrl+s shortcut)
     useEffect(() => {
         let identifier: NodeJS.Timeout;
-
-        // override ctrl+s shortcut
         const handleSave = (event: KeyboardEvent) => {
             if (
                 ctx.activeResumeId &&
@@ -47,19 +41,20 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
                 event.preventDefault();
 
                 if (hasUnsavedChanges) {
-                    console.log(prevResume);
                     console.log(resume);
+                    console.log(modList);
 
                     identifier = setTimeout(async () => {
                         fetcher("/api/updateResume", "", {
                             method: "POST",
-                            body: JSON.stringify({ resume, prevResume }),
+                            body: JSON.stringify({ resume, modList }),
                         });
                         setHasUnsavedChanges(false);
+                        setModList({});
                         setPrevResume(cloneDeep(resume));
                     }, 250);
 
-                    // TODO: redo update reusme -> details are below.
+                    // TODO: redo update resume -> details are below.
                     // // set timeout to wait for any last second user inputs to be sent to reducer.
                     // identifier = setTimeout(() => {
                     //     // const cleansed = cleanseResume(resume);
@@ -91,47 +86,62 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
             target?.removeEventListener("keydown", handleSave);
             clearTimeout(identifier);
         };
-    }, [ctx.activeResumeId, resume, prevResume, hasUnsavedChanges]);
+    }, [
+        ctx.activeResumeId,
+        resume,
+        prevResume,
+        hasUnsavedChanges,
+        modList,
+        sectionRef,
+    ]);
 
+    /**
+     * ACTIONS
+     */
     const addSection = () => {
         const id = nanoid();
         dispatch({
             type: "addSection",
             payload: { sectionId: id, name: "New Section" },
         });
+
         setModList((prevState) => ({ ...prevState, [id]: ModState.Add }));
         setHasUnsavedChanges(true);
     };
 
-    const addItem = (sectionId: string) => {
+    const addItem = (sectionId: guid) => {
         const id = nanoid();
         dispatch({
             type: "addItem",
             payload: { sectionId, itemId: id, content: "" },
         });
-        setModList((prevState) => ({ ...prevState, [id]: ModState.Add }));
+        setModList((prevState) => ({
+            ...prevState,
+            [`${sectionId}.${id}`]: ModState.Add,
+        }));
         setHasUnsavedChanges(true);
     };
 
     const updateItemContent = (
-        sectionId: string,
-        itemId: string,
+        sectionId: guid,
+        itemId: guid,
         content: string
     ) => {
         dispatch({
             type: "updateItemContent",
             payload: { sectionId, itemId, content },
         });
+        const key = `${sectionId}.${itemId}`;
         setModList((prevState) => {
-            // if the item was just added, don't change the modification state to "Update".
-            if (itemId in prevState && prevState[itemId] !== ModState.Add)
-                return { ...prevState, [itemId]: ModState.Update };
+            // if the item was just added, don't change the mod state to "Update".
+            if (key in prevState && prevState[key] !== ModState.Add)
+                return { ...prevState, [key]: ModState.Update };
             return prevState;
         });
         setHasUnsavedChanges(true);
     };
 
-    const deleteSection = (sectionId: string) => {
+    const deleteSection = (sectionId: guid) => {
         dispatch({ type: "deleteSection", payload: sectionId });
         // if the section was just added, just remove the section from the modList.
         setModList((prevState) => {
@@ -149,8 +159,17 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
         setHasUnsavedChanges(true);
     };
 
-    const deleteItem = (sectionId: string, itemId: string) => {
+    const deleteItem = (sectionId: guid, itemId: guid) => {
         dispatch({ type: "deleteItem", payload: { sectionId, itemId } });
+        const key = `${sectionId}.${itemId}`;
+        setModList((prevState) => {
+            if (key in prevState && prevState[key] === ModState.Add) {
+                const state = { ...prevState };
+                delete state[key];
+                return state;
+            }
+            return { ...prevState, [key]: ModState.Delete };
+        });
         setHasUnsavedChanges(true);
     };
 

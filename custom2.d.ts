@@ -1,20 +1,28 @@
-// Schema objects
+// Misc.
+export type guid = string;
 
+export enum ModState {
+    Add = 0,
+    Update = 1,
+    Delete = 2,
+}
+
+// Schema objects
 export interface IItem {
-    content: string,
-    order : number,
-    id: string; // nanoid
+    content: string;
+    order: number;
+    id: guid;
 }
 export interface ISection {
     name: string;
     items: IItem[];
-    id: string; // nanoid
+    id: guid;
 }
 
 export interface IFile {
     name: string;
     sections: ISection[];
-    id: string; // nanoid
+    id: guid;
 }
 
 // API
@@ -45,8 +53,3 @@ export enum ActiveView {
     HomeView = 0,
     FileSystemView = 1,
 }
-
-// Tells TypeScript that the font filetypes are valid import modules.
-// declare module "*.ttf";
-// declare module "*.woff";
-// declare module "*.woff2";
