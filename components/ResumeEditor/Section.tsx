@@ -1,26 +1,20 @@
 import React from "react";
 import Card from "@mui/material/Card";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import DeleteOutlineIcon from "@mui/icons-material/Delete";
 import classes from "./Section.module.css";
 import AddListItem from "./AddListItem";
-// import Input from "@mui/material/Input";
 import Textarea from "../UI/Textarea";
 import { IItem, guid } from "../../custom2";
-// import MyInput from "../UI/Input";
+import Item from "./Item";
 
 interface IProps {
     id: guid;
     title: string;
     items: IItem[];
     addItem: (sectionId: guid) => void;
-    updateItemContent: (
-        sectionId: guid,
-        itemId: guid,
-        content: string
-    ) => void;
+    updateSectionName: (sectionId: guid, name: string) => void;
+    updateItemContent: (sectionId: guid, itemId: guid, content: string) => void;
     deleteItem: (sectionId: guid, itemId: guid) => void;
     deleteSection: (sectionId: guid) => void;
 }
@@ -29,7 +23,17 @@ const Section: React.FC<IProps> = (props) => {
     return (
         <Card elevation={0} className={classes.Card}>
             <div className={classes.top}>
-                <h1 className={classes.title}>{props.title}</h1>
+                <Textarea
+                    sx={{
+                        fontSize: "1.5rem",
+                        width: "max-content",
+                        fontWeight: 600,
+                    }}
+                    defaultValue={props.title}
+                    placeholder="Give me a title..."
+                    multiline={false}
+                    onChange={(name) => props.updateSectionName(props.id, name)}
+                />
                 <DeleteOutlineIcon
                     sx={{
                         color: "#ff0000",
@@ -48,49 +52,18 @@ const Section: React.FC<IProps> = (props) => {
             {props.items.length > 0 && (
                 <Card elevation={2}>
                     <List className={classes.List}>
-                        {props.items.map((item, idx) => (
-                            <div
-                                key={idx}
-                                className={classes.list_item_wrapper}
-                            >
-                                <ListItem
-                                    sx={[
-                                        {
-                                            "&:hover": {
-                                                backgroundColor: "#eee",
-                                            },
-                                        },
-                                    ]}
-                                    className={classes.list_item}
-                                    disablePadding
-                                >
-                                    <Textarea
-                                        sx={{ width: "100%" }}
-                                        defaultValue={item.content}
-                                        placeholder="Type here. . ."
-                                        onChange={(content) => {
-                                            props.updateItemContent(
-                                                props.id,
-                                                item.id,
-                                                content
-                                            );
-                                        }}
-                                    />
-                                </ListItem>
-                                <ListItemIcon
-                                    sx={{ color: "#000", minWidth: "unset" }}
-                                    className={classes.list_style}
-                                    onClick={() =>
-                                        props.deleteItem(props.id, item.id)
-                                    }
-                                ></ListItemIcon>
-                            </div>
+                        {props.items.map((item) => (
+                            <Item
+                                key={item.id}
+                                item={item}
+                                sectionId={props.id}
+                                updateItemContent={props.updateItemContent}
+                                deleteItem={props.deleteItem}
+                            />
                         ))}
                     </List>
                 </Card>
             )}
-
-            {/* <MyInput /> */}
         </Card>
     );
 };

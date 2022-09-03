@@ -7,6 +7,7 @@ interface IProps {
     sx?: SxProps;
     defaultValue?: string;
     placeholder?: string;
+    multiline?: boolean;
     onChange?: (content: string) => void;
 }
 
@@ -14,6 +15,7 @@ const Textarea: React.FC<IProps> = ({
     sx,
     defaultValue,
     placeholder,
+    multiline,
     onChange,
 }) => {
     const { value, valueChangeHandler, reset } = useInput("");
@@ -47,7 +49,7 @@ const Textarea: React.FC<IProps> = ({
             value={value}
             onChange={valueChangeHandler}
             placeholder={placeholder ? placeholder : undefined}
-            multiline
+            multiline={multiline !== undefined ? multiline : true} // true by default
             disableUnderline
         />
     );

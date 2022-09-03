@@ -7,6 +7,7 @@ type ACTIONTYPE =
           type: "addItem";
           payload: { sectionId: guid; itemId: guid; content: string };
       }
+    | { type: "updateSectionName"; payload: { sectionId: guid; name: string } }
     | {
           type: "updateItemContent";
           payload: { sectionId: guid; itemId: guid; content: string };
@@ -48,6 +49,25 @@ const resumeReducer = (
                     id: action.payload.itemId,
                 });
                 return { ...state, sections };
+            }
+            case "updateSectionName": {
+                const sectionIdx = state.sections.findIndex(
+                    (s) => s.id === action.payload.sectionId
+                );
+                if (sectionIdx === -1) return state;
+
+                const section: ISection = JSON.parse(
+                    JSON.stringify(state.sections[sectionIdx])
+                );
+                section.name = action.payload.name;
+
+                const updatedState = {
+                    ...state,
+                    sections: [...state.sections],
+                };
+                updatedState.sections[sectionIdx] = section;
+
+                return updatedState;
             }
             case "updateItemContent": {
                 const sectionIdx = state.sections.findIndex(

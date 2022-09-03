@@ -12,6 +12,7 @@ const ResumeEditor: React.FC = () => {
         resume,
         addSection,
         addItem,
+        updateSectionName,
         updateItemContent,
         deleteSection,
         deleteItem,
@@ -29,6 +30,7 @@ const ResumeEditor: React.FC = () => {
                             title={section.name}
                             items={section.items || []}
                             addItem={addItem}
+                            updateSectionName={updateSectionName}
                             updateItemContent={updateItemContent}
                             deleteItem={deleteItem}
                             deleteSection={deleteSection}

@@ -1,15 +1,15 @@
 import { NextApiRequest, NextApiResponse } from "next";
-// import { detailedDiff } from "deep-object-diff";
-// import FileModel from "../../models/FileModel.model";
-// import dbConnect from "../../utils/database";
+import { AnyBulkWriteOperation } from "mongodb";
+import dbConnect from "../../utils/database";
 import {
     ResponseSuccess,
     ResponseError,
-    // AcknowledgementResponseData,
     IFile,
     guid,
     ModState,
 } from "../../custom2.d";
+import FileModel from "../../models/FileModel.model";
+import SectionModel from "../../models/SectionModel.model";
 
 const handler = async (
     req: NextApiRequest,
@@ -21,81 +21,97 @@ const handler = async (
                 const {
                     resume,
                     modList,
-                }: { resume: IFile | null; modList: Record<guid, ModState> } =
+                }: { resume: IFile | null; modList: Record<string, ModState> } =
                     JSON.parse(req.body);
 
-                console.dir(resume, { depth: 10 });
-                console.log(modList);
+                const modListCopy: Record<guid, ModState> = {};
 
-                const modListKeys: string[] = [];
-                Object.keys(modList).forEach((k: string) => {
-                    if (k.includes(".")) modListKeys.push(k);
-                    else modListKeys.unshift(k);
-                });
+                // Extracts all the changed sections from modList.
+                // (a section is also considered updated if an item associated with that section is added/updated/deleted.)
+                for (const k in modList) {
+                    if (k.includes(".")) {
+                        // if key is an item
+                        const sectionId = k.split(".")[0];
+                        if (modListCopy[sectionId] === undefined)
+                            modListCopy[sectionId] = ModState.Update;
+                    } else {
+                        // sections take precedence over items.
+                        modListCopy[k] = modList[k];
+                    }
+                }
 
-                
+                const operations: AnyBulkWriteOperation<Document>[] = [];
 
-                // const section: Record<string, ModState> = {};
-                // let item: Record<string, ModState> = {};
+                // Operations for Delete sections.
+                for (const k in modListCopy) {
+                    if (
+                        !k.includes(".") &&
+                        modListCopy[k] === ModState.Delete
+                    ) {
+                        operations.push({
+                            updateOne: {
+                                filter: { id: resume.id },
+                                update: {
+                                    $pull: {
+                                        sections: { id: k },
+                                    },
+                                },
+                            },
+                        });
+                    }
+                }
 
-                // for (const k in modList) {
-                //     if (k.includes(".")) item[k] = modList[k];
-                //     else section[k] = modList[k];
-                // }
+                // Operations for Add/Update sections.
+                if (Object.keys(modListCopy).length !== 0) {
+                    resume?.sections.forEach((s) => {
+                        if (Object.keys(modListCopy).includes(s.id)) {
+                            switch (modListCopy[s.id]) {
+                                case ModState.Add: {
+                                    const doc = new SectionModel(s);
 
-                // console.log(section, item);
+                                    operations.push({
+                                        updateOne: {
+                                            filter: { id: resume.id },
+                                            update: {
+                                                $push: { sections: doc },
+                                            },
+                                        },
+                                    });
 
-                // const operations: object[] = [];
+                                    delete modListCopy[s.id];
+                                    break;
+                                }
+                                case ModState.Update: {
+                                    operations.push({
+                                        updateOne: {
+                                            filter: {
+                                                id: resume.id,
+                                                "sections.id": s.id,
+                                            },
+                                            update: {
+                                                "sections.$": s,
+                                            },
+                                        },
+                                    });
 
-                // // add, delete, update
-                // for (const k in section) {
-                //     switch (section[k]) {
-                //         case ModState.Add: {
-                //             const section = resume?.sections.find(
-                //                 (s) => s.id === k
-                //             );
-                //             operations.push({
-                //                 updateOne: {
-                //                     filter: { id: k },
-                //                     update: { $push: { sections: section } },
-                //                 },
-                //             });
+                                    delete modListCopy[s.id];
+                                    break;
+                                }
+                            }
+                        }
+                    });
+                }
 
-                //             // item = item.filter((i) =>)
-
-                //             break;
-                //         }
-                //         case ModState.Update: {
-                //             break;
-                //         }
-                //         case ModState.Delete: {
-                //             break;
-
-                //             // remove all item updates too.
-                //         }
-                //     }
-                //     console.log(k);
-                // }
-
-                res.send({ error: { code: 1, message: "test" } });
+                try {
+                    await dbConnect();
+                    if (operations.length > 0)
+                        await FileModel.bulkWrite(operations);
+                    res.send({ data: {} });
+                } catch (err) {
+                    console.log(err);
+                    throw new Error("Bulk write operation failed.");
+                }
                 break;
-                /**
-                 * updates:
-                 * file name {type: , name: }
-                 * section {type: , sectionId: , name:}
-                 * item {type: , sectionId: , itemIdx: , content: }
-                 */
-
-                /**
-                 * updates:
-                 *
-                 * file name
-                 * section name
-                 * all items
-                 */
-
-                // db.files.updateOne({id: "hz6yBL", "sections.id": "39i9UMW"}, {"$set": {"sections.$.name": "new name"}})
-                // db.files.updateOne({id: "hz6yBL", "sections.id": "39i9UMW"}, {"$set": {"sections.$.items.0": "new name"}})
             }
             default:
                 throw new Error(`${req.method} is not allowed.`);

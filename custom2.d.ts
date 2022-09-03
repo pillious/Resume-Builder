@@ -27,18 +27,12 @@ export interface IFile {
 
 // API
 export type ResponseSuccess = {
-    data: FileResponseData | AcknowledgementResponseData;
+    data: FileResponseData | Record<string, never>;
 };
 
 export type FileResponseData = {
     files?: IFile[];
     file?: IFile;
-};
-
-export type AcknowledgementResponseData = {
-    acknowledged: boolean;
-    matchedCount: number;
-    modifiedCount: number;
 };
 
 export type ResponseError = {

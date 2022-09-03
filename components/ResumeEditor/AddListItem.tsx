@@ -14,6 +14,7 @@ const AddListItem: React.FC<IProps> = ({ addItem, hidden = false }) => {
             {hidden === false && (
                 <div className={classes.wrapper}>
                     <Button
+                        sx={{width: "110px"}}
                         variant="outlined"
                         size="small"
                         startIcon={<AddIcon />}

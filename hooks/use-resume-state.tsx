@@ -41,9 +41,6 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
                 event.preventDefault();
 
                 if (hasUnsavedChanges) {
-                    console.log(resume);
-                    console.log(modList);
-
                     identifier = setTimeout(async () => {
                         fetcher("/api/updateResume", "", {
                             method: "POST",
@@ -53,26 +50,6 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
                         setModList({});
                         setPrevResume(cloneDeep(resume));
                     }, 250);
-
-                    // TODO: redo update resume -> details are below.
-                    // // set timeout to wait for any last second user inputs to be sent to reducer.
-                    // identifier = setTimeout(() => {
-                    //     // const cleansed = cleanseResume(resume);
-                    //     fetcher("/api/updateResume", "", {
-                    //         method: "POST",
-
-                    //         // an example of a single update
-                    //         // TODO: pass an array of updates.
-                    //         body: JSON.stringify({
-                    //             type: "item",
-                    //             fileId: "f34B43",
-                    //             sectionId: "bj7SfB",
-                    //             itemIdx: 2,
-                    //             content: "new string",
-                    //         }),
-                    //     });
-                    //     setHasUnsavedChanges(false);
-                    // }, 250);
                 } else {
                     console.log("No new changes to save.");
                 }
@@ -122,6 +99,20 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
         setHasUnsavedChanges(true);
     };
 
+    const updateSectionName = (sectionId: guid, name: string) => {
+        dispatch({ type: "updateSectionName", payload: { sectionId, name } });
+        setModList((prevState) => {
+            if (
+                sectionId in prevState &&
+                prevState[sectionId] === ModState.Add
+            ) {
+                return prevState;
+            }
+            return { ...prevState, [sectionId]: ModState.Update };
+        });
+        setHasUnsavedChanges(true);
+    };
+
     const updateItemContent = (
         sectionId: guid,
         itemId: guid,
@@ -134,9 +125,10 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
         const key = `${sectionId}.${itemId}`;
         setModList((prevState) => {
             // if the item was just added, don't change the mod state to "Update".
-            if (key in prevState && prevState[key] !== ModState.Add)
-                return { ...prevState, [key]: ModState.Update };
-            return prevState;
+            if (key in prevState && prevState[key] === ModState.Add) {
+                return prevState;
+            }
+            return { ...prevState, [key]: ModState.Update };
         });
         setHasUnsavedChanges(true);
     };
@@ -177,6 +169,7 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
         resume,
         addSection,
         addItem,
+        updateSectionName,
         updateItemContent,
         deleteSection,
         deleteItem,
