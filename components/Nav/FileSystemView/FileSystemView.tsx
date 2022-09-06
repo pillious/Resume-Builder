@@ -44,7 +44,7 @@ const FileSystemView: React.FC<IProps> = ({ close }) => {
                         sx={{
                             display: "flex",
                             justifyContent: "center",
-                            pb: 0.75,
+                            pb: 1,
                         }}
                         disablePadding
                     >

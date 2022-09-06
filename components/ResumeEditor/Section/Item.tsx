@@ -1,7 +1,7 @@
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import Textarea from "../UI/Textarea";
-import { guid, IItem } from "../../custom2";
+import Textarea from "../../UI/Textarea";
+import { guid, IItem } from "../../../custom2";
 import classes from "./Item.module.css";
 
 interface IProps {

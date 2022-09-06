@@ -2,6 +2,8 @@
 * JSON response format (https://google.github.io/styleguide/jsoncstyleguide.xml)
  - either contains a data or error key (if both, error takes precedence)
 
+* use next-auth for user authentication.
+
 Ideas (TODO):
 1) Redesign database: 
 - section -> {...existing, order}

@@ -1,6 +1,12 @@
-import { RefObject, useContext, useEffect, useReducer, useState } from "react";
-import { cloneDeep } from "lodash";
-import { IFile, guid, ModState } from "../custom2.d";
+import {
+    RefObject,
+    useCallback,
+    useContext,
+    useEffect,
+    useReducer,
+    useState,
+} from "react";
+import { guid, ModState } from "../custom2.d";
 import resumeReducer from "../store/ResumeReducer";
 import nanoid from "../utils/guid";
 import AppContext from "../store/AppContext";
@@ -12,9 +18,6 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
     const { data } = useResumeById(ctx.activeResumeId);
 
     const [resume, dispatch] = useReducer(resumeReducer, data);
-    const [prevResume, setPrevResume] = useState<IFile | null>(
-        cloneDeep(resume)
-    );
 
     // Contains the ids of the parts of the resume that was changed.
     // key = id, value = a modstate. (an item is signified as sectionidd.itemid)
@@ -24,11 +27,22 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
     useEffect(() => {
         if (data != null) {
             dispatch({ type: "setResume", payload: data });
-            setPrevResume(data);
         }
     }, [data]);
 
-    // Save Resume (override ctrl+s shortcut)
+    // Save Resume
+    const saveChanges = useCallback(() => {
+        if (hasUnsavedChanges) {
+            fetcher("/api/updateResume", "", {
+                method: "POST",
+                body: JSON.stringify({ resume, modList }),
+            });
+            setHasUnsavedChanges(false);
+            setModList({});
+        }
+    }, [hasUnsavedChanges, resume, modList]);
+
+    // override ctrl+s shortcut to save resume
     useEffect(() => {
         let identifier: NodeJS.Timeout;
         const handleSave = (event: KeyboardEvent) => {
@@ -41,14 +55,8 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
                 event.preventDefault();
 
                 if (hasUnsavedChanges) {
-                    identifier = setTimeout(async () => {
-                        fetcher("/api/updateResume", "", {
-                            method: "POST",
-                            body: JSON.stringify({ resume, modList }),
-                        });
-                        setHasUnsavedChanges(false);
-                        setModList({});
-                        setPrevResume(cloneDeep(resume));
+                    identifier = setTimeout(() => {
+                        saveChanges();
                     }, 250);
                 } else {
                     console.log("No new changes to save.");
@@ -66,9 +74,8 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
     }, [
         ctx.activeResumeId,
         resume,
-        prevResume,
         hasUnsavedChanges,
-        modList,
+        saveChanges,
         sectionRef,
     ]);
 
@@ -167,6 +174,7 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
 
     return {
         resume,
+        saveChanges,
         addSection,
         addItem,
         updateSectionName,
