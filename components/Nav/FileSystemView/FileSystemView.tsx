@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -8,6 +9,7 @@ import ListItem from "@mui/material/ListItem";
 import { guid } from "../../../custom2";
 import useResumeIds from "../../../hooks/data/use-resume-ids";
 import FileItem from "./FileItem";
+import AppContext from "../../../store/AppContext";
 
 const drawerWidth = 160;
 
@@ -16,6 +18,8 @@ interface IProps {
 }
 
 const FileSystemView: React.FC<IProps> = ({ close }) => {
+    const ctx = useContext(AppContext);
+
     const { data: payload } = useResumeIds();
 
     // const isResponseSuccess =
@@ -65,6 +69,7 @@ const FileSystemView: React.FC<IProps> = ({ close }) => {
                                 key={`FileItem-${idx}`}
                                 name={file.name}
                                 id={file.id}
+                                active={ctx.activeResumeId === file.id}
                             />
                         )
                     )}

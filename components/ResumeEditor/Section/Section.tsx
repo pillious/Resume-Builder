@@ -5,7 +5,7 @@ import List from "@mui/material/List";
 // import DeleteOutlineIcon from "@mui/icons-material/Delete";
 import classes from "./Section.module.css";
 import AddListItem from "./AddListItem";
-import Textarea from "../../UI/Textarea";
+import DebouncedTextarea from "../../UI/DebouncedTextarea";
 import { IItem, guid } from "../../../custom2";
 import Item from "./Item";
 import DeleteSection from "./DeleteSection";
@@ -25,7 +25,7 @@ const Section: React.FC<IProps> = (props) => {
     return (
         <Card elevation={0} className={classes.Card}>
             <div className={classes.top}>
-                <Textarea
+                <DebouncedTextarea
                     sx={{
                         fontSize: "1.5rem",
                         width: "max-content",

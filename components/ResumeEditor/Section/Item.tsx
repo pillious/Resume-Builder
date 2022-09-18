@@ -1,6 +1,6 @@
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import Textarea from "../../UI/Textarea";
+import DebouncedTextarea from "../../UI/DebouncedTextarea";
 import { guid, IItem } from "../../../custom2";
 import classes from "./Item.module.css";
 
@@ -25,7 +25,7 @@ const Item: React.FC<IProps> = (props) => {
                 className={classes.list_item}
                 disablePadding
             >
-                <Textarea
+                <DebouncedTextarea
                     sx={{ width: "100%" }}
                     defaultValue={props.item.content}
                     placeholder="Type here. . ."

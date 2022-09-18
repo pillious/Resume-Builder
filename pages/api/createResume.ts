@@ -12,8 +12,9 @@ const handler = async (
         switch (req.method) {
             case "POST": {
                 await dbConnect();
+                const fileName = req.query.fileName;
                 const doc = new FileModel({
-                    name: `File-${guid()}`,
+                    name: fileName || `File-${guid()}`,
                     id: guid(),
                 });
                 await doc.save();

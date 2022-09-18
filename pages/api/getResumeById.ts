@@ -10,13 +10,18 @@ const handler = async (
     try {
         switch (req.method) {
             case "GET": {
-                await dbConnect();
-                const doc = await FileModel.findOne({ id: req.query.id });
-                res.status(200).json({ data: { file: doc } });
+                const id = req.query.id;
+                if (id) {
+                    await dbConnect();
+                    const doc = await FileModel.findOne({ id: req.query.id });
+                    res.status(200).json({ data: { file: doc } });
+                } else {
+                    res.status(200).json({ data: {} });
+                }
                 break;
             }
             default:
-                throw new Error(`${req.method} is not allowed`)
+                throw new Error(`${req.method} is not allowed`);
         }
     } catch (ex) {
         res.status(500).json({ error: { code: 500, message: ex } });

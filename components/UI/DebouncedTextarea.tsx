@@ -45,10 +45,10 @@ const Textarea: React.FC<IProps> = ({
 
     return (
         <Input
-            sx={sx ? sx : undefined}
+            sx={sx || undefined}
             value={value}
             onChange={valueChangeHandler}
-            placeholder={placeholder ? placeholder : undefined}
+            placeholder={placeholder || undefined}
             multiline={multiline !== undefined ? multiline : true} // true by default
             disableUnderline
         />

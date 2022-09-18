@@ -1,6 +1,8 @@
 import { union } from "lodash";
 import { createContext, useState } from "react";
+import { mutate } from "swr";
 import { guid } from "../custom2";
+import fetcher from "../utils/fetcher";
 
 interface IProps {
     children: JSX.Element;
@@ -11,6 +13,8 @@ interface IAppContext {
     onActiveResumeChange: (id: guid) => void;
     fileIds: guid[];
     onFileIdsChange: (ids: guid | guid[]) => void;
+    deleteFile: (id: guid) => void;
+    renameFile: (id: guid, name: string) => void;
 }
 
 const defaultValues: IAppContext = {
@@ -18,6 +22,8 @@ const defaultValues: IAppContext = {
     onActiveResumeChange: () => ({}),
     fileIds: [],
     onFileIdsChange: () => ({}),
+    deleteFile: () => ({}),
+    renameFile: () => ({}),
 };
 
 const AppContext = createContext<IAppContext>(defaultValues);
@@ -28,7 +34,7 @@ export const AppContextProvider: React.FC<IProps> = (props) => {
     );
     const [fileIds, setFileIds] = useState(defaultValues.fileIds);
 
-    const updateActiveResumeId = (id: guid) => setActiveResumeId(id);
+    const updateActiveResumeId = (id: guid | null) => setActiveResumeId(id);
 
     const updateFileIds = (ids: guid | guid[]) => {
         if (typeof ids === "string") {
@@ -39,6 +45,36 @@ export const AppContextProvider: React.FC<IProps> = (props) => {
         }
     };
 
+    /**
+     * These file actions can be accessed globally and are saved immediately.
+     */
+    // Delete file
+    const deleteFile = async (id: guid) => {
+        if (id) {
+            await fetcher("/api/deleteResumeById", "", {
+                method: "POST",
+                body: JSON.stringify({ fileId: id }),
+            });
+            if (id === activeResumeId) updateActiveResumeId(null);
+            mutate("/api/getResumeIds"); // update filesystem.
+        }
+    };
+
+    // Rename file
+    const renameFile = (id: guid, name: string) => {
+        if (id && name) {
+            fetcher("/api/updateResumeName", "", {
+                method: "POST",
+                body: JSON.stringify({ fileId: id, fileName: name }),
+            });
+            mutate("/api/getResumeIds"); // update filesystem.
+
+            // update active resume
+            if (id === activeResumeId)
+                mutate(["/api/getResumeById", `?id=${activeResumeId}`]);
+        }
+    };
+
     return (
         <AppContext.Provider
             value={{
@@ -46,6 +82,8 @@ export const AppContextProvider: React.FC<IProps> = (props) => {
                 onActiveResumeChange: updateActiveResumeId,
                 fileIds,
                 onFileIdsChange: updateFileIds,
+                deleteFile,
+                renameFile,
             }}
         >
             {props.children}

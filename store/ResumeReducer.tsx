@@ -1,7 +1,7 @@
 import { IFile, ISection, IItem, guid } from "../custom2";
 
 type ACTIONTYPE =
-    | { type: "setResume"; payload: IFile }
+    | { type: "setResume"; payload: IFile | null}
     | { type: "addSection"; payload: { sectionId: guid; name: string } }
     | {
           type: "addItem";

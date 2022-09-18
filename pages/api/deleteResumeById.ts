@@ -9,17 +9,20 @@ const handler = async (
 ) => {
     try {
         switch (req.method) {
-            case "GET": {
+            case "POST": {
                 await dbConnect();
-                const doc = await FileModel.find({});
-                res.status(200).json({ data: { files: doc } });
+                const fileId = JSON.parse(req.body).fileId;
+                if (fileId) {
+                    const x = await FileModel.deleteOne({ id: fileId });
+                    console.log(x);
+                }
+                res.status(200).json({ data: {} });
                 break;
             }
             default:
                 throw new Error(`${req.method} is not allowed.`);
         }
     } catch (ex) {
-        console.log(ex);
         res.status(500).json({ error: { code: 500, message: ex } });
     }
 };

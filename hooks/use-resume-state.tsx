@@ -25,9 +25,7 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
     const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
     useEffect(() => {
-        if (data != null) {
-            dispatch({ type: "setResume", payload: data });
-        }
+        dispatch({ type: "setResume", payload: data }); // payload can be null.
     }, [data]);
 
     // Save Resume
@@ -80,7 +78,7 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
     ]);
 
     /**
-     * ACTIONS
+     * REDUCER ACTIONS
      */
     const addSection = () => {
         const id = nanoid();

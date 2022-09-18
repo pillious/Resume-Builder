@@ -4,6 +4,11 @@
 
 * use next-auth for user authentication.
 
+* resume creation: https://react-pdf.org/node
+
+* drag and drop: https://react-dnd.github.io/react-dnd/about
+
+
 Ideas (TODO):
 1) Redesign database: 
 - section -> {...existing, order}

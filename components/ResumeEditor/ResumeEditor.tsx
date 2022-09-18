@@ -1,12 +1,14 @@
-import { useRef } from "react";
+import { useRef, useContext } from "react";
 import AddSection from "./Section/AddSection";
 import classes from "./ResumeEditor.module.css";
 import Section from "./Section/Section";
 import Toolbox from "./Toolbox";
 import useResumeState from "../../hooks/use-resume-state";
-import TopBar from "./TopBar";
+import AppContext from "../../store/AppContext";
 
 const ResumeEditor: React.FC = () => {
+    const ctx = useContext(AppContext);
+
     const sectionRef = useRef<HTMLBaseElement>(null);
 
     const {
@@ -24,14 +26,21 @@ const ResumeEditor: React.FC = () => {
         <section className={classes.section} tabIndex={-1} ref={sectionRef}>
             {resume && (
                 <>
-                    <TopBar />
                     <Toolbox
+                        fileName={resume.name}
                         save={saveChanges}
                         copy={() => console.log("copy")}
                         print={() => console.log("print")}
                         preview={() => console.log("preview")}
-                        rename={() => console.log("rename")}
-                        delete={() => console.log("delete")}
+                        rename={(name) => {
+                            if (ctx.activeResumeId && name)
+                                ctx.renameFile(ctx.activeResumeId, name);
+                        }}
+                        delete={() => {
+                            if (ctx.activeResumeId) {
+                                ctx.deleteFile(ctx.activeResumeId);
+                            }
+                        }}
                     />
                     {resume?.sections.map((section, idx) => (
                         <Section
