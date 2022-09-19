@@ -4,7 +4,7 @@
 
 * use next-auth for user authentication.
 
-* resume creation: https://react-pdf.org/node
+* resume creation: https://react-pdf.org
 
 * drag and drop: https://react-dnd.github.io/react-dnd/about
 

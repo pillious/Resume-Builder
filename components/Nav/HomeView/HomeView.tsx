@@ -20,7 +20,11 @@ interface IProps {
 
 const HomeView: React.FC<IProps> = ({ openFileSystem }) => {
     return (
-        <Box sx={{ display: "flex" }}>
+        <Box
+            sx={{
+                display: "flex",
+            }}
+        >
             <Drawer
                 sx={{
                     width: drawerWidth,

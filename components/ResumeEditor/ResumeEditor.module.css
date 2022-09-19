@@ -4,4 +4,5 @@
     width: 50vw;
     border-right: 1px solid steelblue;
     overflow-y: scroll;
+    flex: 1;
 }
