@@ -14,8 +14,11 @@ import useResumeById from "./data/use-resume-by-id";
 import fetcher from "../utils/fetcher";
 
 const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
-    const ctx = useContext(AppContext);
-    const { data } = useResumeById(ctx.activeResumeId);
+    const {
+        activeResumeId: ctxActiveResumeId,
+        updateActiveResumeObj: ctxUpdateActiveResumeObj,
+    } = useContext(AppContext);
+    const { data } = useResumeById(ctxActiveResumeId);
 
     const [resume, dispatch] = useReducer(resumeReducer, data);
 
@@ -26,7 +29,8 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
 
     useEffect(() => {
         dispatch({ type: "setResume", payload: data }); // payload can be null.
-    }, [data]);
+        ctxUpdateActiveResumeObj(data);
+    }, [data, ctxUpdateActiveResumeObj]);
 
     // Save Resume
     const saveChanges = useCallback(() => {
@@ -45,7 +49,7 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
         let identifier: NodeJS.Timeout;
         const handleSave = (event: KeyboardEvent) => {
             if (
-                ctx.activeResumeId &&
+                ctxActiveResumeId &&
                 event.ctrlKey &&
                 event.key === "s" &&
                 resume
@@ -69,13 +73,7 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
             target?.removeEventListener("keydown", handleSave);
             clearTimeout(identifier);
         };
-    }, [
-        ctx.activeResumeId,
-        resume,
-        hasUnsavedChanges,
-        saveChanges,
-        sectionRef,
-    ]);
+    }, [ctxActiveResumeId, resume, hasUnsavedChanges, saveChanges, sectionRef]);
 
     /**
      * REDUCER ACTIONS

@@ -7,7 +7,11 @@ import useResumeState from "../../hooks/use-resume-state";
 import AppContext from "../../store/AppContext";
 
 const ResumeEditor: React.FC = () => {
-    const ctx = useContext(AppContext);
+    const {
+        activeResumeId: ctxActiveResumeId,
+        renameFile: ctxRenameFile,
+        deleteFile: ctxDeleteFile,
+    } = useContext(AppContext);
 
     const sectionRef = useRef<HTMLBaseElement>(null);
 
@@ -33,12 +37,12 @@ const ResumeEditor: React.FC = () => {
                         print={() => console.log("print")}
                         preview={() => console.log("preview")}
                         rename={(name) => {
-                            if (ctx.activeResumeId && name)
-                                ctx.renameFile(ctx.activeResumeId, name);
+                            if (ctxActiveResumeId && name)
+                                ctxRenameFile(ctxActiveResumeId, name);
                         }}
                         delete={() => {
-                            if (ctx.activeResumeId) {
-                                ctx.deleteFile(ctx.activeResumeId);
+                            if (ctxActiveResumeId) {
+                                ctxDeleteFile(ctxActiveResumeId);
                             }
                         }}
                     />

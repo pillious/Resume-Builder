@@ -7,6 +7,19 @@ export enum ModState {
     Delete = 2,
 }
 
+// PDF Properties
+export interface PDFDocStyles {
+    spacing: number;
+}
+
+export interface PDFSectionProps {
+    spacing: number;
+}
+
+export interface PDFItemProps {
+    spacing: number;
+}
+
 // Schema objects
 export interface IItem {
     content: string;

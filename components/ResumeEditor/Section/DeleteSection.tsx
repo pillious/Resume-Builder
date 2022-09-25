@@ -9,7 +9,12 @@ interface IProps {
 
 const DeleteSection: React.FC<IProps> = (props) => {
     return (
-        <IconButton color="error">
+        <IconButton
+            color="error"
+            onClick={() => {
+                props.deleteSection(props.id);
+            }}
+        >
             <DeleteOutlineIcon
                 sx={{
                     color: "#ff0000",
@@ -18,9 +23,6 @@ const DeleteSection: React.FC<IProps> = (props) => {
                         cursor: "pointer",
                     },
                     transition: "200ms",
-                }}
-                onClick={() => {
-                    props.deleteSection(props.id);
                 }}
             />
         </IconButton>

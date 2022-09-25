@@ -18,7 +18,7 @@ interface IProps {
 }
 
 const FileSystemView: React.FC<IProps> = ({ close }) => {
-    const ctx = useContext(AppContext);
+    const { activeResumeId: ctxActiveResumeId } = useContext(AppContext);
 
     const { data: payload } = useResumeIds();
 
@@ -69,7 +69,7 @@ const FileSystemView: React.FC<IProps> = ({ close }) => {
                                 key={`FileItem-${idx}`}
                                 name={file.name}
                                 id={file.id}
-                                active={ctx.activeResumeId === file.id}
+                                active={ctxActiveResumeId === file.id}
                             />
                         )
                     )}

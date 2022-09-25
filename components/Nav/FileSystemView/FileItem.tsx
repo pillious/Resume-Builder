@@ -16,11 +16,18 @@ interface IProps {
     iconColor?: string;
 }
 
-const FileItem: React.FC<IProps> = ({ name, id, active, iconSize, iconColor }) => {
-    const ctx = useContext(AppContext);
+const FileItem: React.FC<IProps> = ({
+    name,
+    id,
+    active,
+    iconSize,
+    iconColor,
+}) => {
+    const { updateActiveResumeId: ctxUpdateActiveResumeId } =
+        useContext(AppContext);
 
     const clickHandler = () => {
-        ctx.onActiveResumeChange(id);
+        ctxUpdateActiveResumeId(id);
     };
 
     const HSLColor = useMemo(() => buildHSLString(pastelHSLColor()), []);
@@ -28,7 +35,11 @@ const FileItem: React.FC<IProps> = ({ name, id, active, iconSize, iconColor }) =
     return (
         <>
             <ListItem disablePadding>
-                <ListItemButton sx={{ m: 0, p: 0.5 }} selected={active} onClick={clickHandler}>
+                <ListItemButton
+                    sx={{ m: 0, p: 0.5 }}
+                    selected={active}
+                    onClick={clickHandler}
+                >
                     <ListItemIcon
                         sx={{
                             minWidth: `${iconSize || 20}px`,

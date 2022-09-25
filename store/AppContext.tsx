@@ -1,91 +1,138 @@
+import { createContext, useState, useCallback, useMemo } from "react";
+import { jsPDF } from "jspdf";
 import { union } from "lodash";
-import { createContext, useState } from "react";
 import { mutate } from "swr";
-import { guid } from "../custom2";
+import { guid, IFile } from "../custom2";
 import fetcher from "../utils/fetcher";
+import { generate } from "../utils/pdfgen";
 
 interface IProps {
     children: JSX.Element;
 }
 
+// Data structure (probably array) to store resumes/previews -> keep track of open tabs.
+// maybe just store ids in one array, and the actual components in another array?
+
 interface IAppContext {
     activeResumeId: guid | null;
-    onActiveResumeChange: (id: guid) => void;
-    fileIds: guid[];
-    onFileIdsChange: (ids: guid | guid[]) => void;
+    activeResumeObj: { file: IFile | null; pdf: jsPDF | null };
+    fileIds: guid[]; // unused
+    updateFileIds: (ids: guid | guid[]) => void; // unused
+    updateActiveResumeId: (id: guid | null) => void;
+    updateActiveResumeObj: (file: IFile | null) => void;
     deleteFile: (id: guid) => void;
     renameFile: (id: guid, name: string) => void;
 }
 
 const defaultValues: IAppContext = {
     activeResumeId: null,
-    onActiveResumeChange: () => ({}),
+    activeResumeObj: { file: null, pdf: null },
     fileIds: [],
-    onFileIdsChange: () => ({}),
+    updateFileIds: () => ({}),
+    updateActiveResumeId: () => ({}),
+    updateActiveResumeObj: () => ({}),
     deleteFile: () => ({}),
     renameFile: () => ({}),
 };
 
+// useCallback & useMemo -> reduces unneccessary component re-renders.
 const AppContext = createContext<IAppContext>(defaultValues);
 
 export const AppContextProvider: React.FC<IProps> = (props) => {
     const [activeResumeId, setActiveResumeId] = useState(
         defaultValues.activeResumeId
     );
+    const [activeResumeObj, setActiveResumeObj] = useState(
+        defaultValues.activeResumeObj
+    );
     const [fileIds, setFileIds] = useState(defaultValues.fileIds);
 
-    const updateActiveResumeId = (id: guid | null) => setActiveResumeId(id);
+    const updateActiveResumeObj = useCallback(async (file: IFile | null) => {
+        const pdf = file ? await generate(file) : null;
+        setActiveResumeObj({ file, pdf });
+    }, []);
 
-    const updateFileIds = (ids: guid | guid[]) => {
-        if (typeof ids === "string") {
-            if (fileIds.indexOf(ids) != -1)
-                setFileIds((prev) => [...prev, ids]);
-        } else if (Array.isArray(ids)) {
-            setFileIds((prev) => union(prev, ids));
-        }
-    };
+    const updateActiveResumeId = useCallback(
+        (id: guid | null) => {
+            setActiveResumeId(id);
+            updateActiveResumeObj(null);
+        },
+        [updateActiveResumeObj]
+    );
+
+    const updateFileIds = useCallback(
+        (ids: guid | guid[]) => {
+            if (typeof ids === "string") {
+                if (fileIds.indexOf(ids) != -1)
+                    setFileIds((prev) => [...prev, ids]);
+            } else if (Array.isArray(ids)) {
+                setFileIds((prev) => union(prev, ids));
+            }
+        },
+        [fileIds]
+    );
 
     /**
      * These file actions can be accessed globally and are saved immediately.
      */
     // Delete file
-    const deleteFile = async (id: guid) => {
-        if (id) {
-            await fetcher("/api/deleteResumeById", "", {
-                method: "POST",
-                body: JSON.stringify({ fileId: id }),
-            });
-            if (id === activeResumeId) updateActiveResumeId(null);
-            mutate("/api/getResumeIds"); // update filesystem.
-        }
-    };
+    const deleteFile = useCallback(
+        async (id: guid) => {
+            if (id) {
+                await fetcher("/api/deleteResumeById", "", {
+                    method: "POST",
+                    body: JSON.stringify({ fileId: id }),
+                });
+                if (id === activeResumeId) updateActiveResumeId(null);
+                mutate("/api/getResumeIds"); // update filesystem.
+            }
+        },
+        [activeResumeId, updateActiveResumeId]
+    );
 
     // Rename file
-    const renameFile = (id: guid, name: string) => {
-        if (id && name) {
-            fetcher("/api/updateResumeName", "", {
-                method: "POST",
-                body: JSON.stringify({ fileId: id, fileName: name }),
-            });
-            mutate("/api/getResumeIds"); // update filesystem.
+    const renameFile = useCallback(
+        (id: guid, name: string) => {
+            if (id && name) {
+                fetcher("/api/updateResumeName", "", {
+                    method: "POST",
+                    body: JSON.stringify({ fileId: id, fileName: name }),
+                });
+                mutate("/api/getResumeIds"); // update filesystem.
 
-            // update active resume
-            if (id === activeResumeId)
-                mutate(["/api/getResumeById", `?id=${activeResumeId}`]);
-        }
-    };
+                // update active resume
+                if (id === activeResumeId)
+                    mutate(["/api/getResumeById", `?id=${activeResumeId}`]);
+            }
+        },
+        [activeResumeId]
+    );
+
+    const contextValue = useMemo(
+        () => ({
+            activeResumeId,
+            activeResumeObj,
+            fileIds,
+            updateFileIds,
+            updateActiveResumeId,
+            updateActiveResumeObj,
+            deleteFile,
+            renameFile,
+        }),
+        [
+            activeResumeId,
+            activeResumeObj,
+            fileIds,
+            updateFileIds,
+            updateActiveResumeId,
+            updateActiveResumeObj,
+            deleteFile,
+            renameFile,
+        ]
+    );
 
     return (
-        <AppContext.Provider
-            value={{
-                activeResumeId,
-                onActiveResumeChange: updateActiveResumeId,
-                fileIds,
-                onFileIdsChange: updateFileIds,
-                deleteFile,
-                renameFile,
-            }}
-        >
+        <AppContext.Provider value={contextValue}>
             {props.children}
         </AppContext.Provider>
     );
