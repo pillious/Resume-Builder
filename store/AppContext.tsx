@@ -1,10 +1,9 @@
 import { createContext, useState, useCallback, useMemo } from "react";
-import { jsPDF } from "jspdf";
 import { union } from "lodash";
 import { mutate } from "swr";
 import { guid, IFile } from "../custom2";
 import fetcher from "../utils/fetcher";
-import { generate } from "../utils/pdfgen";
+import { Pdf } from "../utils/pdfgen";
 
 interface IProps {
     children: JSX.Element;
@@ -15,7 +14,7 @@ interface IProps {
 
 interface IAppContext {
     activeResumeId: guid | null;
-    activeResumeObj: { file: IFile | null; pdf: jsPDF | null };
+    activeResumeObj: { file: IFile | null; pdf: Pdf };
     fileIds: guid[]; // unused
     updateFileIds: (ids: guid | guid[]) => void; // unused
     updateActiveResumeId: (id: guid | null) => void;
@@ -26,7 +25,7 @@ interface IAppContext {
 
 const defaultValues: IAppContext = {
     activeResumeId: null,
-    activeResumeObj: { file: null, pdf: null },
+    activeResumeObj: { file: null, pdf: new Pdf() },
     fileIds: [],
     updateFileIds: () => ({}),
     updateActiveResumeId: () => ({}),
@@ -47,10 +46,24 @@ export const AppContextProvider: React.FC<IProps> = (props) => {
     );
     const [fileIds, setFileIds] = useState(defaultValues.fileIds);
 
-    const updateActiveResumeObj = useCallback(async (file: IFile | null) => {
-        const pdf = file ? await generate(file) : null;
-        setActiveResumeObj({ file, pdf });
-    }, []);
+    const updateActiveResumeObj = useCallback(
+        async (file: IFile | null) => {
+            const pdf = file
+                ? (
+                      await activeResumeObj.pdf
+                          .reset()
+                          .loadAndSetFont(
+                              "/fonts/Proxima-Nova-Reg.ttf",
+                              "Proxima-Nova-Reg",
+                              "normal",
+                              400
+                          )
+                  ).generate(file)
+                : activeResumeObj.pdf.reset();
+            setActiveResumeObj({ file, pdf });
+        },
+        [activeResumeObj.pdf]
+    );
 
     const updateActiveResumeId = useCallback(
         (id: guid | null) => {
