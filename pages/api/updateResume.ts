@@ -40,6 +40,9 @@ const handler = async (
                     }
                 }
 
+                console.log("------");
+                console.log(modList, modListCopy);
+
                 const operations: AnyBulkWriteOperation<Document>[] = [];
 
                 // Operations for Delete sections.
@@ -63,6 +66,26 @@ const handler = async (
 
                 // Operations for Add/Update sections.
                 if (Object.keys(modListCopy).length !== 0) {
+                    // Header
+                    if (
+                        resume &&
+                        Object.keys(modListCopy).findIndex((k) =>
+                            k.includes(resume.header.id)
+                        ) !== -1
+                    ) {
+                        operations.push({
+                            updateOne: {
+                                filter: {
+                                    id: resume.id,
+                                },
+                                update: {
+                                    header: resume.header,
+                                },
+                            },
+                        });
+                    }
+
+                    // Sections
                     resume?.sections.forEach((s) => {
                         if (Object.keys(modListCopy).includes(s.id)) {
                             switch (modListCopy[s.id]) {

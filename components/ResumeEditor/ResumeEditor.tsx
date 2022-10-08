@@ -1,16 +1,20 @@
 import { useRef, useContext } from "react";
+import Divider from "@mui/material/Divider";
 import AddSection from "./Section/AddSection";
 import classes from "./ResumeEditor.module.css";
 import Section from "./Section/Section";
 import Toolbox from "./Toolbox";
 import useResumeState from "../../hooks/use-resume-state";
 import AppContext from "../../store/AppContext";
+import Header from "./Header/Header";
 
 const ResumeEditor: React.FC = () => {
     const {
         activeResumeId: ctxActiveResumeId,
         renameFile: ctxRenameFile,
         deleteFile: ctxDeleteFile,
+        downloadFile: ctxDownloadFile,
+        openPreview: ctxOpenPreview,
     } = useContext(AppContext);
 
     const sectionRef = useRef<HTMLBaseElement>(null);
@@ -18,10 +22,14 @@ const ResumeEditor: React.FC = () => {
     const {
         resume,
         saveChanges,
+        addHeaderInfo,
         addSection,
         addItem,
+        updateHeaderName,
+        updateHeaderInfo,
         updateSectionName,
         updateItemContent,
+        deleteHeaderInfo,
         deleteSection,
         deleteItem,
     } = useResumeState(sectionRef);
@@ -34,8 +42,12 @@ const ResumeEditor: React.FC = () => {
                         fileName={resume.name}
                         save={saveChanges}
                         copy={() => console.log("copy")}
-                        print={() => console.log("print")}
-                        preview={() => console.log("preview")}
+                        download={() => {
+                            if (ctxActiveResumeId) ctxDownloadFile();
+                        }}
+                        preview={() => {
+                            if (ctxActiveResumeId) ctxOpenPreview();
+                        }}
                         rename={(name) => {
                             if (ctxActiveResumeId && name)
                                 ctxRenameFile(ctxActiveResumeId, name);
@@ -46,6 +58,15 @@ const ResumeEditor: React.FC = () => {
                             }
                         }}
                     />
+                    <Header
+                        addHeaderInfo={addHeaderInfo}
+                        updateHeaderName={updateHeaderName}
+                        updateHeaderInfo={updateHeaderInfo}
+                        deleteHeaderInfo={deleteHeaderInfo}
+                        items={resume.header.items}
+                        name={resume.header.name}
+                    />
+                    <Divider />
                     {resume?.sections.map((section, idx) => (
                         <Section
                             key={`${section.id}-${idx}`}

@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import FileModel from "../../models/FileModel.model";
+import SectionModel from "../../models/SectionModel.model";
 import dbConnect from "../../utils/database";
 import guid from "../../utils/guid";
 import { ResponseSuccess, ResponseError } from "../../custom2.d";
@@ -14,8 +15,12 @@ const handler = async (
                 await dbConnect();
                 const fileName = req.query.fileName;
                 const doc = new FileModel({
+                    userId: `TEMP-${guid()}`,
                     name: fileName || `File-${guid()}`,
                     id: guid(),
+                    header: new SectionModel({
+                        id: guid(),
+                    }),
                 });
                 await doc.save();
 

@@ -22,7 +22,7 @@ const Textarea: React.FC<IProps> = ({
     const [prevValue, setPrevValue] = useState(value);
 
     useEffect(() => {
-        if (defaultValue) reset(defaultValue);
+        reset(defaultValue ?? "");
     }, [reset, defaultValue]);
 
     // Debounce saving to reducer.
@@ -35,7 +35,7 @@ const Textarea: React.FC<IProps> = ({
             identifier = setTimeout(() => {
                 onChange(value);
                 setPrevValue(value);
-            }, 300);
+            }, 275);
         }
 
         return () => {

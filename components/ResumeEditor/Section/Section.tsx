@@ -1,8 +1,6 @@
 import React from "react";
 import Card from "@mui/material/Card";
 import List from "@mui/material/List";
-// import IconButton from "@mui/material/IconButton";
-// import DeleteOutlineIcon from "@mui/icons-material/Delete";
 import classes from "./Section.module.css";
 import AddListItem from "./AddListItem";
 import DebouncedTextarea from "../../UI/DebouncedTextarea";
@@ -27,12 +25,18 @@ const Section: React.FC<IProps> = (props) => {
             <div className={classes.top}>
                 <DebouncedTextarea
                     sx={{
-                        fontSize: "1.5rem",
+                        fontSize: "1.25rem",
                         width: "max-content",
                         fontWeight: 600,
+                        borderRadius: "8px",
+                        backgroundColor: "#f5f5f5",
+                        pl: "0.5rem",
+                        "&:hover": {
+                            backgroundColor: "#ddd",
+                        },
                     }}
                     defaultValue={props.title}
-                    placeholder="Give me a title..."
+                    placeholder="Section Title"
                     multiline={false}
                     onChange={(name) => props.updateSectionName(props.id, name)}
                 />
@@ -43,7 +47,7 @@ const Section: React.FC<IProps> = (props) => {
                 />
             </div>
             {props.items.length > 0 && (
-                <Card elevation={2}>
+                <Card elevation={2} sx={{ mx: "2px" }}>
                     <List className={classes.List}>
                         {props.items.map((item) => (
                             <Item

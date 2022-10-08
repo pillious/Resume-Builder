@@ -33,8 +33,10 @@ export interface ISection {
 }
 
 export interface IFile {
+    userId: string;
     name: string;
     sections: ISection[];
+    header: ISection;
     id: guid;
 }
 

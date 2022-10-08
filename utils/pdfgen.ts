@@ -35,6 +35,17 @@ export class Pdf {
         return this;
     }
 
+    download(fileName?: string) {
+        try {
+            this._doc.save(fileName);
+        } catch (err) {
+            console.log(err);
+            return false;
+        }
+
+        return true;
+    }
+
     getUri() {
         return this._doc ? this._doc.output("datauristring") : "";
     }

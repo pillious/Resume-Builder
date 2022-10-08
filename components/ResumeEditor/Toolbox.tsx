@@ -8,7 +8,7 @@ import ConstructionIcon from "@mui/icons-material/Construction";
 import CloseIcon from "@mui/icons-material/Close";
 import FileCopyIcon from "@mui/icons-material/FileCopyOutlined";
 import SaveIcon from "@mui/icons-material/Save";
-import PrintIcon from "@mui/icons-material/Print";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import PreviewIcon from "@mui/icons-material/Preview";
@@ -20,7 +20,7 @@ interface IProps {
     fileName: string;
     copy: () => void;
     save: () => void;
-    print: () => void;
+    download: () => void;
     preview: () => void;
     rename: (name: string) => void;
     delete: () => void;
@@ -99,13 +99,13 @@ const Toolbox: React.FC<IProps> = (props) => {
                             <>
                                 <IconButton
                                     color="warning"
-                                    aria-label="Print"
+                                    aria-label="Download"
                                     onClick={() => {
-                                        props.print();
+                                        props.download();
                                         handleToolboxClose();
                                     }}
                                 >
-                                    <PrintIcon />
+                                    <FileDownloadIcon />
                                 </IconButton>
                                 <IconButton
                                     color="warning"
@@ -119,7 +119,7 @@ const Toolbox: React.FC<IProps> = (props) => {
                                 </IconButton>
                             </>
                         }
-                        tooltipTitle="Print / Preview"
+                        tooltipTitle="Download / Preview"
                     />
                     <SpeedDialAction
                         sx={{

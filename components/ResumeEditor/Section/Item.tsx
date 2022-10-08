@@ -26,7 +26,9 @@ const Item: React.FC<IProps> = (props) => {
                 disablePadding
             >
                 <DebouncedTextarea
-                    sx={{ width: "100%" }}
+                    sx={{
+                        width: "100%",
+                    }}
                     defaultValue={props.item.content}
                     placeholder="Type here. . ."
                     onChange={(content) => {

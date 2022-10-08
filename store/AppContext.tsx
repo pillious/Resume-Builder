@@ -14,6 +14,7 @@ interface IProps {
 
 interface IAppContext {
     activeResumeId: guid | null;
+    isPreviewActive: boolean;
     activeResumeObj: { file: IFile | null; pdf: Pdf };
     fileIds: guid[]; // unused
     updateFileIds: (ids: guid | guid[]) => void; // unused
@@ -21,10 +22,13 @@ interface IAppContext {
     updateActiveResumeObj: (file: IFile | null) => void;
     deleteFile: (id: guid) => void;
     renameFile: (id: guid, name: string) => void;
+    downloadFile: (id?: guid) => void;
+    openPreview: () => void;
 }
 
 const defaultValues: IAppContext = {
     activeResumeId: null,
+    isPreviewActive: false,
     activeResumeObj: { file: null, pdf: new Pdf() },
     fileIds: [],
     updateFileIds: () => ({}),
@@ -32,6 +36,8 @@ const defaultValues: IAppContext = {
     updateActiveResumeObj: () => ({}),
     deleteFile: () => ({}),
     renameFile: () => ({}),
+    downloadFile: () => ({}),
+    openPreview: () => ({}),
 };
 
 // useCallback & useMemo -> reduces unneccessary component re-renders.
@@ -40,6 +46,9 @@ const AppContext = createContext<IAppContext>(defaultValues);
 export const AppContextProvider: React.FC<IProps> = (props) => {
     const [activeResumeId, setActiveResumeId] = useState(
         defaultValues.activeResumeId
+    );
+    const [isPreviewActive, setIsPreviewActive] = useState(
+        defaultValues.isPreviewActive
     );
     const [activeResumeObj, setActiveResumeObj] = useState(
         defaultValues.activeResumeObj
@@ -72,6 +81,10 @@ export const AppContextProvider: React.FC<IProps> = (props) => {
         },
         [updateActiveResumeObj]
     );
+
+    const openPreview = useCallback(() => {
+        if (activeResumeId) setIsPreviewActive((prev) => !prev);
+    }, [activeResumeId]);
 
     const updateFileIds = useCallback(
         (ids: guid | guid[]) => {
@@ -121,9 +134,22 @@ export const AppContextProvider: React.FC<IProps> = (props) => {
         [activeResumeId]
     );
 
+    const downloadFile = useCallback(
+        (id?: guid) => {
+            // const fileId = id ?? activeResumeId ?? null;
+            const fileId = id ?? activeResumeId ?? null;
+
+            if (fileId) {
+                activeResumeObj.pdf.download(activeResumeObj.file?.name);
+            }
+        },
+        [activeResumeId, activeResumeObj]
+    );
+
     const contextValue = useMemo(
         () => ({
             activeResumeId,
+            isPreviewActive,
             activeResumeObj,
             fileIds,
             updateFileIds,
@@ -131,9 +157,12 @@ export const AppContextProvider: React.FC<IProps> = (props) => {
             updateActiveResumeObj,
             deleteFile,
             renameFile,
+            downloadFile,
+            openPreview,
         }),
         [
             activeResumeId,
+            isPreviewActive,
             activeResumeObj,
             fileIds,
             updateFileIds,
@@ -141,6 +170,8 @@ export const AppContextProvider: React.FC<IProps> = (props) => {
             updateActiveResumeObj,
             deleteFile,
             renameFile,
+            downloadFile,
+            openPreview,
         ]
     );
 

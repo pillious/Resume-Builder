@@ -30,6 +30,8 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
     useEffect(() => {
         dispatch({ type: "setResume", payload: data }); // payload can be null.
         ctxUpdateActiveResumeObj(data);
+        setModList({});
+        setHasUnsavedChanges(false);
     }, [data, ctxUpdateActiveResumeObj]);
 
     // Save Resume
@@ -48,18 +50,16 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
     useEffect(() => {
         let identifier: NodeJS.Timeout;
         const handleSave = (event: KeyboardEvent) => {
-            if (
-                ctxActiveResumeId &&
-                event.ctrlKey &&
-                event.key === "s" &&
-                resume
-            ) {
+            if (ctxActiveResumeId && event.ctrlKey && event.key === "s") {
                 event.preventDefault();
 
                 if (hasUnsavedChanges) {
+                    console.log("save begin");
+
                     identifier = setTimeout(() => {
                         saveChanges();
-                    }, 250);
+                        console.log("save end");
+                    }, 275);
                 } else {
                     console.log("No new changes to save.");
                 }
@@ -73,11 +73,26 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
             target?.removeEventListener("keydown", handleSave);
             clearTimeout(identifier);
         };
-    }, [ctxActiveResumeId, resume, hasUnsavedChanges, saveChanges, sectionRef]);
+    }, [ctxActiveResumeId, hasUnsavedChanges, sectionRef, saveChanges]);
 
     /**
      * REDUCER ACTIONS
      */
+    const addHeaderInfo = () => {
+        const id = nanoid();
+        dispatch({
+            type: "addHeaderInfo",
+            payload: { itemId: id, content: "" },
+        });
+        if (resume) {
+            setModList((prevState) => ({
+                ...prevState,
+                [`${resume.header.id}.${id}`]: ModState.Add,
+            }));
+            setHasUnsavedChanges(true);
+        }
+    };
+
     const addSection = () => {
         const id = nanoid();
         dispatch({
@@ -102,18 +117,59 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
         setHasUnsavedChanges(true);
     };
 
-    const updateSectionName = (sectionId: guid, name: string) => {
-        dispatch({ type: "updateSectionName", payload: { sectionId, name } });
-        setModList((prevState) => {
-            if (
-                sectionId in prevState &&
-                prevState[sectionId] === ModState.Add
-            ) {
-                return prevState;
+    const updateHeaderName = (name: string) => {
+        if (name !== resume?.header.name) {
+            dispatch({ type: "updateHeaderName", payload: { name } });
+            if (resume) {
+                setModList((prevState) => {
+                    if (!(resume.header.id in prevState))
+                        return {
+                            ...prevState,
+                            [resume.header.id]: ModState.Update,
+                        };
+                    return prevState;
+                });
             }
-            return { ...prevState, [sectionId]: ModState.Update };
-        });
-        setHasUnsavedChanges(true);
+            setHasUnsavedChanges(true);
+        }
+    };
+
+    const updateHeaderInfo = (itemId: guid, content: string) => {
+        if (
+            content !==
+            resume?.header.items.find((i) => i.id === itemId)?.content
+        ) {
+            dispatch({
+                type: "updateHeaderInfo",
+                payload: { itemId, content },
+            });
+            if (resume) {
+                setModList((prevState) => ({
+                    ...prevState,
+                    [`${resume.header.id}.${itemId}`]: ModState.Update,
+                }));
+                setHasUnsavedChanges(true);
+            }
+        }
+    };
+
+    const updateSectionName = (sectionId: guid, name: string) => {
+        if (name !== resume?.sections.find((s) => s.id === sectionId)?.name) {
+            dispatch({
+                type: "updateSectionName",
+                payload: { sectionId, name },
+            });
+            setModList((prevState) => {
+                if (
+                    sectionId in prevState &&
+                    prevState[sectionId] === ModState.Add
+                ) {
+                    return prevState;
+                }
+                return { ...prevState, [sectionId]: ModState.Update };
+            });
+            setHasUnsavedChanges(true);
+        }
     };
 
     const updateItemContent = (
@@ -121,19 +177,37 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
         itemId: guid,
         content: string
     ) => {
-        dispatch({
-            type: "updateItemContent",
-            payload: { sectionId, itemId, content },
-        });
-        const key = `${sectionId}.${itemId}`;
-        setModList((prevState) => {
-            // if the item was just added, don't change the mod state to "Update".
-            if (key in prevState && prevState[key] === ModState.Add) {
-                return prevState;
-            }
-            return { ...prevState, [key]: ModState.Update };
-        });
-        setHasUnsavedChanges(true);
+        if (
+            content !==
+            resume?.sections
+                .find((s) => s.id === sectionId)
+                ?.items.find((i) => i.id === itemId)?.content
+        ) {
+            dispatch({
+                type: "updateItemContent",
+                payload: { sectionId, itemId, content },
+            });
+            const key = `${sectionId}.${itemId}`;
+            setModList((prevState) => {
+                // if the item was just added, don't change the mod state to "Update".
+                if (key in prevState && prevState[key] === ModState.Add) {
+                    return prevState;
+                }
+                return { ...prevState, [key]: ModState.Update };
+            });
+            setHasUnsavedChanges(true);
+        }
+    };
+
+    const deleteHeaderInfo = (itemId: guid) => {
+        dispatch({ type: "deleteHeaderInfo", payload: itemId });
+        if (resume) {
+            setModList((prevState) => ({
+                ...prevState,
+                [`${resume.header.id}.${itemId}`]: ModState.Delete,
+            }));
+            setHasUnsavedChanges(true);
+        }
     };
 
     const deleteSection = (sectionId: guid) => {
@@ -171,10 +245,14 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
     return {
         resume,
         saveChanges,
+        addHeaderInfo,
         addSection,
         addItem,
+        updateHeaderName,
+        updateHeaderInfo,
         updateSectionName,
         updateItemContent,
+        deleteHeaderInfo,
         deleteSection,
         deleteItem,
     };

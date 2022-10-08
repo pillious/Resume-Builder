@@ -4,7 +4,7 @@ import { itemSchema } from "./ItemModel.model";
 
 export const sectionSchema = new Schema<ISection>(
     {
-        name: { type: String, required: true },
+        name: { type: String, default: "" },
         items: [{ type: itemSchema, default: [] }],
         id: { type: String, required: true },
     },
