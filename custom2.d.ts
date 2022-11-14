@@ -8,6 +8,16 @@ export enum ModState {
 }
 
 // PDF Properties
+
+export interface PDFStyles {
+    margin: [number, number, number, number];
+    textAlign: "left" | "center" | "right";
+    fontFamily: string;
+    fontSize: number;
+    fontStyle: "normal" | "italic";
+    fontWeight: 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;
+    color: string;
+}
 export interface PDFDocStyles {
     spacing: number;
 }
@@ -30,11 +40,22 @@ export interface ISection {
     name: string;
     items: IItem[];
     id: guid;
+    categoryId: guid; // add
+    startDate: string; // add
+    endDate: string; // add
+}
+
+export interface IHeader {
+    // add
+    name: string;
+    items: IItem[];
+    id: guid;
 }
 
 export interface IFile {
     userId: string;
     name: string;
+    categories: { id: guid; name: string }[]; // add
     sections: ISection[];
     header: ISection;
     id: guid;

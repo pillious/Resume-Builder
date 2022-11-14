@@ -40,9 +40,6 @@ const Header: React.FC<IProps> = ({
         },
         [updateHeaderInfo]
     );
-    const removeInfo = () => {
-        setInfo((prev) => prev.splice(0, prev.length - 1));
-    };
 
     useEffect(() => {
         setInfo([]);
@@ -86,46 +83,43 @@ const Header: React.FC<IProps> = ({
                 }}
             >
                 {[...info]}
-                <Fab
-                    sx={{
-                        width: "20px",
-                        minHeight: "20px",
-                        height: "20px",
-                        "& svg": {
-                            height: 14,
-                        },
-                    }}
-                    size="small"
-                    color="info"
-                    aria-label="add"
-                    // onClick={() => {
-                    //     // addInfo();
-                    //     addHeaderInfo("");
-                    // }}
-                    onClick={addHeaderInfo}
-                >
-                    <AddIcon />
-                </Fab>
-                <Fab
-                    sx={{
-                        width: "20px",
-                        minHeight: "20px",
-                        height: "20px",
-                        "& svg": {
-                            height: 14,
-                        },
-                    }}
-                    size="small"
-                    color="warning"
-                    aria-label="remove"
-                    // onClick={() => {
-                    //     removeInfo();
-                    //     deleteHeaderInfo(items[items.length - 1].id);
-                    // }}
-                    onClick={() => deleteHeaderInfo(items[items.length - 1].id)}
-                >
-                    <RemoveIcon />
-                </Fab>
+                <Box>
+                    <Fab
+                        sx={{
+                            width: "20px",
+                            minHeight: "20px",
+                            height: "20px",
+                            mr: "0.25rem",
+                            "& svg": {
+                                height: 14,
+                            },
+                        }}
+                        size="small"
+                        color="info"
+                        aria-label="add"
+                        onClick={addHeaderInfo}
+                    >
+                        <AddIcon />
+                    </Fab>
+                    <Fab
+                        sx={{
+                            width: "20px",
+                            minHeight: "20px",
+                            height: "20px",
+                            "& svg": {
+                                height: 14,
+                            },
+                        }}
+                        size="small"
+                        color="warning"
+                        aria-label="remove"
+                        onClick={() =>
+                            deleteHeaderInfo(items[items.length - 1].id)
+                        }
+                    >
+                        <RemoveIcon />
+                    </Fab>
+                </Box>
             </Box>
         </Box>
     );

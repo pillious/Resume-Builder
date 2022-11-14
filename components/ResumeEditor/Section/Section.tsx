@@ -7,6 +7,7 @@ import DebouncedTextarea from "../../UI/DebouncedTextarea";
 import { IItem, guid } from "../../../custom2";
 import Item from "./Item";
 import DeleteSection from "./DeleteSection";
+import Date from "./Date";
 
 interface IProps {
     id: guid;
@@ -40,6 +41,9 @@ const Section: React.FC<IProps> = (props) => {
                     multiline={false}
                     onChange={(name) => props.updateSectionName(props.id, name)}
                 />
+
+                <Date />
+
                 <AddListItem addItem={() => props.addItem(props.id)} />
                 <DeleteSection
                     id={props.id}

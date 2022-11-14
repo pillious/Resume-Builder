@@ -29,6 +29,7 @@ export class Pdf {
             this._doc.setProperties({ title: file.name });
             this._doc.setFontSize(fontSize);
 
+            this.buildSection(file.header);
             for (const section of file.sections) this.buildSection(section);
         }
 
