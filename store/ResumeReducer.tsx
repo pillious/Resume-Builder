@@ -1,32 +1,62 @@
-import { IFile, ISection, IItem, guid } from "../custom2";
+import { IFile, IHeader, ISection, IExperience, IItem, guid } from "../custom2";
 
 type ACTIONTYPE =
     | { type: "setResume"; payload: IFile | null }
     | { type: "addHeaderInfo"; payload: { itemId: guid; content: string } }
     | { type: "addSection"; payload: { sectionId: guid; name: string } }
     | {
+          type: "addExperience";
+          payload: { sectionId: guid; experienceId: guid; name: string };
+      }
+    | {
           type: "addItem";
-          payload: { sectionId: guid; itemId: guid; content: string };
+          payload: {
+              sectionId: guid;
+              experienceId: guid;
+              itemId: guid;
+              content: string;
+          };
       }
     | { type: "updateHeaderName"; payload: { name: string } }
     | { type: "updateHeaderInfo"; payload: { itemId: guid; content: string } }
-    | { type: "updateHeaderOrder"; payload: { itemId: guid; order: number } }
     | { type: "updateSectionName"; payload: { sectionId: guid; name: string } }
+    | { type: "updateHeaderOrder"; payload: { itemId: guid; order: number } }
     | {
-          type: "updateSectionOrder";
-          payload: { sectionId: guid; order: number };
+          type: "updateExperienceName";
+          payload: { sectionId: guid; experienceId: guid; name: string };
+      }
+    | {
+          type: "updateExperienceOrder";
+          payload: { sectionId: guid; experienceId: guid; order: number };
       }
     | {
           type: "updateItemContent";
-          payload: { sectionId: guid; itemId: guid; content: string };
+          payload: {
+              sectionId: guid;
+              experienceId: guid;
+              itemId: guid;
+              content: string;
+          };
       }
     | {
           type: "updateItemOrder";
-          payload: { sectionId: guid; itemId: guid; order: number };
+          payload: {
+              sectionId: guid;
+              experienceId: guid;
+              itemId: guid;
+              order: number;
+          };
       }
     | { type: "deleteHeaderInfo"; payload: guid }
-    | { type: "deleteSection"; payload: string }
-    | { type: "deleteItem"; payload: { sectionId: guid; itemId: guid } };
+    | { type: "deleteSection"; payload: guid }
+    | {
+          type: "deleteExperience";
+          payload: { sectionId: guid; experienceId: guid };
+      }
+    | {
+          type: "deleteItem";
+          payload: { sectionId: guid; experienceId: guid; itemId: guid };
+      };
 
 const resumeReducer = (
     state: IFile | null,
@@ -38,7 +68,7 @@ const resumeReducer = (
     } else if (state != null) {
         switch (action.type) {
             case "addHeaderInfo": {
-                const header: ISection = JSON.parse(
+                const header: IHeader = JSON.parse(
                     JSON.stringify(state.header)
                 );
                 header.items.push({
@@ -51,24 +81,62 @@ const resumeReducer = (
             }
             case "addSection": {
                 const newSection: ISection = {
-                    name: action.payload.name,
                     id: action.payload.sectionId,
+                    name: action.payload.name,
                     items: [],
                 };
-                return { ...state, sections: [...state.sections, newSection] };
+
+                const sections = JSON.parse(JSON.stringify(state.sections));
+
+                return { ...state, sections: [...sections, newSection] };
             }
-            case "addItem": {
-                const idx = state.sections.findIndex(
+            case "addExperience": {
+                const newExperience: IExperience = {
+                    name: action.payload.name,
+                    id: action.payload.experienceId,
+                    items: [],
+                    sectionId: action.payload.sectionId,
+                    startDate: "",
+                    endDate: "",
+                };
+
+                const secIdx = state.sections.findIndex(
                     (section) => section.id === action.payload.sectionId
                 );
+                if (secIdx === -1) return state;
+
                 const sections: ISection[] = JSON.parse(
                     JSON.stringify(state.sections)
                 );
-                sections[idx].items.push({
+                sections[secIdx].items.push(newExperience);
+
+                return { ...state, sections };
+            }
+            case "addItem": {
+                const secIdx = state.sections.findIndex(
+                    (section) => section.id === action.payload.sectionId
+                );
+                if (secIdx === -1) return state;
+
+                const expIdx = state.sections[secIdx].items.findIndex(
+                    (exp) => exp.id === action.payload.experienceId
+                );
+                if (expIdx === -1) return state;
+
+                const sections: ISection[] = JSON.parse(
+                    JSON.stringify(state.sections)
+                );
+                const experiences: IExperience[] = JSON.parse(
+                    JSON.stringify(sections[secIdx].items)
+                );
+
+                experiences[expIdx].items.push({
                     content: action.payload.content,
-                    order: sections[idx].items.length,
+                    order: experiences[expIdx].items.length,
                     id: action.payload.itemId,
                 });
+                sections[secIdx].items = experiences;
+
                 return { ...state, sections };
             }
             case "updateHeaderName": {
@@ -80,7 +148,7 @@ const resumeReducer = (
                 return updatedState;
             }
             case "updateHeaderInfo": {
-                const header: ISection = JSON.parse(
+                const header: IHeader = JSON.parse(
                     JSON.stringify(state.header)
                 );
                 const item = header.items.find(
@@ -91,58 +159,81 @@ const resumeReducer = (
 
                 item.content = action.payload.content;
 
-                const updatedState = {
-                    ...state,
-                    header,
-                };
-
-                return updatedState;
+                return { ...state, header };
             }
             case "updateSectionName": {
-                const sectionIdx = state.sections.findIndex(
-                    (s) => s.id === action.payload.sectionId
+                const secIdx = state.sections.findIndex(
+                    (section) => section.id === action.payload.sectionId
                 );
-                if (sectionIdx === -1) return state;
+                if (secIdx === -1) return state;
 
-                const section: ISection = JSON.parse(
-                    JSON.stringify(state.sections[sectionIdx])
+                const sections: ISection[] = JSON.parse(
+                    JSON.stringify(state.sections)
                 );
-                section.name = action.payload.name;
 
-                const updatedState = {
-                    ...state,
-                    sections: [...state.sections],
-                };
-                updatedState.sections[sectionIdx] = section;
+                sections[secIdx].name = action.payload.name;
 
-                return updatedState;
+                console.log({ ...state, sections });
+
+                return { ...state, sections };
+            }
+            case "updateExperienceName": {
+                const secIdx = state.sections.findIndex(
+                    (section) => section.id === action.payload.sectionId
+                );
+                if (secIdx === -1) return state;
+
+                const expIdx = state.sections[secIdx].items.findIndex(
+                    (exp) => exp.id === action.payload.experienceId
+                );
+                if (expIdx === -1) return state;
+
+                const sections: ISection[] = JSON.parse(
+                    JSON.stringify(state.sections)
+                );
+                const experiences: IExperience[] = JSON.parse(
+                    JSON.stringify(sections[secIdx].items)
+                );
+
+                experiences[expIdx].name = action.payload.name;
+                sections[secIdx].items = experiences;
+
+                return { ...state, sections };
             }
             case "updateItemContent": {
-                const sectionIdx = state.sections.findIndex(
-                    (s) => s.id === action.payload.sectionId
+                const secIdx = state.sections.findIndex(
+                    (section) => section.id === action.payload.sectionId
                 );
+                if (secIdx === -1) return state;
 
-                if (sectionIdx === -1) return state;
+                const expIdx = state.sections[secIdx].items.findIndex(
+                    (exp) => exp.id === action.payload.experienceId
+                );
+                if (expIdx === -1) return state;
 
+                const itemIdx = state.sections[secIdx].items[
+                    expIdx
+                ].items.findIndex((item) => item.id === action.payload.itemId);
+                if (itemIdx === -1) return state;
+
+                const sections: ISection[] = JSON.parse(
+                    JSON.stringify(state.sections)
+                );
+                const experiences: IExperience[] = JSON.parse(
+                    JSON.stringify(sections[secIdx].items)
+                );
                 const items: IItem[] = JSON.parse(
-                    JSON.stringify(state.sections[sectionIdx].items)
+                    JSON.stringify(state.sections[secIdx].items[expIdx].items)
                 );
-                const item = items.find((i) => i.id === action.payload.itemId);
 
-                if (!item) return state;
+                items[itemIdx].content = action.payload.content;
+                experiences[expIdx].items = items;
+                sections[secIdx].items = experiences;
 
-                item.content = action.payload.content;
-
-                const updatedState = {
-                    ...state,
-                    sections: [...state.sections],
-                };
-                updatedState.sections[sectionIdx].items = items;
-
-                return updatedState;
+                return { ...state, sections };
             }
             case "deleteHeaderInfo": {
-                const header: ISection = JSON.parse(
+                const header: IHeader = JSON.parse(
                     JSON.stringify(state.header)
                 );
                 const idx = header.items.findIndex(
@@ -156,44 +247,75 @@ const resumeReducer = (
                 return { ...state, header };
             }
             case "deleteSection": {
-                const idx = state.sections.findIndex(
-                    (s) => s.id === action.payload
+                const secIdx = state.sections.findIndex(
+                    (section) => section.id === action.payload
                 );
-
-                if (idx === -1) return state;
+                if (secIdx === -1) return state;
 
                 const sections: ISection[] = JSON.parse(
                     JSON.stringify(state.sections)
                 );
-                sections.splice(idx, 1);
+
+                sections.splice(secIdx, 1);
+
+                return { ...state, sections };
+            }
+            case "deleteExperience": {
+                const secIdx = state.sections.findIndex(
+                    (section) => section.id === action.payload.sectionId
+                );
+                if (secIdx === -1) return state;
+
+                const expIdx = state.sections[secIdx].items.findIndex(
+                    (exp) => exp.id === action.payload.experienceId
+                );
+                if (expIdx === -1) return state;
+
+                const sections: ISection[] = JSON.parse(
+                    JSON.stringify(state.sections)
+                );
+                const experiences: IExperience[] = JSON.parse(
+                    JSON.stringify(sections[secIdx].items)
+                );
+
+                experiences.splice(expIdx, 1);
+                sections[secIdx].items = experiences;
 
                 return { ...state, sections };
             }
             case "deleteItem": {
-                const sectionIdx = state.sections.findIndex(
-                    (s) => s.id === action.payload.sectionId
+                const secIdx = state.sections.findIndex(
+                    (section) => section.id === action.payload.sectionId
                 );
+                if (secIdx === -1) return state;
 
-                if (sectionIdx === -1) return state;
-
-                const itemIdx = state.sections[sectionIdx].items.findIndex(
-                    (i) => i.id === action.payload.itemId
+                const expIdx = state.sections[secIdx].items.findIndex(
+                    (exp) => exp.id === action.payload.experienceId
                 );
+                if (expIdx === -1) return state;
 
+                const itemIdx = state.sections[secIdx].items[
+                    expIdx
+                ].items.findIndex((item) => item.id === action.payload.itemId);
                 if (itemIdx === -1) return state;
 
-                const items = JSON.parse(
-                    JSON.stringify(state.sections[sectionIdx].items)
+                const sections: ISection[] = JSON.parse(
+                    JSON.stringify(state.sections)
                 );
+                const experiences: IExperience[] = JSON.parse(
+                    JSON.stringify(sections[secIdx].items)
+                );
+                const items: IItem[] = JSON.parse(
+                    JSON.stringify(state.sections[secIdx].items[expIdx].items)
+                );
+
                 items.splice(itemIdx, 1);
+                experiences[expIdx].items = items;
+                sections[secIdx].items = experiences;
 
-                const updatedState = {
-                    ...state,
-                    sections: [...state.sections],
-                };
-                updatedState.sections[sectionIdx].items = items;
+                console.log({ ...state, sections });
 
-                return updatedState;
+                return { ...state, sections };
             }
         }
     }

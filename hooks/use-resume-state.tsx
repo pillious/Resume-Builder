@@ -95,20 +95,28 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
 
     const addSection = () => {
         const id = nanoid();
+        dispatch({ type: "addSection", payload: { sectionId: id, name: "" } });
+
+        // setModList(())
+        setHasUnsavedChanges(true);
+    };
+
+    const addExperience = (sectionId: guid) => {
+        const id = nanoid();
         dispatch({
-            type: "addSection",
-            payload: { sectionId: id, name: "New Section" },
+            type: "addExperience",
+            payload: { sectionId, experienceId: id, name: "" },
         });
 
         setModList((prevState) => ({ ...prevState, [id]: ModState.Add }));
         setHasUnsavedChanges(true);
     };
 
-    const addItem = (sectionId: guid) => {
+    const addItem = (sectionId: guid, experienceId: guid) => {
         const id = nanoid();
         dispatch({
             type: "addItem",
-            payload: { sectionId, itemId: id, content: "" },
+            payload: { sectionId, experienceId, itemId: id, content: "" },
         });
         setModList((prevState) => ({
             ...prevState,
@@ -159,6 +167,27 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
                 type: "updateSectionName",
                 payload: { sectionId, name },
             });
+        }
+
+        // setModList()
+        setHasUnsavedChanges(true);
+    };
+
+    const updateExperienceName = (
+        sectionId: guid,
+        experienceId: guid,
+        name: string
+    ) => {
+        if (
+            name !==
+            resume?.sections
+                .find((s) => s.id === sectionId)
+                ?.items.find((exp) => exp.id === experienceId)?.name
+        ) {
+            dispatch({
+                type: "updateExperienceName",
+                payload: { sectionId, experienceId, name },
+            });
             setModList((prevState) => {
                 if (
                     sectionId in prevState &&
@@ -174,6 +203,7 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
 
     const updateItemContent = (
         sectionId: guid,
+        experienceId: guid,
         itemId: guid,
         content: string
     ) => {
@@ -181,11 +211,12 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
             content !==
             resume?.sections
                 .find((s) => s.id === sectionId)
+                ?.items.find((exp) => exp.id === experienceId)
                 ?.items.find((i) => i.id === itemId)?.content
         ) {
             dispatch({
                 type: "updateItemContent",
-                payload: { sectionId, itemId, content },
+                payload: { sectionId, experienceId, itemId, content },
             });
             const key = `${sectionId}.${itemId}`;
             setModList((prevState) => {
@@ -212,6 +243,16 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
 
     const deleteSection = (sectionId: guid) => {
         dispatch({ type: "deleteSection", payload: sectionId });
+
+        // setModList()
+        setHasUnsavedChanges(true);
+    };
+
+    const deleteExperience = (sectionId: guid, experienceId: guid) => {
+        dispatch({
+            type: "deleteExperience",
+            payload: { sectionId, experienceId },
+        });
         // if the section was just added, just remove the section from the modList.
         setModList((prevState) => {
             if (
@@ -228,8 +269,11 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
         setHasUnsavedChanges(true);
     };
 
-    const deleteItem = (sectionId: guid, itemId: guid) => {
-        dispatch({ type: "deleteItem", payload: { sectionId, itemId } });
+    const deleteItem = (sectionId: guid, experienceId: guid, itemId: guid) => {
+        dispatch({
+            type: "deleteItem",
+            payload: { sectionId, experienceId, itemId },
+        });
         const key = `${sectionId}.${itemId}`;
         setModList((prevState) => {
             if (key in prevState && prevState[key] === ModState.Add) {
@@ -246,14 +290,17 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
         resume,
         saveChanges,
         addHeaderInfo,
+        addExperience,
         addSection,
         addItem,
         updateHeaderName,
         updateHeaderInfo,
         updateSectionName,
+        updateExperienceName,
         updateItemContent,
         deleteHeaderInfo,
         deleteSection,
+        deleteExperience,
         deleteItem,
     };
 };

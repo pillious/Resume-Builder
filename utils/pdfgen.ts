@@ -23,15 +23,15 @@ export class Pdf {
     }
 
     generate(file: IFile) {
-        if (file) {
-            console.log(file);
+        // if (file) {
+        //     console.log(file);
 
-            this._doc.setProperties({ title: file.name });
-            this._doc.setFontSize(fontSize);
+        //     this._doc.setProperties({ title: file.name });
+        //     this._doc.setFontSize(fontSize);
 
-            this.buildSection(file.header);
-            for (const section of file.sections) this.buildSection(section);
-        }
+        //     this.buildSection(file.header);
+        //     for (const section of file.sections) this.buildSection(section);
+        // }
 
         return this;
     }

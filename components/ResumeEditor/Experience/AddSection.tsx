@@ -12,7 +12,7 @@ const AddSection: React.FC<IProps> = (props) => {
     return (
         <Tooltip title="Create Section" placement="bottom" arrow>
             <div className={classes.add_section} onClick={props.addSection}>
-                {/* Don't remove the empty span elements. CSS selectors operate on these. */}
+                {/* Don't remove the empty elements. CSS selectors operate upon these. */}
                 <span />
                 <span>
                     <Fab

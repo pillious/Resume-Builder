@@ -1,32 +1,32 @@
 import IconButton from "@mui/material/IconButton";
-import DeleteOutlineIcon from "@mui/icons-material/Delete";
-import { guid } from "../../../custom2";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 interface IProps {
-    id: guid;
-    deleteSection: (sectionId: guid) => void;
+    deleteExperience: () => void;
 }
 
-const DeleteSection: React.FC<IProps> = (props) => {
+const DeleteExperience: React.FC<IProps> = (props) => {
     return (
         <IconButton
             color="error"
+            title="Delete experience"
             onClick={() => {
-                props.deleteSection(props.id);
+                props.deleteExperience();
             }}
         >
             <DeleteOutlineIcon
                 sx={{
-                    color: "#ff0000",
+                    color: "#ff355a",
                     "&:hover": {
                         transform: "scale(1.25)",
                         cursor: "pointer",
                     },
                     transition: "200ms",
                 }}
+                
             />
         </IconButton>
     );
 };
 
-export default DeleteSection;
+export default DeleteExperience;

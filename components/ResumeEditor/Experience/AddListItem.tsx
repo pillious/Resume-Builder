@@ -14,9 +14,10 @@ const AddListItem: React.FC<IProps> = ({ addItem, hidden = false }) => {
             {hidden === false && (
                 <div className={classes.wrapper}>
                     <IconButton
-                        color="info"
+                        color="secondary"
                         aria-label="add item"
                         onClick={addItem}
+                        title="Add item"
                     >
                         <AddCircleOutlineIcon
                             sx={{

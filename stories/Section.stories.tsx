@@ -1,5 +1,5 @@
 import { ComponentMeta } from '@storybook/react';
-import Section from '../components/ResumeEditor/Section/Section';
+import Section from '../components/ResumeEditor/Section/Experience';
 
 export default {
   title: 'Section',

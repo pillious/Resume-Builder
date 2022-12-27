@@ -1,9 +1,21 @@
 import Box from "@mui/material/Box";
 import DebouncedTextarea from "../../UI/DebouncedTextarea";
 
-const Date: React.FC = () => {
+interface IProps {
+    startDate: string;
+    endDate: string;
+}
+
+const Date: React.FC<IProps> = ({ startDate, endDate }) => {
     return (
-        <Box sx={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+        <Box
+            sx={{
+                display: "flex",
+                gap: "0.5rem",
+                alignItems: "center",
+                marginLeft: "auto",
+            }}
+        >
             <DebouncedTextarea
                 sx={{
                     borderBottom: "1px solid #bbb",
@@ -14,7 +26,7 @@ const Date: React.FC = () => {
                     },
                     "& input": { textAlign: "center" },
                 }}
-                // defaultValue={props.title}
+                defaultValue={startDate}
                 placeholder="04/2022"
                 multiline={false}
                 onChange={(date) => console.log(date)}
@@ -30,7 +42,7 @@ const Date: React.FC = () => {
                     },
                     "& input": { textAlign: "center" },
                 }}
-                // defaultValue={props.title}
+                defaultValue={endDate}
                 placeholder="04/2022"
                 multiline={false}
                 onChange={(date) => console.log(date)}

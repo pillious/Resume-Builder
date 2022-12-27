@@ -6,9 +6,15 @@ import classes from "./Item.module.css";
 
 interface IProps {
     item: IItem;
-    sectionId: string;
-    updateItemContent: (sectionId: guid, itemId: guid, content: string) => void;
-    deleteItem: (sectionId: guid, itemId: guid) => void;
+    experienceId: guid;
+    sectionId: guid;
+    updateItemContent: (
+        sectionId: guid,
+        experienceId: guid,
+        itemId: guid,
+        content: string
+    ) => void;
+    deleteItem: (sectionId: guid, experienceId: guid, itemId: guid) => void;
 }
 
 const Item: React.FC<IProps> = (props) => {
@@ -34,6 +40,7 @@ const Item: React.FC<IProps> = (props) => {
                     onChange={(content) => {
                         props.updateItemContent(
                             props.sectionId,
+                            props.experienceId,
                             props.item.id,
                             content
                         );
@@ -43,7 +50,13 @@ const Item: React.FC<IProps> = (props) => {
             <ListItemIcon
                 sx={{ color: "#000", minWidth: "unset" }}
                 className={classes.list_style}
-                onClick={() => props.deleteItem(props.sectionId, props.item.id)}
+                onClick={() =>
+                    props.deleteItem(
+                        props.sectionId,
+                        props.experienceId,
+                        props.item.id
+                    )
+                }
             ></ListItemIcon>
         </div>
     );

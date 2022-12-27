@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import DebouncedTextarea from "../../UI/DebouncedTextarea";
 import Info from "./Info";
 import { guid, IItem } from "../../../custom2";
 
@@ -30,7 +31,7 @@ const Header: React.FC<IProps> = ({
                 ...prev,
                 <Info
                     key={item.id}
-                    placeholder="email, phone #, link..."
+                    placeholder="Personal info..."
                     defaultValue={item.content ?? ""}
                     onChange={(value: string) => {
                         updateHeaderInfo(item.id, value);
@@ -64,12 +65,21 @@ const Header: React.FC<IProps> = ({
                     "& input": { textAlign: "center" },
                 }}
             >
-                <Info
-                    placeholder="Name"
-                    fontWeight={600}
-                    fontSize="1.25rem"
+                <DebouncedTextarea
+                    sx={{
+                        fontSize: "1.25rem",
+                        fontWeight: "600",
+                        maxWidth: "300px",
+                        backgroundColor: "#f5f5f5",
+                        "&:hover": {
+                            backgroundColor: "#ddd",
+                        },
+                        "& input": { textAlign: "center" },
+                    }}
                     defaultValue={name}
-                    onChange={(name: string) => updateHeaderName(name)}
+                    placeholder="Name"
+                    multiline={false}
+                    onChange={(value: string) => updateHeaderName(value)}
                 />
             </Box>
             <Box
@@ -90,8 +100,11 @@ const Header: React.FC<IProps> = ({
                             minHeight: "20px",
                             height: "20px",
                             mr: "0.25rem",
+                            "&:hover": {
+                                transform: "scale(1.1)",
+                            },
                             "& svg": {
-                                height: 14,
+                                height: 16,
                             },
                         }}
                         size="small"
@@ -106,8 +119,11 @@ const Header: React.FC<IProps> = ({
                             width: "20px",
                             minHeight: "20px",
                             height: "20px",
+                            "&:hover": {
+                                transform: "scale(1.1)",
+                            },
                             "& svg": {
-                                height: 14,
+                                height: 16,
                             },
                         }}
                         size="small"

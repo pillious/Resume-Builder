@@ -8,7 +8,6 @@ export enum ModState {
 }
 
 // PDF Properties
-
 export interface PDFStyles {
     margin: [number, number, number, number];
     textAlign: "left" | "center" | "right";
@@ -31,18 +30,13 @@ export interface PDFItemProps {
 }
 
 // Schema objects
-export interface IItem {
-    content: string;
-    order: number;
-    id: guid;
-}
-export interface ISection {
+export interface IFile {
+    userId: string;
     name: string;
-    items: IItem[];
+    categories: { id: guid; name: string }[]; // add
+    sections: ISection[];
+    header: IHeader;
     id: guid;
-    categoryId: guid; // add
-    startDate: string; // add
-    endDate: string; // add
 }
 
 export interface IHeader {
@@ -52,12 +46,33 @@ export interface IHeader {
     id: guid;
 }
 
-export interface IFile {
-    userId: string;
+export interface ISection {
     name: string;
-    categories: { id: guid; name: string }[]; // add
-    sections: ISection[];
-    header: ISection;
+    items: IExperience[];
+    id: guid;
+}
+
+export interface IExperience {
+    name: string;
+    items: IItem[];
+    id: guid;
+    sectionId: guid; // add
+    startDate: string; // add
+    endDate: string; // add
+}
+
+// export interface ISection extends IHeader {
+//     // name: string;
+//     // items: IItem[];
+//     // id: guid;
+//     categoryId: guid; // add
+//     startDate: string; // add
+//     endDate: string; // add
+// }
+
+export interface IItem {
+    content: string;
+    order: number;
     id: guid;
 }
 
