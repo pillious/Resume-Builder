@@ -7,6 +7,12 @@ export enum ModState {
     Delete = 2,
 }
 
+export type ModList = {
+    header: Record<guid, ModState>;
+    sections: Record<guid, ModState>;
+    experiences: Record<guid, Record<guid, ModState>>;
+};
+
 // PDF Properties
 export interface PDFStyles {
     margin: [number, number, number, number];
@@ -40,7 +46,6 @@ export interface IFile {
 }
 
 export interface IHeader {
-    // add
     name: string;
     items: IItem[];
     id: guid;
@@ -56,19 +61,10 @@ export interface IExperience {
     name: string;
     items: IItem[];
     id: guid;
-    sectionId: guid; // add
-    startDate: string; // add
-    endDate: string; // add
+    sectionId: guid;
+    startDate: string;
+    endDate: string;
 }
-
-// export interface ISection extends IHeader {
-//     // name: string;
-//     // items: IItem[];
-//     // id: guid;
-//     categoryId: guid; // add
-//     startDate: string; // add
-//     endDate: string; // add
-// }
 
 export interface IItem {
     content: string;

@@ -26,6 +26,15 @@ type ACTIONTYPE =
           payload: { sectionId: guid; experienceId: guid; name: string };
       }
     | {
+          type: "updateExperienceDate";
+          payload: {
+              sectionId: guid;
+              experienceId: guid;
+              isStartDate: boolean;
+              date: string;
+          };
+      }
+    | {
           type: "updateExperienceOrder";
           payload: { sectionId: guid; experienceId: guid; order: number };
       }
@@ -173,8 +182,6 @@ const resumeReducer = (
 
                 sections[secIdx].name = action.payload.name;
 
-                console.log({ ...state, sections });
-
                 return { ...state, sections };
             }
             case "updateExperienceName": {
@@ -196,6 +203,32 @@ const resumeReducer = (
                 );
 
                 experiences[expIdx].name = action.payload.name;
+                sections[secIdx].items = experiences;
+
+                return { ...state, sections };
+            }
+            case "updateExperienceDate": {
+                const secIdx = state.sections.findIndex(
+                    (section) => section.id === action.payload.sectionId
+                );
+                if (secIdx === -1) return state;
+
+                const expIdx = state.sections[secIdx].items.findIndex(
+                    (exp) => exp.id === action.payload.experienceId
+                );
+                if (expIdx === -1) return state;
+
+                const sections: ISection[] = JSON.parse(
+                    JSON.stringify(state.sections)
+                );
+                const experiences: IExperience[] = JSON.parse(
+                    JSON.stringify(sections[secIdx].items)
+                );
+
+                if (action.payload.isStartDate)
+                    experiences[expIdx].startDate = action.payload.date;
+                else experiences[expIdx].endDate = action.payload.date;
+
                 sections[secIdx].items = experiences;
 
                 return { ...state, sections };
@@ -312,8 +345,6 @@ const resumeReducer = (
                 items.splice(itemIdx, 1);
                 experiences[expIdx].items = items;
                 sections[secIdx].items = experiences;
-
-                console.log({ ...state, sections });
 
                 return { ...state, sections };
             }

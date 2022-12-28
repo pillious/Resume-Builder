@@ -22,6 +22,12 @@ interface IProps {
         experienceId: guid,
         name: string
     ) => void;
+    updateExperienceDate: (
+        sectionId: guid,
+        experienceId: guid,
+        isStartDate: boolean,
+        date: string
+    ) => void;
     updateItemContent: (
         sectionId: guid,
         experienceId: guid,
@@ -70,7 +76,18 @@ const Experience: React.FC<IProps> = (props) => {
                     />
                 </span>
 
-                <Date startDate={props.startDate} endDate={props.endDate} />
+                <Date
+                    startDate={props.startDate}
+                    endDate={props.endDate}
+                    updateDate={(isStartDate: boolean, date: string) =>
+                        props.updateExperienceDate(
+                            props.sectionId,
+                            props.id,
+                            isStartDate,
+                            date
+                        )
+                    }
+                />
             </div>
             {props.items.length > 0 && (
                 <Card elevation={2} sx={{ mx: "2px", p: 0 }}>

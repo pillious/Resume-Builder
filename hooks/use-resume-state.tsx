@@ -6,12 +6,18 @@ import {
     useReducer,
     useState,
 } from "react";
-import { guid, ModState } from "../custom2.d";
+import { guid, ModState, ModList } from "../custom2.d";
 import resumeReducer from "../store/ResumeReducer";
 import nanoid from "../utils/guid";
 import AppContext from "../store/AppContext";
 import useResumeById from "./data/use-resume-by-id";
 import fetcher from "../utils/fetcher";
+
+const resetModList = (): ModList => ({
+    header: {},
+    sections: {},
+    experiences: {},
+});
 
 const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
     const {
@@ -22,27 +28,31 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
 
     const [resume, dispatch] = useReducer(resumeReducer, data);
 
-    // Contains the ids of the parts of the resume that was changed.
-    // key = id, value = a modstate. (an item is signified as sectionidd.itemid)
-    const [modList, setModList] = useState<Record<guid, ModState>>({});
+    // maintains all the changes (creation/deletion/updates) to the resume.
+    const [modList, setModList] = useState<ModList>(resetModList());
     const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
     useEffect(() => {
         dispatch({ type: "setResume", payload: data }); // payload can be null.
         ctxUpdateActiveResumeObj(data);
-        setModList({});
+        setModList(resetModList());
         setHasUnsavedChanges(false);
     }, [data, ctxUpdateActiveResumeObj]);
 
     // Save Resume
     const saveChanges = useCallback(() => {
-        if (hasUnsavedChanges) {
+        if (
+            hasUnsavedChanges &&
+            (Object.keys(modList.header).length !== 0 ||
+                Object.keys(modList.sections).length !== 0 ||
+                Object.keys(modList.experiences).length !== 0)
+        ) {
             fetcher("/api/updateResume", "", {
                 method: "POST",
                 body: JSON.stringify({ resume, modList }),
             });
             setHasUnsavedChanges(false);
-            setModList({});
+            setModList(resetModList());
         }
     }, [hasUnsavedChanges, resume, modList]);
 
@@ -53,7 +63,12 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
             if (ctxActiveResumeId && event.ctrlKey && event.key === "s") {
                 event.preventDefault();
 
-                if (hasUnsavedChanges) {
+                if (
+                    hasUnsavedChanges &&
+                    (Object.keys(modList.header).length !== 0 ||
+                        Object.keys(modList.sections).length !== 0 ||
+                        Object.keys(modList.experiences).length !== 0)
+                ) {
                     console.log("save begin");
 
                     identifier = setTimeout(() => {
@@ -73,7 +88,11 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
             target?.removeEventListener("keydown", handleSave);
             clearTimeout(identifier);
         };
-    }, [ctxActiveResumeId, hasUnsavedChanges, sectionRef, saveChanges]);
+    }, [ctxActiveResumeId, hasUnsavedChanges, sectionRef, saveChanges, modList.header, modList.sections, modList.experiences]);
+
+    useEffect(() => {
+        console.log(modList);
+    }, [modList]);
 
     /**
      * REDUCER ACTIONS
@@ -84,20 +103,29 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
             type: "addHeaderInfo",
             payload: { itemId: id, content: "" },
         });
-        if (resume) {
-            setModList((prevState) => ({
-                ...prevState,
-                [`${resume.header.id}.${id}`]: ModState.Add,
-            }));
-            setHasUnsavedChanges(true);
-        }
+
+        setModList((prev) => {
+            if (resume?.header.id)
+                return {
+                    ...prev,
+                    header: {
+                        ...prev.header,
+                        [resume.header.id]: ModState.Update,
+                    },
+                };
+            return prev;
+        });
+        setHasUnsavedChanges(true);
     };
 
     const addSection = () => {
         const id = nanoid();
         dispatch({ type: "addSection", payload: { sectionId: id, name: "" } });
 
-        // setModList(())
+        setModList((prev) => ({
+            ...prev,
+            sections: { ...prev.sections, [id]: ModState.Add },
+        }));
         setHasUnsavedChanges(true);
     };
 
@@ -108,7 +136,28 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
             payload: { sectionId, experienceId: id, name: "" },
         });
 
-        setModList((prevState) => ({ ...prevState, [id]: ModState.Add }));
+        setModList((prev) => {
+            if (sectionId in prev.experiences) {
+                return {
+                    ...prev,
+                    experiences: {
+                        ...prev.experiences,
+                        [sectionId]: {
+                            ...prev.experiences[sectionId],
+                            [id]: ModState.Add,
+                        },
+                    },
+                };
+            }
+
+            return {
+                ...prev,
+                experiences: {
+                    ...prev.experiences,
+                    [sectionId]: { [id]: ModState.Add },
+                },
+            };
+        });
         setHasUnsavedChanges(true);
     };
 
@@ -118,26 +167,53 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
             type: "addItem",
             payload: { sectionId, experienceId, itemId: id, content: "" },
         });
-        setModList((prevState) => ({
-            ...prevState,
-            [`${sectionId}.${id}`]: ModState.Add,
-        }));
+
+        setModList((prev) => {
+            if (sectionId in prev.experiences) {
+                if (
+                    experienceId in prev.experiences[sectionId] &&
+                    prev.experiences[sectionId][experienceId] === ModState.Add
+                )
+                    return prev;
+
+                return {
+                    ...prev,
+                    experiences: {
+                        ...prev.experiences,
+                        [sectionId]: {
+                            ...prev.experiences[sectionId],
+                            [experienceId]: ModState.Update,
+                        },
+                    },
+                };
+            } else {
+                return {
+                    ...prev,
+                    experiences: {
+                        ...prev.experiences,
+                        [sectionId]: { [experienceId]: ModState.Update },
+                    },
+                };
+            }
+        });
         setHasUnsavedChanges(true);
     };
 
     const updateHeaderName = (name: string) => {
         if (name !== resume?.header.name) {
             dispatch({ type: "updateHeaderName", payload: { name } });
-            if (resume) {
-                setModList((prevState) => {
-                    if (!(resume.header.id in prevState))
-                        return {
-                            ...prevState,
+
+            setModList((prev) => {
+                if (resume?.header.id)
+                    return {
+                        ...prev,
+                        header: {
+                            ...prev.header,
                             [resume.header.id]: ModState.Update,
-                        };
-                    return prevState;
-                });
-            }
+                        },
+                    };
+                return prev;
+            });
             setHasUnsavedChanges(true);
         }
     };
@@ -151,13 +227,19 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
                 type: "updateHeaderInfo",
                 payload: { itemId, content },
             });
-            if (resume) {
-                setModList((prevState) => ({
-                    ...prevState,
-                    [`${resume.header.id}.${itemId}`]: ModState.Update,
-                }));
-                setHasUnsavedChanges(true);
-            }
+
+            setModList((prev) => {
+                if (resume?.header.id)
+                    return {
+                        ...prev,
+                        header: {
+                            ...prev.header,
+                            [resume.header.id]: ModState.Update,
+                        },
+                    };
+                return prev;
+            });
+            setHasUnsavedChanges(true);
         }
     };
 
@@ -167,10 +249,24 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
                 type: "updateSectionName",
                 payload: { sectionId, name },
             });
-        }
 
-        // setModList()
-        setHasUnsavedChanges(true);
+            setModList((prev) => {
+                if (
+                    sectionId in prev.sections &&
+                    prev.sections[sectionId] === ModState.Add
+                )
+                    return prev;
+
+                return {
+                    ...prev,
+                    sections: {
+                        ...prev.sections,
+                        [sectionId]: ModState.Update,
+                    },
+                };
+            });
+            setHasUnsavedChanges(true);
+        }
     };
 
     const updateExperienceName = (
@@ -188,14 +284,92 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
                 type: "updateExperienceName",
                 payload: { sectionId, experienceId, name },
             });
-            setModList((prevState) => {
-                if (
-                    sectionId in prevState &&
-                    prevState[sectionId] === ModState.Add
-                ) {
-                    return prevState;
+
+            setModList((prev) => {
+                if (sectionId in prev.experiences) {
+                    if (
+                        experienceId in prev.experiences[sectionId] &&
+                        prev.experiences[sectionId][experienceId] ===
+                            ModState.Add
+                    )
+                        return prev;
+
+                    return {
+                        ...prev,
+                        experiences: {
+                            ...prev.experiences,
+                            [sectionId]: {
+                                ...prev.experiences[sectionId],
+                                [experienceId]: ModState.Update,
+                            },
+                        },
+                    };
+                } else {
+                    return {
+                        ...prev,
+                        experiences: {
+                            ...prev.experiences,
+                            [sectionId]: { [experienceId]: ModState.Update },
+                        },
+                    };
                 }
-                return { ...prevState, [sectionId]: ModState.Update };
+            });
+            setHasUnsavedChanges(true);
+        }
+    };
+
+    const updateExperienceDate = (
+        sectionId: guid,
+        experienceId: guid,
+        isStartDate: boolean,
+        date: string
+    ) => {
+        if (
+            (isStartDate &&
+                date !==
+                    resume?.sections
+                        .find((s) => s.id === sectionId)
+                        ?.items.find((exp) => exp.id === experienceId)
+                        ?.startDate) ||
+            (!isStartDate &&
+                date !==
+                    resume?.sections
+                        .find((s) => s.id === sectionId)
+                        ?.items.find((exp) => exp.id === experienceId)?.endDate)
+        ) {
+            dispatch({
+                type: "updateExperienceDate",
+                payload: { sectionId, experienceId, isStartDate, date },
+            });
+
+            setModList((prev) => {
+                if (sectionId in prev.experiences) {
+                    if (
+                        experienceId in prev.experiences[sectionId] &&
+                        prev.experiences[sectionId][experienceId] ===
+                            ModState.Add
+                    )
+                        return prev;
+
+                    return {
+                        ...prev,
+                        experiences: {
+                            ...prev.experiences,
+                            [sectionId]: {
+                                ...prev.experiences[sectionId],
+                                [experienceId]: ModState.Update,
+                            },
+                        },
+                    };
+                } else {
+                    return {
+                        ...prev,
+                        experiences: {
+                            ...prev.experiences,
+                            [sectionId]: { [experienceId]: ModState.Update },
+                        },
+                    };
+                }
             });
             setHasUnsavedChanges(true);
         }
@@ -218,13 +392,35 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
                 type: "updateItemContent",
                 payload: { sectionId, experienceId, itemId, content },
             });
-            const key = `${sectionId}.${itemId}`;
-            setModList((prevState) => {
-                // if the item was just added, don't change the mod state to "Update".
-                if (key in prevState && prevState[key] === ModState.Add) {
-                    return prevState;
+
+            setModList((prev) => {
+                if (sectionId in prev.experiences) {
+                    if (
+                        experienceId in prev.experiences[sectionId] &&
+                        prev.experiences[sectionId][experienceId] ===
+                            ModState.Add
+                    )
+                        return prev;
+
+                    return {
+                        ...prev,
+                        experiences: {
+                            ...prev.experiences,
+                            [sectionId]: {
+                                ...prev.experiences[sectionId],
+                                [experienceId]: ModState.Update,
+                            },
+                        },
+                    };
+                } else {
+                    return {
+                        ...prev,
+                        experiences: {
+                            ...prev.experiences,
+                            [sectionId]: { [experienceId]: ModState.Update },
+                        },
+                    };
                 }
-                return { ...prevState, [key]: ModState.Update };
             });
             setHasUnsavedChanges(true);
         }
@@ -232,19 +428,42 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
 
     const deleteHeaderInfo = (itemId: guid) => {
         dispatch({ type: "deleteHeaderInfo", payload: itemId });
-        if (resume) {
-            setModList((prevState) => ({
-                ...prevState,
-                [`${resume.header.id}.${itemId}`]: ModState.Delete,
-            }));
-            setHasUnsavedChanges(true);
-        }
+
+        setModList((prev) => {
+            if (resume?.header.id)
+                return {
+                    ...prev,
+                    header: {
+                        ...prev.header,
+                        [resume.header.id]: ModState.Update,
+                    },
+                };
+            return prev;
+        });
+        setHasUnsavedChanges(true);
     };
 
     const deleteSection = (sectionId: guid) => {
         dispatch({ type: "deleteSection", payload: sectionId });
 
-        // setModList()
+        setModList((prev) => {
+            if (
+                sectionId in modList.sections &&
+                modList.sections[sectionId] === ModState.Add
+            ) {
+                const copy = { ...prev, sections: { ...prev.sections } };
+                delete copy.sections[sectionId];
+                return copy;
+            }
+
+            return {
+                ...prev,
+                sections: {
+                    ...prev.sections,
+                    [sectionId]: ModState.Delete,
+                },
+            };
+        });
         setHasUnsavedChanges(true);
     };
 
@@ -253,19 +472,46 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
             type: "deleteExperience",
             payload: { sectionId, experienceId },
         });
-        // if the section was just added, just remove the section from the modList.
-        setModList((prevState) => {
-            if (
-                sectionId in prevState &&
-                prevState[sectionId] === ModState.Add
-            ) {
-                const state = { ...prevState };
-                delete state[sectionId];
-                return state;
-            }
-            return { ...prevState, [sectionId]: ModState.Delete };
-        });
 
+        setModList((prev) => {
+            if (sectionId in prev.experiences) {
+                if (
+                    experienceId in prev.experiences[sectionId] &&
+                    prev.experiences[sectionId][experienceId] === ModState.Add
+                ) {
+                    const copy = {
+                        ...prev,
+                        experiences: {
+                            ...prev.experiences,
+                            [sectionId]: { ...prev.experiences[sectionId] },
+                        },
+                    };
+                    delete copy.experiences[sectionId][experienceId];
+                    if (Object.keys(copy.experiences[sectionId]).length === 0)
+                        delete copy.experiences[sectionId];
+                    return copy;
+                }
+
+                return {
+                    ...prev,
+                    experiences: {
+                        ...prev.experiences,
+                        [sectionId]: {
+                            ...prev.experiences[sectionId],
+                            [experienceId]: ModState.Delete,
+                        },
+                    },
+                };
+            } else {
+                return {
+                    ...prev,
+                    experiences: {
+                        ...prev.experiences,
+                        [sectionId]: { [experienceId]: ModState.Delete },
+                    },
+                };
+            }
+        });
         setHasUnsavedChanges(true);
     };
 
@@ -274,14 +520,43 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
             type: "deleteItem",
             payload: { sectionId, experienceId, itemId },
         });
-        const key = `${sectionId}.${itemId}`;
-        setModList((prevState) => {
-            if (key in prevState && prevState[key] === ModState.Add) {
-                const state = { ...prevState };
-                delete state[key];
-                return state;
+
+        setModList((prev) => {
+            if (sectionId in prev.experiences) {
+                if (
+                    experienceId in prev.experiences[sectionId] &&
+                    prev.experiences[sectionId][experienceId] === ModState.Add
+                ) {
+                    const copy = {
+                        ...prev,
+                        experiences: {
+                            ...prev.experiences,
+                            [sectionId]: { ...prev.experiences[sectionId] },
+                        },
+                    };
+                    delete copy.experiences[sectionId][experienceId];
+                    return copy;
+                }
+
+                return {
+                    ...prev,
+                    experiences: {
+                        ...prev.experiences,
+                        [sectionId]: {
+                            ...prev.experiences[sectionId],
+                            [experienceId]: ModState.Delete,
+                        },
+                    },
+                };
+            } else {
+                return {
+                    ...prev,
+                    experiences: {
+                        ...prev.experiences,
+                        [sectionId]: { [experienceId]: ModState.Delete },
+                    },
+                };
             }
-            return { ...prevState, [key]: ModState.Delete };
         });
         setHasUnsavedChanges(true);
     };
@@ -297,6 +572,7 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
         updateHeaderInfo,
         updateSectionName,
         updateExperienceName,
+        updateExperienceDate,
         updateItemContent,
         deleteHeaderInfo,
         deleteSection,

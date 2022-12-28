@@ -1,5 +1,4 @@
 import { createContext, useState, useCallback, useMemo } from "react";
-import { union } from "lodash";
 import { mutate } from "swr";
 import { guid, IFile } from "../custom2";
 import fetcher from "../utils/fetcher";
@@ -92,7 +91,7 @@ export const AppContextProvider: React.FC<IProps> = (props) => {
                 if (fileIds.indexOf(ids) != -1)
                     setFileIds((prev) => [...prev, ids]);
             } else if (Array.isArray(ids)) {
-                setFileIds((prev) => union(prev, ids));
+                setFileIds((prev) => [...prev, ...ids]);
             }
         },
         [fileIds]

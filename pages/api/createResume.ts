@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import FileModel from "../../models/FileModel.model";
-import SectionModel from "../../models/SectionModel.model";
 import dbConnect from "../../utils/database";
 import guid from "../../utils/guid";
 import { ResponseSuccess, ResponseError } from "../../custom2.d";
+import HeaderModel from '../../models/HeaderModel.model';
 
 const handler = async (
     req: NextApiRequest,
@@ -18,7 +18,7 @@ const handler = async (
                     userId: `TEMP-${guid()}`,
                     name: fileName || `File-${guid()}`,
                     id: guid(),
-                    header: new SectionModel({
+                    header: new HeaderModel({
                         id: guid(),
                     }),
                 });

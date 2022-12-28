@@ -16,7 +16,6 @@
     "@mui/icons-material": "^5.8.3",
     "@mui/material": "^5.8.3",
     "jspdf": "^2.5.1",
-    "lodash": "^4.17.21",
     "mongodb": "^4.9.1",
     "mongoose": "^6.3.5",
     "nanoid": "^4.0.0",

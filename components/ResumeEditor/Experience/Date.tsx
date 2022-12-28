@@ -4,9 +4,10 @@ import DebouncedTextarea from "../../UI/DebouncedTextarea";
 interface IProps {
     startDate: string;
     endDate: string;
+    updateDate: (isStartDate: boolean, date: string) => void;
 }
 
-const Date: React.FC<IProps> = ({ startDate, endDate }) => {
+const Date: React.FC<IProps> = ({ startDate, endDate, updateDate }) => {
     return (
         <Box
             sx={{
@@ -29,7 +30,7 @@ const Date: React.FC<IProps> = ({ startDate, endDate }) => {
                 defaultValue={startDate}
                 placeholder="04/2022"
                 multiline={false}
-                onChange={(date) => console.log(date)}
+                onChange={(date) => updateDate(true, date)}
             />
             <span>-</span>
             <DebouncedTextarea
@@ -45,7 +46,7 @@ const Date: React.FC<IProps> = ({ startDate, endDate }) => {
                 defaultValue={endDate}
                 placeholder="04/2022"
                 multiline={false}
-                onChange={(date) => console.log(date)}
+                onChange={(date) => updateDate(false, date)}
             />
         </Box>
     );

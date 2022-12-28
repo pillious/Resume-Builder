@@ -9,8 +9,17 @@
 * drag and drop: https://react-dnd.github.io/react-dnd/about
 
 
-Ideas (TODO):
-1) Redesign database: 
+# TODO:
+- update packages
+- fix modlist
+- change toolbox to a toolbar across the top of the resume editor (think about mobile design)
+- add ctrl-z/ctrl-y, ctrl-shift-z -> include undo/redo buttons on toolbar
+- drop and drop ordering
+
+- authentication
+
+Ideas (future):
+1) Redesign database: ✔
 - section -> {...existing, order}
 2) put resume reducer into context, so that commands can be sent from terminal.
 (the terminal will probably only work for the current active resume).
@@ -75,7 +84,3 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
-# TODO:
-- fix modlist
-- reducer: update dates -> (can be included w/ update exp. name)
