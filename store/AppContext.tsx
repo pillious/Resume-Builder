@@ -104,7 +104,7 @@ export const AppContextProvider: React.FC<IProps> = (props) => {
     const deleteFile = useCallback(
         async (id: guid) => {
             if (id) {
-                await fetcher("/api/deleteResumeById", "", {
+                await fetcher("/api/deleteResumeById", {
                     method: "POST",
                     body: JSON.stringify({ fileId: id }),
                 });
@@ -119,7 +119,7 @@ export const AppContextProvider: React.FC<IProps> = (props) => {
     const renameFile = useCallback(
         (id: guid, name: string) => {
             if (id && name) {
-                fetcher("/api/updateResumeName", "", {
+                fetcher("/api/updateResumeName", {
                     method: "POST",
                     body: JSON.stringify({ fileId: id, fileName: name }),
                 });

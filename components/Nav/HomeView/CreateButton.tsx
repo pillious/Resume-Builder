@@ -15,8 +15,7 @@ const CreateButton: React.FC = () => {
     const createNewResume = async (fileName: string) => {
         try {
             const resp: ResponseSuccess | ResponseError = await fetcher(
-                "/api/createResume",
-                `?fileName=${fileName || ""}`,
+                `/api/createResume?fileName=${fileName || ""}`,
                 { method: "POST" }
             );
             mutate("/api/getResumes"); // tell all SWRs with this key to revalidate
@@ -52,7 +51,7 @@ const CreateButton: React.FC = () => {
                 </Tooltip>
             </ListItem>
 
-            <InputModal 
+            <InputModal
                 open={openModal}
                 handleClose={handleModalClose}
                 handleConfirm={(fileName) => createNewResume(fileName)}

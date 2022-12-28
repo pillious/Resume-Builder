@@ -47,7 +47,7 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
                 Object.keys(modList.sections).length !== 0 ||
                 Object.keys(modList.experiences).length !== 0)
         ) {
-            fetcher("/api/updateResume", "", {
+            fetcher("/api/updateResume", {
                 method: "POST",
                 body: JSON.stringify({ resume, modList }),
             });
@@ -88,7 +88,15 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
             target?.removeEventListener("keydown", handleSave);
             clearTimeout(identifier);
         };
-    }, [ctxActiveResumeId, hasUnsavedChanges, sectionRef, saveChanges, modList.header, modList.sections, modList.experiences]);
+    }, [
+        ctxActiveResumeId,
+        hasUnsavedChanges,
+        sectionRef,
+        saveChanges,
+        modList.header,
+        modList.sections,
+        modList.experiences,
+    ]);
 
     useEffect(() => {
         console.log(modList);

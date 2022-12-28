@@ -4,7 +4,7 @@ import fetcher from "../../utils/fetcher";
 
 const useResumeById = (activeResumeId: guid | null) => {
     const { data, error } = useSWR(
-        ["/api/getResumeById", `?id=${activeResumeId}`],
+        `/api/getResumeById?id=${activeResumeId}`,
         fetcher
     );
 
