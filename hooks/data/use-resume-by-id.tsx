@@ -10,8 +10,7 @@ const useResumeById = (activeResumeId: guid | null) => {
 
     const isLoading = !error && !data;
     const isError = error;
-    const isSuccessful =
-        !isError && !isLoading && data != undefined && "data" in data;
+    const isSuccessful = !isError && !isLoading && data != undefined && "data" in data;
     const payload: IFile | null =
         isSuccessful && "file" in data.data && data.data.file != undefined
             ? data.data.file

@@ -10,6 +10,7 @@
 
 
 # TODO:
+- update api routes to filter by userid as well.
 - change toolbox to a toolbar across the top of the resume editor (think about mobile design)
 - add ctrl-z/ctrl-y, ctrl-shift-z -> include undo/redo buttons on toolbar
 - drop and drop ordering

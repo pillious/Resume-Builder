@@ -72,7 +72,24 @@ export interface IItem {
     id: guid;
 }
 
+export interface IUser {
+    name: string;
+    email: string;
+    image: string;
+}
+
 // API
+export type ApiResponse =
+    | {
+          data: Record<string, never>;
+      }
+    | {
+          error: {
+              code: 400 | 404 | 500;
+              message: string;
+          };
+      };
+
 export type ResponseSuccess = {
     data: FileResponseData | Record<string, never>;
 };
