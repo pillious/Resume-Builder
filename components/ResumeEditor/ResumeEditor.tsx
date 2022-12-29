@@ -33,6 +33,7 @@ const ResumeEditor: React.FC = () => {
         updateExperienceName,
         updateExperienceDate,
         updateItemContent,
+        updateItemOrder,
         deleteHeaderInfo,
         deleteSection,
         deleteExperience,
@@ -81,6 +82,7 @@ const ResumeEditor: React.FC = () => {
                                             updateExperienceDate
                                         }
                                         updateItemContent={updateItemContent}
+                                        updateItemOrder={updateItemOrder}
                                         deleteItem={deleteItem}
                                         deleteExperience={deleteExperience}
                                     />

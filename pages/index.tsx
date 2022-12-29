@@ -13,8 +13,7 @@ const Previewer = dynamic(import("../components/Previewer/Previewer"), {
 const Home: NextPage = () => {
     return (
         <AppContextProvider>
-            
-            <Box sx={{ display: "flex", width: "100%", height: "100%" }} >
+            <Box sx={{ display: "flex", width: "100%", height: "100%" }}>
                 <Nav />
                 {/* <Box><TabList /></Box> */}
                 <ResumeEditor />

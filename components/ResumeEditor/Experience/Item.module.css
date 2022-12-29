@@ -34,3 +34,7 @@
 .list_style:hover::before {
     opacity: 0;
 }
+
+.list_item:hover svg {
+    display: block;
+}

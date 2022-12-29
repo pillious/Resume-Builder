@@ -36,7 +36,7 @@ type ACTIONTYPE =
       }
     | {
           type: "updateExperienceOrder";
-          payload: { sectionId: guid; experienceId: guid; order: number };
+          payload: { sectionId: guid; experienceId: guid; order: guid[] };
       }
     | {
           type: "updateItemContent";
@@ -52,8 +52,7 @@ type ACTIONTYPE =
           payload: {
               sectionId: guid;
               experienceId: guid;
-              itemId: guid;
-              order: number;
+              order: guid[];
           };
       }
     | { type: "deleteHeaderInfo"; payload: guid }
@@ -261,6 +260,45 @@ const resumeReducer = (
 
                 items[itemIdx].content = action.payload.content;
                 experiences[expIdx].items = items;
+                sections[secIdx].items = experiences;
+
+                return { ...state, sections };
+            }
+            case "updateItemOrder": {
+                const secIdx = state.sections.findIndex(
+                    (section) => section.id === action.payload.sectionId
+                );
+                if (secIdx === -1) return state;
+
+                const expIdx = state.sections[secIdx].items.findIndex(
+                    (exp) => exp.id === action.payload.experienceId
+                );
+                if (expIdx === -1) return state;
+
+                const sections: ISection[] = JSON.parse(
+                    JSON.stringify(state.sections)
+                );
+                const experiences: IExperience[] = JSON.parse(
+                    JSON.stringify(sections[secIdx].items)
+                );
+                const items: IItem[] = JSON.parse(
+                    JSON.stringify(state.sections[secIdx].items[expIdx].items)
+                );
+
+                const updatedItems: IItem[] = action.payload.order.map(
+                    (id, idx) => {
+                        const item = items.find((i) => i.id === id);
+                        if (item) {
+                            item.order = idx;
+                            return item;
+                        }
+
+                        // shouldn't ever reach this.
+                        return items[0];
+                    }
+                );
+
+                experiences[expIdx].items = updatedItems;
                 sections[secIdx].items = experiences;
 
                 return { ...state, sections };

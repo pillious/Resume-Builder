@@ -1,6 +1,7 @@
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import DebouncedTextarea from "../../UI/DebouncedTextarea";
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import { guid, IItem } from "../../../custom2";
 import classes from "./Item.module.css";
 
@@ -35,7 +36,7 @@ const Item: React.FC<IProps> = (props) => {
                     sx={{
                         width: "100%",
                     }}
-                    defaultValue={props.item.content}
+                    defaultValue={`${props.item.id}`}
                     placeholder="Type here. . ."
                     onChange={(content) => {
                         props.updateItemContent(
@@ -44,6 +45,14 @@ const Item: React.FC<IProps> = (props) => {
                             props.item.id,
                             content
                         );
+                    }}
+                />
+                <DragIndicatorIcon
+                    sx={{
+                        color: "#aaa",
+                        cursor: "grab",
+                        display: "none",
+                        "&:active": { cursor: "grabbing" },
                     }}
                 />
             </ListItem>

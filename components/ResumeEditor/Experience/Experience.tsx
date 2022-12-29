@@ -1,13 +1,11 @@
-import React from "react";
 import Card from "@mui/material/Card";
-import List from "@mui/material/List";
 import classes from "./Experience.module.css";
 import AddListItem from "./AddListItem";
 import DebouncedTextarea from "../../UI/DebouncedTextarea";
 import { IItem, guid } from "../../../custom2";
-import Item from "./Item";
 import DeleteExperience from "./DeleteExperience";
 import Date from "./Date";
+import ExperienceList from "./ExperienceList";
 
 interface IProps {
     id: guid;
@@ -33,6 +31,11 @@ interface IProps {
         experienceId: guid,
         itemId: guid,
         content: string
+    ) => void;
+    updateItemOrder: (
+        sectionId: guid,
+        experienceId: guid,
+        order: guid[]
     ) => void;
     deleteItem: (sectionId: guid, experienceId: guid, itemId: guid) => void;
     deleteExperience: (sectionId: guid, experienceId: guid) => void;
@@ -92,18 +95,14 @@ const Experience: React.FC<IProps> = (props) => {
             {props.items.length > 0 && (
                 <Card elevation={2} sx={{ mx: "2px", p: 0 }}>
                     {/* 2px margin to fix boxshadow */}
-                    <List className={classes.List} sx={{ p: "1rem" }}>
-                        {props.items.map((item) => (
-                            <Item
-                                key={item.id}
-                                item={item}
-                                sectionId={props.sectionId}
-                                experienceId={props.id}
-                                updateItemContent={props.updateItemContent}
-                                deleteItem={props.deleteItem}
-                            />
-                        ))}
-                    </List>
+                    <ExperienceList
+                        items={props.items}
+                        sectionId={props.sectionId}
+                        experienceId={props.id}
+                        updateItemContent={props.updateItemContent}
+                        updateItemOrder={props.updateItemOrder}
+                        deleteItem={props.deleteItem}
+                    />
                 </Card>
             )}
         </Card>
