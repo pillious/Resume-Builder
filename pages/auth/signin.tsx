@@ -3,7 +3,6 @@ import {
     getProviders,
     signIn,
     getSession,
-    getCsrfToken,
 } from "next-auth/react";
 import { Provider } from "next-auth/providers";
 
@@ -12,8 +11,6 @@ interface IProps {
 }
 
 const SignIn: React.FC<IProps> = ({ providers }) => {
-    console.log(providers);
-
     return (
         <>
             {Object.values(providers).map((provider) => (
@@ -29,31 +26,21 @@ const SignIn: React.FC<IProps> = ({ providers }) => {
 
 export default SignIn;
 
-// export const getServerSideProps: GetServerSideProps = async (
-//     context
-// ): Promise<GetServerSidePropsResult<{ [key: string]: unknown }>> => {
-//     // const { req } = context;
-//     // const session = await getSession({ req });
+export const getServerSideProps: GetServerSideProps = async (
+    context
+): Promise<GetServerSidePropsResult<{ [key: string]: unknown }>> => {
+    const { req } = context;
+    const session = await getSession({ req });
 
-//     // if (session) {
-//     //     return {
-//     //         redirect: { destination: "/", permanent: false },
-//     //     };
-//     // }
+    if (session) {
+        return {
+            redirect: { destination: "/", permanent: false },
+        };
+    }
 
-//     console.log(await getProviders());
-
-//     return {
-//         props: {
-//             providers: await getProviders(),
-//             csrfToken: await getCsrfToken(context),
-//         },
-//     };
-// };
-
-export const getServerSideProps: GetServerSideProps = async () => {
-    const providers = await getProviders();
     return {
-        props: { providers },
+        props: {
+            providers: await getProviders(),
+        },
     };
 };
