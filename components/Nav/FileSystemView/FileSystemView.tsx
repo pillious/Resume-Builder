@@ -22,13 +22,6 @@ const FileSystemView: React.FC<IProps> = ({ close }) => {
 
     const { data: payload } = useResumeIds();
 
-    // const isResponseSuccess =
-    //     !isError && !isLoading && payload != undefined && "data" in payload;
-
-    // let files: IFile[] = [];
-    // if (isResponseSuccess && payload.data.files != undefined)
-    //     files = payload.data.files;
-
     return (
         <Box sx={{ display: "flex" }}>
             <Drawer

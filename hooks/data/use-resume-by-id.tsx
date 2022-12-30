@@ -10,11 +10,15 @@ const useResumeById = (activeResumeId: guid | null) => {
 
     const isLoading = !error && !data;
     const isError = error;
-    const isSuccessful = !isError && !isLoading && data != undefined && "data" in data;
-    const payload: IFile | null =
-        isSuccessful && "file" in data.data && data.data.file != undefined
-            ? data.data.file
-            : null;
+    const isSuccessful =
+        !isError && !isLoading && data != undefined && "data" in data;
+    let payload: IFile | null;
+    if (isSuccessful && "file" in data.data && data.data.file && "userId" in data.data.file) {
+        payload = data.data.file as IFile;
+    }
+    else {
+        payload = null;
+    }
 
     return {
         data: payload,

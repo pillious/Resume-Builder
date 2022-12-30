@@ -1,31 +1,60 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import { unstable_getServerSession } from "next-auth";
+import { authOptions } from "./auth/[...nextauth]";
 import FileModel from "../../models/FileModel.model";
 import dbConnect from "../../utils/database";
-import { ResponseSuccess, ResponseError } from "../../custom2.d";
+import { ApiResponse, IFile } from "../../custom2.d";
 
 const handler = async (
     req: NextApiRequest,
-    res: NextApiResponse<ResponseSuccess | ResponseError>
+    res: NextApiResponse<ApiResponse>
 ) => {
     try {
         switch (req.method) {
             case "GET": {
-                const id = req.query.id;
-                if (id) {
-                    await dbConnect();
-                    const doc = await FileModel.findOne({ id: req.query.id });
-                    res.status(200).json({ data: { file: doc } });
+                const session = await unstable_getServerSession(
+                    req,
+                    res,
+                    authOptions
+                );
+
+                if (session) {
+                    const id = req.query.id;
+                    if (id) {
+                        await dbConnect();
+                        const doc: IFile | null = await FileModel.findOne({
+                            id: req.query.id,
+                        });
+
+                        doc
+                            ? res.status(200).json({ data: { file: doc } })
+                            : res.status(200).json({ data: { file: {} } });
+                    } else {
+                        res.status(400).json({
+                            error: {
+                                code: 400,
+                                message: "id parameter required",
+                            },
+                        });
+                    }
                 } else {
-                    res.status(200).json({ data: {} });
+                    res.status(401).json({
+                        error: { code: 401, message: "Unauthorized" },
+                    });
                 }
+
                 break;
             }
             default:
-                throw new Error(`${req.method} is not allowed`);
+                res.status(405).json({
+                    error: { code: 405, message: `${req.method} not allowed.` },
+                });
         }
     } catch (ex) {
         console.log(ex);
-        res.status(500).json({ error: { code: 500, message: ex } });
+        res.status(500).json({
+            error: { code: 500, message: "Internal Server Error" },
+        });
     }
 };
 

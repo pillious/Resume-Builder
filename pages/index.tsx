@@ -2,11 +2,12 @@ import { useEffect } from "react";
 import type { NextPage } from "next";
 import dynamic from "next/dynamic";
 import { useSession } from "next-auth/react";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 import Box from "@mui/material/Box";
 import { AppContextProvider } from "../store/AppContext";
 import ResumeEditor from "../components/ResumeEditor/ResumeEditor";
 import Nav from "../components/Nav/Nav";
+import nanoid from "../utils/guid";
 
 // import TabList from "../components/TabList/TabList";
 

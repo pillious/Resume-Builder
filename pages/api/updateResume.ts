@@ -1,24 +1,32 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import { unstable_getServerSession } from "next-auth";
+import { authOptions } from "./auth/[...nextauth]";
 import { AnyBulkWriteOperation } from "mongodb";
 import dbConnect from "../../utils/database";
-import {
-    ResponseSuccess,
-    ResponseError,
-    IFile,
-    ModState,
-    ModList,
-} from "../../custom2.d";
+import { ApiResponse, IFile, ModState, ModList } from "../../custom2.d";
 import FileModel from "../../models/FileModel.model";
 import SectionModel from "../../models/SectionModel.model";
 import ExperienceModel from "../../models/ExperienceModel.model";
 
 const handler = async (
     req: NextApiRequest,
-    res: NextApiResponse<ResponseSuccess | ResponseError>
+    res: NextApiResponse<ApiResponse>
 ) => {
     try {
         switch (req.method) {
             case "POST": {
+                const session = await unstable_getServerSession(
+                    req,
+                    res,
+                    authOptions
+                );
+
+                if (!session) {
+                    res.status(401).json({
+                        error: { code: 401, message: "Unauthorized" },
+                    });
+                }
+
                 const {
                     resume,
                     modList,
@@ -48,7 +56,7 @@ const handler = async (
                             });
                         } else {
                             console.error(
-                                "Save Header: illegal modification (add/delete) "
+                                "Illegal modification (add/delete operation for header)"
                             );
                         }
                     }
@@ -201,9 +209,22 @@ const handler = async (
 
                 try {
                     await dbConnect();
-                    if (operations.length > 0)
-                        await FileModel.bulkWrite(operations);
-                    res.send({ data: {} });
+                    if (operations.length > 0) {
+                        const resp = await FileModel.bulkWrite(operations);
+                        if (resp.result.ok > 0)
+                            res.status(200).json({
+                                data: {
+                                    message:
+                                        "Successfully saved changes to file.",
+                                },
+                            });
+                        else
+                            res.status(404).json({
+                                data: {
+                                    message: "Failed to saved changes to file.",
+                                },
+                            });
+                    }
                 } catch (err) {
                     console.log(err);
                     throw new Error("Bulk write operation failed.");
@@ -212,11 +233,15 @@ const handler = async (
                 break;
             }
             default:
-                throw new Error(`${req.method} is not allowed.`);
+                res.status(405).json({
+                    error: { code: 405, message: `${req.method} not allowed.` },
+                });
         }
     } catch (ex) {
         console.log(ex);
-        res.status(500).json({ error: { code: 500, message: ex } });
+        res.status(500).json({
+            error: { code: 500, message: "Internal Server Error" },
+        });
     }
 };
 

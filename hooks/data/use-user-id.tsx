@@ -1,4 +1,5 @@
 import useSWR from "swr";
+import { IUser } from "../../custom2";
 import fetcher from "../../utils/fetcher";
 
 const useUserId = () => {
@@ -10,8 +11,17 @@ const useUserId = () => {
     const isError = error;
     const isSuccessful =
         !isError && !isLoading && data != undefined && "data" in data;
-    const payload =
-        isSuccessful && data.data.files != undefined ? data.data.files : [];
+    let payload: IUser | null;
+    if (
+        isSuccessful &&
+        "user" in data.data &&
+        data.data.user &&
+        "email" in data.data.user
+    ) {
+        payload = data.data.user as IUser;
+    } else {
+        payload = null;
+    }
 
     return {
         data: payload,

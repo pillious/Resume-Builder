@@ -79,30 +79,21 @@ export interface IUser {
 }
 
 // API
-export type ApiResponse =
-    | {
-          data: Record<string, never>;
-      }
-    | {
-          error: {
-              code: 400 | 404 | 500;
-              message: string;
-          };
-      };
+export type ApiResponse = ApiResponseSuccess | ApiResponseError;
 
-export type ResponseSuccess = {
-    data: FileResponseData | Record<string, never>;
+type ApiResponseSuccess = {
+    data:
+        | { file: IFile | Record<string, never> }
+        | { files: IFile[] }
+        | { fileIds: guid[] }
+        | { message: string }
+        | { user: IUser | Record<string, never> };
 };
 
-export type FileResponseData = {
-    files?: IFile[];
-    file?: IFile;
-};
-
-export type ResponseError = {
+type ApiResponseError = {
     error: {
-        code: number;
-        message: unknown | string;
+        code: 400 | 401 | 404 | 405 | 500;
+        message: string;
     };
 };
 
