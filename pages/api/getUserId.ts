@@ -19,15 +19,23 @@ const handler = async (
                 );
 
                 if (session) {
-                    const email = req.query.email;
-                    await dbConnect();
-                    const doc: IUser | null = await UserModel.findOne({
-                        email,
-                    });
+                    const { email, userId } = req.query;
 
-                    doc
-                        ? res.status(200).json({ data: { user: doc } })
-                        : res.status(200).json({ data: { user: {} } });
+                    if (
+                        email !== "undefined" &&
+                        email !== "null" &&
+                        userId !== "undefined" &&
+                        userId !== "null"
+                    ) {
+                        await dbConnect();
+                        const doc: IUser | null = await UserModel.findOne({
+                            email,
+                        });
+
+                        doc
+                            ? res.status(200).json({ data: { user: doc } })
+                            : res.status(200).json({ data: { user: {} } });
+                    } else res.status(200).json({ data: { user: {} } });
                 } else {
                     res.status(401).json({
                         error: { code: 401, message: "Unauthorized" },

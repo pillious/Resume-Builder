@@ -19,23 +19,24 @@ const handler = async (
                 );
 
                 if (session) {
-                    const id = req.query.id;
-                    if (id) {
+                    const { id, userId } = req.query;
+                    if (
+                        id !== "undefined" &&
+                        id !== "null" &&
+                        userId !== "undefined" &&
+                        userId !== "null"
+                    ) {
                         await dbConnect();
                         const doc: IFile | null = await FileModel.findOne({
-                            id: req.query.id,
+                            id,
+                            userId,
                         });
 
                         doc
                             ? res.status(200).json({ data: { file: doc } })
                             : res.status(200).json({ data: { file: {} } });
                     } else {
-                        res.status(400).json({
-                            error: {
-                                code: 400,
-                                message: "id parameter required",
-                            },
-                        });
+                        res.status(200).json({ data: { file: {} } });
                     }
                 } else {
                     res.status(401).json({

@@ -6,7 +6,7 @@ import dbConnect from "../../utils/database";
 import guid from "../../utils/guid";
 import { ApiResponse, IFile } from "../../custom2.d";
 import HeaderModel from "../../models/HeaderModel.model";
-import { HydratedDocument } from "mongoose";
+import mongoose, { HydratedDocument } from "mongoose";
 
 const handler = async (
     req: NextApiRequest,
@@ -23,17 +23,30 @@ const handler = async (
 
                 if (session) {
                     await dbConnect();
-                    const fileName = req.query.fileName;
+                    const { fileName, userId } = JSON.parse(req.body);
+
+                    if (
+                        fileName === undefined ||
+                        fileName === null ||
+                        userId === undefined ||
+                        userId === null
+                    ) {
+                        res.status(400).json({
+                            error: { code: 400, message: "Invalid Parameters" },
+                        });
+                    }
+
                     const doc: HydratedDocument<IFile> = new FileModel({
-                        userId: `TEMP-${guid()}`,
-                        name: fileName || `File-${guid()}`,
-                        id: guid(),
+                        userId: new mongoose.Types.ObjectId(userId),
+                        name: fileName || "Untitled Resume",
+                        id: guid(20),
                         header: new HeaderModel({
                             id: guid(),
                         }),
                     });
 
-                    await doc.save()
+                    await doc
+                        .save()
                         .then(() =>
                             res.status(200).json({
                                 data: {

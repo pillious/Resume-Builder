@@ -3,7 +3,7 @@ import { IFile } from "../custom2.d";
 import { sectionSchema } from "./SectionModel.model";
 
 const fileSchema = new Schema<IFile>({
-    userId: { type: String, required: true },
+    userId: { type: Schema.Types.ObjectId, required: true },
     name: { type: String, required: true },
     sections: [{ type: sectionSchema, default: [] }],
     header: { type: sectionSchema, required: true },

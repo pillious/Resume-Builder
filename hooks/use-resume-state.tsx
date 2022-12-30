@@ -12,6 +12,7 @@ import nanoid from "../utils/guid";
 import AppContext from "../store/AppContext";
 import useResumeById from "./data/use-resume-by-id";
 import fetcher from "../utils/fetcher";
+import AuthContext from "../store/AuthContext";
 
 const resetModList = (): ModList => ({
     header: {},
@@ -24,7 +25,9 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
         activeResumeId: ctxActiveResumeId,
         updateActiveResumeObj: ctxUpdateActiveResumeObj,
     } = useContext(AppContext);
-    const { data } = useResumeById(ctxActiveResumeId);
+    const { userId } = useContext(AuthContext);
+
+    const { data } = useResumeById(ctxActiveResumeId, userId);
 
     const [resume, dispatch] = useReducer(resumeReducer, data);
 
@@ -43,18 +46,19 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
     const saveChanges = useCallback(() => {
         if (
             hasUnsavedChanges &&
+            userId !== null &&
             (Object.keys(modList.header).length !== 0 ||
                 Object.keys(modList.sections).length !== 0 ||
                 Object.keys(modList.experiences).length !== 0)
         ) {
             fetcher("/api/updateResume", {
                 method: "POST",
-                body: JSON.stringify({ resume, modList }),
+                body: JSON.stringify({ resume, modList, userId }),
             });
             setHasUnsavedChanges(false);
             setModList(resetModList());
         }
-    }, [hasUnsavedChanges, resume, modList]);
+    }, [hasUnsavedChanges, modList, resume, userId]);
 
     // override ctrl+s shortcut to save resume
     useEffect(() => {

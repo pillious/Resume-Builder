@@ -10,6 +10,7 @@ import { guid } from "../../../custom2";
 import useResumeIds from "../../../hooks/data/use-resume-ids";
 import FileItem from "./FileItem";
 import AppContext from "../../../store/AppContext";
+import AuthContext from "../../../store/AuthContext";
 
 const drawerWidth = 160;
 
@@ -19,8 +20,8 @@ interface IProps {
 
 const FileSystemView: React.FC<IProps> = ({ close }) => {
     const { activeResumeId: ctxActiveResumeId } = useContext(AppContext);
-
-    const { data: payload } = useResumeIds();
+    const { userId } = useContext(AuthContext);
+    const { data: payload } = useResumeIds(userId);
 
     return (
         <Box sx={{ display: "flex" }}>

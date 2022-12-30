@@ -36,7 +36,7 @@ const Item: React.FC<IProps> = (props) => {
                     sx={{
                         width: "100%",
                     }}
-                    defaultValue={`${props.item.id}`}
+                    defaultValue={props.item.content}
                     placeholder="Type here. . ."
                     onChange={(content) => {
                         props.updateItemContent(

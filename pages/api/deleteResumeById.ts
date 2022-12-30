@@ -20,9 +20,17 @@ const handler = async (
 
                 if (session) {
                     await dbConnect();
-                    const fileId = JSON.parse(req.body).fileId;
-                    if (fileId) {
-                        const resp = await FileModel.deleteOne({ id: fileId });
+                    const { fileId, userId } = JSON.parse(req.body);
+                    if (
+                        fileId !== undefined &&
+                        fileId !== null &&
+                        userId !== undefined &&
+                        userId !== null
+                    ) {
+                        const resp = await FileModel.deleteOne({
+                            id: fileId,
+                            userId,
+                        });
                         if (resp.deletedCount > 0)
                             res.status(200).json({
                                 data: { message: "Successfully delete file." },

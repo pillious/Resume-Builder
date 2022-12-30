@@ -19,8 +19,8 @@ interface IAppContext {
     updateFileIds: (ids: guid | guid[]) => void; // unused
     updateActiveResumeId: (id: guid | null) => void;
     updateActiveResumeObj: (file: IFile | null) => void;
-    deleteFile: (id: guid) => void;
-    renameFile: (id: guid, name: string) => void;
+    deleteFile: (id: guid, userId: guid) => void;
+    renameFile: (id: guid, name: string, userId: guid) => void;
     downloadFile: (id?: guid) => void;
     openPreview: () => void;
 }
@@ -88,7 +88,7 @@ export const AppContextProvider: React.FC<IProps> = (props) => {
     const updateFileIds = useCallback(
         (ids: guid | guid[]) => {
             if (typeof ids === "string") {
-                if (fileIds.indexOf(ids) != -1)
+                if (fileIds.indexOf(ids) !== -1)
                     setFileIds((prev) => [...prev, ids]);
             } else if (Array.isArray(ids)) {
                 setFileIds((prev) => [...prev, ...ids]);
@@ -102,11 +102,11 @@ export const AppContextProvider: React.FC<IProps> = (props) => {
      */
     // Delete file
     const deleteFile = useCallback(
-        async (id: guid) => {
+        async (id: guid, userId: guid) => {
             if (id) {
                 await fetcher("/api/deleteResumeById", {
                     method: "POST",
-                    body: JSON.stringify({ fileId: id }),
+                    body: JSON.stringify({ fileId: id, userId }),
                 });
                 if (id === activeResumeId) updateActiveResumeId(null);
                 mutate("/api/getResumeIds"); // update filesystem.
@@ -117,11 +117,15 @@ export const AppContextProvider: React.FC<IProps> = (props) => {
 
     // Rename file
     const renameFile = useCallback(
-        (id: guid, name: string) => {
-            if (id && name) {
+        (id: guid, name: string, userId: guid) => {
+            if (id && name && userId) {
                 fetcher("/api/updateResumeName", {
                     method: "POST",
-                    body: JSON.stringify({ fileId: id, fileName: name }),
+                    body: JSON.stringify({
+                        fileId: id,
+                        fileName: name,
+                        userId,
+                    }),
                 });
                 mutate("/api/getResumeIds"); // update filesystem.
 

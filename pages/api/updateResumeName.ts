@@ -19,26 +19,39 @@ const handler = async (
                 );
 
                 if (session) {
-                    await dbConnect();
-                    const { fileId, fileName } = JSON.parse(req.body);
-                    if (fileId && fileName) {
-                        const resp = await FileModel.updateOne(
-                            { id: fileId },
-                            { name: fileName }
-                        );
-                        if (resp.matchedCount > 0)
-                            res.status(200).json({
-                                data: {
-                                    message: "Successfully updated file name.",
-                                },
-                            });
-                        else
-                            res.status(404).json({
-                                data: {
-                                    message: "Failed to update file name.",
-                                },
-                            });
+                    const { fileId, fileName, userId } = JSON.parse(req.body);
+
+                    if (
+                        fileId === undefined ||
+                        fileId === null ||
+                        fileName === undefined ||
+                        fileName === null ||
+                        userId === undefined ||
+                        userId === null
+                    ) {
+                        res.status(400).json({
+                            error: { code: 400, message: "Invalid Parameters" },
+                        });
                     }
+
+                    await dbConnect();
+
+                    const resp = await FileModel.updateOne(
+                        { id: fileId },
+                        { name: fileName }
+                    );
+                    if (resp.matchedCount > 0)
+                        res.status(200).json({
+                            data: {
+                                message: "Successfully updated file name.",
+                            },
+                        });
+                    else
+                        res.status(404).json({
+                            data: {
+                                message: "Failed to update file name.",
+                            },
+                        });
                 } else {
                     res.status(401).json({
                         error: { code: 401, message: "Unauthorized" },

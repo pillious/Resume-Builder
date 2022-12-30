@@ -1,14 +1,13 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import type { NextPage } from "next";
 import dynamic from "next/dynamic";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Box from "@mui/material/Box";
-import { AppContextProvider } from "../store/AppContext";
 import ResumeEditor from "../components/ResumeEditor/ResumeEditor";
 import Nav from "../components/Nav/Nav";
-import nanoid from "../utils/guid";
-
+import AuthContext from "../store/AuthContext";
+import fetcher from "../utils/fetcher";
 // import TabList from "../components/TabList/TabList";
 
 const Previewer = dynamic(import("../components/Previewer/Previewer"), {
@@ -18,31 +17,36 @@ const Previewer = dynamic(import("../components/Previewer/Previewer"), {
 const Home: NextPage = () => {
     const { data: session, status } = useSession();
     const router = useRouter();
+    const { updateUserId } = useContext(AuthContext);
 
     useEffect(() => {
-        if (status === "authenticated") {
-            // console.log(session);
-        }
-    }, [session, status]);
+        const updateId = async () => {
+            if (session && session.user && "email" in session.user) {
+                const resp = await fetcher(
+                    `/api/getUserId?email=${session.user?.email}`
+                );
 
-    if (status === "unauthenticated") {
-        router.push("/api/auth/signin");
-    }
+                if ("data" in resp && "user" in resp.data) {
+                    updateUserId(resp.data.user._id);
+                }
+            }
+        };
 
-    // <Box><TabList /></Box>
+        if (status === "authenticated") updateId();
+        else if (status === "unauthenticated") router.push("/api/auth/signin");
+    }, [router, session, status, updateUserId]);
 
     return (
-        <AppContextProvider>
-            <Box sx={{ display: "flex", width: "100%", height: "100%" }}>
-                {status === "authenticated" && (
-                    <>
-                        <Nav />
-                        <ResumeEditor />
-                        <Previewer />
-                    </>
-                )}
-            </Box>
-        </AppContextProvider>
+        <Box sx={{ display: "flex", width: "100%", height: "100%" }}>
+            {/* <Box><TabList /></Box> */}
+            {status === "authenticated" && (
+                <>
+                    <Nav />
+                    <ResumeEditor />
+                    <Previewer />
+                </>
+            )}
+        </Box>
     );
 };
 

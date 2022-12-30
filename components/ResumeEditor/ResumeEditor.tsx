@@ -8,6 +8,7 @@ import useResumeState from "../../hooks/use-resume-state";
 import AppContext from "../../store/AppContext";
 import Header from "./Header/Header";
 import Section from "./Section/Section";
+import AuthContext from "../../store/AuthContext";
 
 const ResumeEditor: React.FC = () => {
     const {
@@ -17,6 +18,8 @@ const ResumeEditor: React.FC = () => {
         downloadFile: ctxDownloadFile,
         openPreview: ctxOpenPreview,
     } = useContext(AppContext);
+
+    const { userId } = useContext(AuthContext);
 
     const sectionRef = useRef<HTMLBaseElement>(null);
 
@@ -104,12 +107,12 @@ const ResumeEditor: React.FC = () => {
                             if (ctxActiveResumeId) ctxOpenPreview();
                         }}
                         rename={(name) => {
-                            if (ctxActiveResumeId && name)
-                                ctxRenameFile(ctxActiveResumeId, name);
+                            if (ctxActiveResumeId && name && userId !== null)
+                                ctxRenameFile(ctxActiveResumeId, name, userId);
                         }}
                         delete={() => {
-                            if (ctxActiveResumeId) {
-                                ctxDeleteFile(ctxActiveResumeId);
+                            if (ctxActiveResumeId && userId !== null) {
+                                ctxDeleteFile(ctxActiveResumeId, userId);
                             }
                         }}
                     />

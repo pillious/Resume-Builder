@@ -15,7 +15,10 @@
 - add ctrl-z/ctrl-y, ctrl-shift-z -> include undo/redo buttons on toolbar
 - drop and drop ordering
 
-- authentication
+- bug: file viewer not updating after renaming.
+
+- use the userUserId hook instead?
+- authentication (navbar)
 
 Ideas (future):
 1) Redesign database: ✔

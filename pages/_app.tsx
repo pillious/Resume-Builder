@@ -3,6 +3,8 @@ import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
 import type { Session } from "next-auth";
+import { AppContextProvider } from "../store/AppContext";
+import { AuthContextProvider } from "../store/AuthContext";
 
 const App = ({
     Component,
@@ -10,7 +12,11 @@ const App = ({
 }: AppProps<{ session: Session }>) => {
     return (
         <SessionProvider session={session}>
-            <Component {...pageProps} />
+            <AuthContextProvider>
+                <AppContextProvider>
+                    <Component {...pageProps} />
+                </AppContextProvider>
+            </AuthContextProvider>
         </SessionProvider>
     );
 };

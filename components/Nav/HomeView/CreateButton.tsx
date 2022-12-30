@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -8,17 +8,19 @@ import { useSWRConfig } from "swr";
 import { ApiResponse } from "../../../custom2.d";
 import { Tooltip } from "@mui/material";
 import InputModal from "../../UI/InputModal";
+import AuthContext from "../../../store/AuthContext";
 
 const CreateButton: React.FC = () => {
     const { mutate } = useSWRConfig();
+    const { userId } = useContext(AuthContext);
 
     const createNewResume = async (fileName: string) => {
         try {
             const resp: ApiResponse = await fetcher(
-                `/api/createResume?fileName=${fileName || ""}`,
-                { method: "POST" }
+                `/api/createResume`,
+                { method: "POST", body: JSON.stringify({ fileName, userId }) }
             );
-            mutate("/api/getResumes"); // tell all SWRs with this key to revalidate
+            mutate("/api/getResumeIds"); // tell all SWRs with this key to revalidate
 
             // TODO: is this even used?
             if ("data" in resp) {

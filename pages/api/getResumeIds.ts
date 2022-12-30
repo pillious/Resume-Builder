@@ -19,11 +19,22 @@ const handler = async (
                 );
 
                 if (session) {
-                    await dbConnect();
-                    const docs: guid[] = await FileModel.find({}).select(
-                        "name id -_id"
-                    );
-                    res.status(200).json({ data: { fileIds: docs } });
+                    const { userId } = req.query;
+
+                    if (userId !== "undefined" && userId !== "null") {
+                        await dbConnect();
+                        const docs: { name: string; id: guid }[] =
+                            await FileModel.find({ userId }).select(
+                                "name id -_id"
+                            );
+                        res.status(200).json({
+                            data: { fileIdentifiers: docs },
+                        });
+                    } else {
+                        res.status(200).json({
+                            data: { fileIdentifiers: [] },
+                        });
+                    }
                 } else {
                     res.status(401).json({
                         error: { code: 401, message: "Unauthorized" },

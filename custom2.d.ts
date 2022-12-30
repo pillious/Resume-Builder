@@ -1,3 +1,5 @@
+import mongoose from 'mongoose';
+
 // Misc.
 export type guid = string;
 
@@ -37,7 +39,7 @@ export interface PDFItemProps {
 
 // Schema objects
 export interface IFile {
-    userId: string;
+    userId: mongoose.Schema.Types.ObjectId;
     name: string;
     categories: { id: guid; name: string }[]; // add
     sections: ISection[];
@@ -76,6 +78,7 @@ export interface IUser {
     name: string;
     email: string;
     image: string;
+    _id: guid;
 }
 
 // API
@@ -85,7 +88,7 @@ type ApiResponseSuccess = {
     data:
         | { file: IFile | Record<string, never> }
         | { files: IFile[] }
-        | { fileIds: guid[] }
+        | { fileIdentifiers: { name: string; id: guid }[]}
         | { message: string }
         | { user: IUser | Record<string, never> };
 };

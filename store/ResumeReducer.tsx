@@ -73,7 +73,7 @@ const resumeReducer = (
     // "setResume" can still occur even if previous state is null.
     if (action.type === "setResume") {
         return action.payload;
-    } else if (state != null) {
+    } else if (state !== null) {
         switch (action.type) {
             case "addHeaderInfo": {
                 const header: IHeader = JSON.parse(
