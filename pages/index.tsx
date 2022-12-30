@@ -1,13 +1,14 @@
 import { useContext, useEffect } from "react";
 import type { NextPage } from "next";
 import dynamic from "next/dynamic";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+import { useSession, signIn } from "next-auth/react";
 import Box from "@mui/material/Box";
 import ResumeEditor from "../components/ResumeEditor/ResumeEditor";
-import Nav from "../components/Nav/Nav";
+import Sidebar from "../components/Sidebar/Sidebar";
 import AuthContext from "../store/AuthContext";
 import fetcher from "../utils/fetcher";
+import { AppContextProvider } from "../store/AppContext";
+
 // import TabList from "../components/TabList/TabList";
 
 const Previewer = dynamic(import("../components/Previewer/Previewer"), {
@@ -16,7 +17,6 @@ const Previewer = dynamic(import("../components/Previewer/Previewer"), {
 
 const Home: NextPage = () => {
     const { data: session, status } = useSession();
-    const router = useRouter();
     const { updateUserId } = useContext(AuthContext);
 
     useEffect(() => {
@@ -33,20 +33,22 @@ const Home: NextPage = () => {
         };
 
         if (status === "authenticated") updateId();
-        else if (status === "unauthenticated") router.push("/api/auth/signin");
-    }, [router, session, status, updateUserId]);
+        else if (status === "unauthenticated") signIn();
+    }, [session, status, updateUserId]);
 
     return (
-        <Box sx={{ display: "flex", width: "100%", height: "100%" }}>
-            {/* <Box><TabList /></Box> */}
-            {status === "authenticated" && (
-                <>
-                    <Nav />
-                    <ResumeEditor />
-                    <Previewer />
-                </>
-            )}
-        </Box>
+        <AppContextProvider>
+            <Box sx={{ display: "flex", width: "100%", height: "100%" }}>
+                {/* <Box><TabList /></Box> */}
+                {status === "authenticated" && (
+                    <>
+                        <Sidebar />
+                        <ResumeEditor />
+                        <Previewer />
+                    </>
+                )}
+            </Box>
+        </AppContextProvider>
     );
 };
 

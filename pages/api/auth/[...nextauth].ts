@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import NextAuth, { AuthOptions } from "next-auth";
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
-import GoogleProvider from "next-auth/providers/google";
+import GoogleProvider, { GoogleProfile } from "next-auth/providers/google";
 import clientPromise from "../../../utils/mongodb";
 
 export const authOptions: AuthOptions = {
@@ -16,9 +16,10 @@ export const authOptions: AuthOptions = {
         async signIn({ account, profile }) {
             console.log({ account, profile });
             if (account && account.provider === "google") {
+                const prof: GoogleProfile = profile as GoogleProfile;
                 if (
-                    profile.email_verified &&
-                    profile.email.endsWith("@gmail.com")
+                    prof.email_verified &&
+                    prof.email.endsWith("@gmail.com")
                 )
                     return true;
 
@@ -31,7 +32,6 @@ export const authOptions: AuthOptions = {
     secret: process.env.NEXTAUTH_SECRET,
     pages: {
         signIn: "/auth/signin",
-        // signOut: "/auth/signout"
     },
 };
 

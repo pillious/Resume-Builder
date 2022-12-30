@@ -32,6 +32,7 @@ const FileSystemView: React.FC<IProps> = ({ close }) => {
                     "& .MuiDrawer-paper": {
                         width: drawerWidth,
                         boxSizing: "border-box",
+                        mt: "48px", // height of navbar
                     },
                 }}
                 variant="permanent"

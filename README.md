@@ -10,7 +10,6 @@
 
 
 # TODO:
-- update api routes to filter by userid as well.
 - change toolbox to a toolbar across the top of the resume editor (think about mobile design)
 - add ctrl-z/ctrl-y, ctrl-shift-z -> include undo/redo buttons on toolbar
 - drop and drop ordering
@@ -21,6 +20,8 @@
 - authentication (navbar)
 
 Ideas (future):
+- navbar uses monospace font.
+
 1) Redesign database: ✔
 - section -> {...existing, order}
 2) put resume reducer into context, so that commands can be sent from terminal.

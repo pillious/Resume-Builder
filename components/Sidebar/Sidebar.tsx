@@ -35,7 +35,7 @@ const theme = createTheme({
     },
 });
 
-const Nav: React.FC = () => {
+const Sidebar: React.FC = () => {
     const [activeView, setActiveView] = useState<ActiveView>(
         ActiveView.FileSystemView
     );
@@ -59,4 +59,4 @@ const Nav: React.FC = () => {
     return <ThemeProvider theme={theme}>{view}</ThemeProvider>;
 };
 
-export default Nav;
+export default Sidebar;
