@@ -1,9 +1,10 @@
 import { useRef, useContext } from "react";
 import Divider from "@mui/material/Divider";
+import Box from "@mui/material/Box";
 import AddSection from "./Section/AddSection";
 import classes from "./ResumeEditor.module.css";
 import Experience from "./Experience/Experience";
-import Toolbox from "./Toolbox";
+import Toolbox from "./Toolbox/Toolbox";
 import useResumeState from "../../hooks/use-resume-state";
 import AppContext from "../../store/AppContext";
 import Header from "./Header/Header";
@@ -13,10 +14,11 @@ import AuthContext from "../../store/AuthContext";
 const ResumeEditor: React.FC = () => {
     const {
         activeResumeId: ctxActiveResumeId,
-        renameFile: ctxRenameFile,
-        deleteFile: ctxDeleteFile,
-        downloadFile: ctxDownloadFile,
-        openPreview: ctxOpenPreview,
+        renameFile,
+        deleteFile,
+        downloadFile,
+        togglePreview,
+        areToolsActive,
     } = useContext(AppContext);
 
     const { userId } = useContext(AuthContext);
@@ -47,75 +49,105 @@ const ResumeEditor: React.FC = () => {
         <main className={classes.section} tabIndex={-1} ref={sectionRef}>
             {resume && (
                 <>
-                    <Header
-                        addHeaderInfo={addHeaderInfo}
-                        updateHeaderName={updateHeaderName}
-                        updateHeaderInfo={updateHeaderInfo}
-                        deleteHeaderInfo={deleteHeaderInfo}
-                        items={resume.header.items}
-                        name={resume.header.name}
-                    />
-
-                    <Divider />
-
-                    {resume?.sections.map((section, idx) => (
-                        <Section
-                            key={`${section.id}-${idx}`}
-                            name={section.name}
-                            id={section.id}
-                            updateSectionName={updateSectionName}
-                            deleteSection={deleteSection}
-                            addExperience={addExperience}
-                        >
-                            <>
-                                {section.items.map((experience, idx) => (
-                                    <Experience
-                                        key={`${experience.id}-${idx}`}
-                                        id={experience.id}
-                                        sectionId={section.id}
-                                        title={experience.name}
-                                        items={experience.items || []}
-                                        startDate={experience.startDate}
-                                        endDate={experience.endDate}
-                                        addItem={addItem}
-                                        updateExperienceName={
-                                            updateExperienceName
-                                        }
-                                        updateExperienceDate={
-                                            updateExperienceDate
-                                        }
-                                        updateItemContent={updateItemContent}
-                                        updateItemOrder={updateItemOrder}
-                                        deleteItem={deleteItem}
-                                        deleteExperience={deleteExperience}
-                                    />
-                                ))}
-                            </>
-                        </Section>
-                    ))}
-
-                    <AddSection addSection={addSection} />
-
                     <Toolbox
                         fileName={resume.name}
                         save={saveChanges}
                         copy={() => console.log("copy")}
                         download={() => {
-                            if (ctxActiveResumeId) ctxDownloadFile();
+                            if (ctxActiveResumeId) downloadFile();
                         }}
                         preview={() => {
-                            if (ctxActiveResumeId) ctxOpenPreview();
+                            if (ctxActiveResumeId) togglePreview();
                         }}
                         rename={(name) => {
                             if (ctxActiveResumeId && name && userId !== null)
-                                ctxRenameFile(ctxActiveResumeId, name, userId);
+                                renameFile(ctxActiveResumeId, name, userId);
                         }}
                         delete={() => {
                             if (ctxActiveResumeId && userId !== null) {
-                                ctxDeleteFile(ctxActiveResumeId, userId);
+                                deleteFile(ctxActiveResumeId, userId);
                             }
                         }}
                     />
+                    <Box sx={{ overflowY: "scroll", pt: "1rem", height: "calc(100% - 34px)"}}>
+                        <Box
+                            sx={{
+                                p: "1rem",
+                                m: "auto",
+                                maxWidth: "816px",
+                                minHeight: "100%",
+                                border: "1px solid #eee",
+                            }}
+                        >
+                            <Header
+                                items={resume.header.items}
+                                name={resume.header.name}
+                                areToolsActive={areToolsActive}
+                                addHeaderInfo={addHeaderInfo}
+                                updateHeaderName={updateHeaderName}
+                                updateHeaderInfo={updateHeaderInfo}
+                                deleteHeaderInfo={deleteHeaderInfo}
+                            />
+
+                            <Divider />
+
+                            {resume?.sections.map((section, idx) => (
+                                <Section
+                                    key={`${section.id}-${idx}`}
+                                    name={section.name}
+                                    id={section.id}
+                                    areToolsActive={areToolsActive}
+                                    updateSectionName={updateSectionName}
+                                    deleteSection={deleteSection}
+                                    addExperience={addExperience}
+                                >
+                                    <>
+                                        {section.items.map(
+                                            (experience, idx) => (
+                                                <Experience
+                                                    key={`${experience.id}-${idx}`}
+                                                    id={experience.id}
+                                                    sectionId={section.id}
+                                                    title={experience.name}
+                                                    items={
+                                                        experience.items || []
+                                                    }
+                                                    startDate={
+                                                        experience.startDate
+                                                    }
+                                                    endDate={experience.endDate}
+                                                    areToolsActive={
+                                                        areToolsActive
+                                                    }
+                                                    addItem={addItem}
+                                                    updateExperienceName={
+                                                        updateExperienceName
+                                                    }
+                                                    updateExperienceDate={
+                                                        updateExperienceDate
+                                                    }
+                                                    updateItemContent={
+                                                        updateItemContent
+                                                    }
+                                                    updateItemOrder={
+                                                        updateItemOrder
+                                                    }
+                                                    deleteItem={deleteItem}
+                                                    deleteExperience={
+                                                        deleteExperience
+                                                    }
+                                                />
+                                            )
+                                        )}
+                                    </>
+                                </Section>
+                            ))}
+
+                            {areToolsActive && (
+                                <AddSection addSection={addSection} />
+                            )}
+                        </Box>
+                    </Box>
                 </>
             )}
         </main>

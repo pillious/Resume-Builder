@@ -23,11 +23,10 @@ const FileItem: React.FC<IProps> = ({
     iconSize,
     iconColor,
 }) => {
-    const { updateActiveResumeId: ctxUpdateActiveResumeId } =
-        useContext(AppContext);
+    const { updateActiveResumeId } = useContext(AppContext);
 
     const clickHandler = () => {
-        ctxUpdateActiveResumeId(id);
+        updateActiveResumeId(id);
     };
 
     const HSLColor = useMemo(() => buildHSLString(pastelHSLColor()), []);

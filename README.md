@@ -1,14 +1,3 @@
-* use SWR for data fetching (comes preinstalled as dependency w nextjs)
-* JSON response format (https://google.github.io/styleguide/jsoncstyleguide.xml)
- - either contains a data or error key (if both, error takes precedence)
-
-* use next-auth for user authentication.
-
-* resume creation: https://react-pdf.org
-
-* drag and drop: https://react-dnd.github.io/react-dnd/about
-
-
 # TODO:
 - change toolbox to a toolbar across the top of the resume editor (think about mobile design)
 - add ctrl-z/ctrl-y, ctrl-shift-z -> include undo/redo buttons on toolbar

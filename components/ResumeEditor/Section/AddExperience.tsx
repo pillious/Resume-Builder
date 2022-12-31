@@ -7,7 +7,7 @@ interface IProps {
 
 const AddExperience: React.FC<IProps> = (props) => {
     return (
-        <Box sx={{ display: "flex", justifyContent: "center", mt: 1, mb: 2 }}>
+        <Box sx={{ mt: 1 }}>
             <Button
                 size="small"
                 variant="outlined"

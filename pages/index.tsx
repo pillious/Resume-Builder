@@ -7,7 +7,6 @@ import ResumeEditor from "../components/ResumeEditor/ResumeEditor";
 import Sidebar from "../components/Sidebar/Sidebar";
 import AuthContext from "../store/AuthContext";
 import fetcher from "../utils/fetcher";
-import { AppContextProvider } from "../store/AppContext";
 
 // import TabList from "../components/TabList/TabList";
 
@@ -37,18 +36,23 @@ const Home: NextPage = () => {
     }, [session, status, updateUserId]);
 
     return (
-        <AppContextProvider>
-            <Box sx={{ display: "flex", width: "100%", height: "100%" }}>
-                {/* <Box><TabList /></Box> */}
-                {status === "authenticated" && (
-                    <>
-                        <Sidebar />
-                        <ResumeEditor />
-                        <Previewer />
-                    </>
-                )}
-            </Box>
-        </AppContextProvider>
+        <Box
+            sx={{
+                display: "flex",
+                width: "100%",
+                height: "100%",
+                overflow: "hidden",
+            }}
+        >
+            {/* <Box><TabList /></Box> */}
+            {status === "authenticated" && (
+                <>
+                    <Sidebar />
+                    <ResumeEditor />
+                    <Previewer />
+                </>
+            )}
+        </Box>
     );
 };
 

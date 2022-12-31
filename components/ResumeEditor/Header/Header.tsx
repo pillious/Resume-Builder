@@ -1,15 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
 import Box from "@mui/material/Box";
-import Fab from "@mui/material/Fab";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
 import DebouncedTextarea from "../../UI/DebouncedTextarea";
 import Info from "./Info";
 import { guid, IItem } from "../../../custom2";
+import HeaderButtonGroup from "./HeaderButtonGroup";
 
 interface IProps {
     name: string;
     items: IItem[];
+    areToolsActive: boolean;
     addHeaderInfo: () => void;
     updateHeaderName: (name: string) => void;
     updateHeaderInfo: (itemId: guid, content: string) => void;
@@ -19,6 +18,7 @@ interface IProps {
 const Header: React.FC<IProps> = ({
     name,
     items,
+    areToolsActive,
     updateHeaderName,
     updateHeaderInfo,
     addHeaderInfo,
@@ -93,49 +93,14 @@ const Header: React.FC<IProps> = ({
                 }}
             >
                 {[...info]}
-                <Box>
-                    <Fab
-                        sx={{
-                            width: "20px",
-                            minHeight: "20px",
-                            height: "20px",
-                            mr: "0.25rem",
-                            "&:hover": {
-                                transform: "scale(1.1)",
-                            },
-                            "& svg": {
-                                height: 16,
-                            },
-                        }}
-                        size="small"
-                        color="info"
-                        aria-label="add"
-                        onClick={addHeaderInfo}
-                    >
-                        <AddIcon />
-                    </Fab>
-                    <Fab
-                        sx={{
-                            width: "20px",
-                            minHeight: "20px",
-                            height: "20px",
-                            "&:hover": {
-                                transform: "scale(1.1)",
-                            },
-                            "& svg": {
-                                height: 16,
-                            },
-                        }}
-                        size="small"
-                        color="warning"
-                        aria-label="remove"
-                        onClick={() =>
+                {areToolsActive && (
+                    <HeaderButtonGroup
+                        addHeaderInfo={addHeaderInfo}
+                        deleteHeaderInfo={() =>
                             deleteHeaderInfo(items[items.length - 1].id)
                         }
-                    >
-                        <RemoveIcon />
-                    </Fab>
-                </Box>
+                    />
+                )}
             </Box>
         </Box>
     );

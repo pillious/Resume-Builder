@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { ActiveView } from "../../custom2.d";
 import { createTheme, ThemeProvider } from "@mui/material";
 import FileSystemView from "./FileSystemView/FileSystemView";
 import HomeView from "./HomeView/HomeView";
+import AppContext from "../../store/AppContext";
 
 const theme = createTheme({
     typography: {
@@ -36,6 +37,8 @@ const theme = createTheme({
 });
 
 const Sidebar: React.FC = () => {
+    const { isNavActive } = useContext(AppContext);
+
     const [activeView, setActiveView] = useState<ActiveView>(
         ActiveView.FileSystemView
     );
@@ -47,7 +50,11 @@ const Sidebar: React.FC = () => {
     let view;
     switch (activeView) {
         case ActiveView.HomeView:
-            view = <HomeView openFileSystem={() => changeView(ActiveView.FileSystemView)}/>;
+            view = (
+                <HomeView
+                    openFileSystem={() => changeView(ActiveView.FileSystemView)}
+                />
+            );
             break;
         case ActiveView.FileSystemView:
             view = (
@@ -56,7 +63,11 @@ const Sidebar: React.FC = () => {
             break;
     }
 
-    return <ThemeProvider theme={theme}>{view}</ThemeProvider>;
+    return (
+        <>
+            {isNavActive && <ThemeProvider theme={theme}>{view}</ThemeProvider>}
+        </>
+    );
 };
 
 export default Sidebar;

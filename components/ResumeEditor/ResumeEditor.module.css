@@ -2,8 +2,5 @@
     position: relative;
     height: 100%;
     width: 50vw;
-    padding: 1rem;
-    border-right: 1px solid steelblue;
-    overflow-y: scroll;
     flex: 1;
 }

@@ -22,12 +22,12 @@ const resetModList = (): ModList => ({
 
 const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
     const {
-        activeResumeId: ctxActiveResumeId,
-        updateActiveResumeObj: ctxUpdateActiveResumeObj,
+        activeResumeId,
+        updateActiveResumeObj,
     } = useContext(AppContext);
     const { userId } = useContext(AuthContext);
 
-    const { data } = useResumeById(ctxActiveResumeId, userId);
+    const { data } = useResumeById(activeResumeId, userId);
 
     const [resume, dispatch] = useReducer(resumeReducer, data);
 
@@ -37,10 +37,10 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
 
     useEffect(() => {
         dispatch({ type: "setResume", payload: data }); // payload can be null.
-        ctxUpdateActiveResumeObj(data);
+        updateActiveResumeObj(data);
         setModList(resetModList());
         setHasUnsavedChanges(false);
-    }, [data, ctxUpdateActiveResumeObj]);
+    }, [data, updateActiveResumeObj]);
 
     // Save Resume
     const saveChanges = useCallback(() => {
@@ -64,7 +64,7 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
     useEffect(() => {
         let identifier: NodeJS.Timeout;
         const handleSave = (event: KeyboardEvent) => {
-            if (ctxActiveResumeId && event.ctrlKey && event.key === "s") {
+            if (activeResumeId && event.ctrlKey && event.key === "s") {
                 event.preventDefault();
 
                 if (
@@ -93,7 +93,7 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
             clearTimeout(identifier);
         };
     }, [
-        ctxActiveResumeId,
+        activeResumeId,
         hasUnsavedChanges,
         sectionRef,
         saveChanges,

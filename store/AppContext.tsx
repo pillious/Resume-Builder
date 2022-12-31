@@ -16,13 +16,17 @@ interface IAppContext {
     isPreviewActive: boolean;
     activeResumeObj: { file: IFile | null; pdf: Pdf };
     fileIds: guid[]; // unused
+    areToolsActive: boolean;
+    isNavActive: boolean;
     updateFileIds: (ids: guid | guid[]) => void; // unused
     updateActiveResumeId: (id: guid | null) => void;
     updateActiveResumeObj: (file: IFile | null) => void;
     deleteFile: (id: guid, userId: guid) => void;
     renameFile: (id: guid, name: string, userId: guid) => void;
     downloadFile: (id?: guid) => void;
-    openPreview: () => void;
+    togglePreview: () => void;
+    toggleTools: () => void;
+    toggleNav: () => void;
 }
 
 const defaultValues: IAppContext = {
@@ -30,13 +34,17 @@ const defaultValues: IAppContext = {
     isPreviewActive: false,
     activeResumeObj: { file: null, pdf: new Pdf() },
     fileIds: [],
+    areToolsActive: true,
+    isNavActive: true,
     updateFileIds: () => ({}),
     updateActiveResumeId: () => ({}),
     updateActiveResumeObj: () => ({}),
     deleteFile: () => ({}),
     renameFile: () => ({}),
     downloadFile: () => ({}),
-    openPreview: () => ({}),
+    togglePreview: () => ({}),
+    toggleTools: () => ({}),
+    toggleNav: () => ({}),
 };
 
 // useCallback & useMemo -> reduces unneccessary component re-renders.
@@ -53,6 +61,10 @@ export const AppContextProvider: React.FC<IProps> = (props) => {
         defaultValues.activeResumeObj
     );
     const [fileIds, setFileIds] = useState(defaultValues.fileIds);
+    const [areToolsActive, setAreToolsActive] = useState(
+        defaultValues.areToolsActive
+    );
+    const [isNavActive, setIsNavActive] = useState(defaultValues.isNavActive);
 
     const updateActiveResumeObj = useCallback(
         async (file: IFile | null) => {
@@ -81,7 +93,7 @@ export const AppContextProvider: React.FC<IProps> = (props) => {
         [updateActiveResumeObj]
     );
 
-    const openPreview = useCallback(() => {
+    const togglePreview = useCallback(() => {
         if (activeResumeId) setIsPreviewActive((prev) => !prev);
     }, [activeResumeId]);
 
@@ -149,32 +161,47 @@ export const AppContextProvider: React.FC<IProps> = (props) => {
         [activeResumeId, activeResumeObj]
     );
 
+    const toggleTools = useCallback(
+        () => setAreToolsActive((prev) => !prev),
+        []
+    );
+
+    const toggleNav = useCallback(() => setIsNavActive((prev) => !prev), []);
+
     const contextValue = useMemo(
         () => ({
             activeResumeId,
             isPreviewActive,
             activeResumeObj,
             fileIds,
+            areToolsActive,
+            isNavActive,
             updateFileIds,
             updateActiveResumeId,
             updateActiveResumeObj,
             deleteFile,
             renameFile,
             downloadFile,
-            openPreview,
+            togglePreview,
+            toggleTools,
+            toggleNav,
         }),
         [
             activeResumeId,
             isPreviewActive,
             activeResumeObj,
             fileIds,
+            areToolsActive,
+            isNavActive,
             updateFileIds,
             updateActiveResumeId,
             updateActiveResumeObj,
             deleteFile,
             renameFile,
             downloadFile,
-            openPreview,
+            togglePreview,
+            toggleTools,
+            toggleNav,
         ]
     );
 

@@ -8,6 +8,7 @@ import AddExperience from "./AddExperience";
 interface IProps {
     name: string;
     id: guid;
+    areToolsActive: boolean;
     updateSectionName: (sectionId: guid, name: string) => void;
     deleteSection: (sectionId: guid) => void;
     addExperience: (sectionId: guid) => void;
@@ -42,18 +43,22 @@ const Section: React.FC<IProps> = (props) => {
                     onChange={(name) => props.updateSectionName(props.id, name)}
                 />
 
-                <DeleteSection
-                    deleteSection={() => props.deleteSection(props.id)}
-                />
+                {props.areToolsActive && (
+                    <DeleteSection
+                        deleteSection={() => props.deleteSection(props.id)}
+                    />
+                )}
             </Box>
 
             {props.children}
 
-            <AddExperience
-                addExperience={() => props.addExperience(props.id)}
-            />
+            {props.areToolsActive && (
+                <AddExperience
+                    addExperience={() => props.addExperience(props.id)}
+                />
+            )}
 
-            <Divider />
+            <Divider sx={{ mt: 2 }} />
         </div>
     );
 };

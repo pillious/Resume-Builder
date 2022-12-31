@@ -14,6 +14,7 @@ interface IProps {
     items: IItem[];
     startDate: string;
     endDate: string;
+    areToolsActive: boolean;
     addItem: (sectionId: guid, experienceId: guid) => void;
     updateExperienceName: (
         sectionId: guid,
@@ -68,16 +69,23 @@ const Experience: React.FC<IProps> = (props) => {
                     }
                 />
 
-                <span className={classes.button_group}>
-                    <AddListItem
-                        addItem={() => props.addItem(props.sectionId, props.id)}
-                    />
-                    <DeleteExperience
-                        deleteExperience={() =>
-                            props.deleteExperience(props.sectionId, props.id)
-                        }
-                    />
-                </span>
+                {props.areToolsActive && (
+                    <span className={classes.button_group}>
+                        <AddListItem
+                            addItem={() =>
+                                props.addItem(props.sectionId, props.id)
+                            }
+                        />
+                        <DeleteExperience
+                            deleteExperience={() =>
+                                props.deleteExperience(
+                                    props.sectionId,
+                                    props.id
+                                )
+                            }
+                        />
+                    </span>
+                )}
 
                 <Date
                     startDate={props.startDate}
