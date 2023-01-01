@@ -4,6 +4,7 @@ import { guid } from "../../../custom2";
 import DebouncedTextarea from "../../UI/DebouncedTextarea";
 import DeleteSection from "./DeleteSection";
 import AddExperience from "./AddExperience";
+import { Reorder } from "framer-motion";
 
 interface IProps {
     name: string;
@@ -17,7 +18,11 @@ interface IProps {
 
 const Section: React.FC<IProps> = (props) => {
     return (
-        <div>
+        <Reorder.Item
+            key={props.id}
+            value={props.id}
+            style={{ listStyle: "none" }}
+        >
             <Box
                 sx={{
                     display: "flex",
@@ -59,7 +64,7 @@ const Section: React.FC<IProps> = (props) => {
             )}
 
             <Divider sx={{ mt: 2 }} />
-        </div>
+        </Reorder.Item>
     );
 };
 

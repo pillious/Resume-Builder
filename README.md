@@ -3,6 +3,8 @@
 - add ctrl-z/ctrl-y, ctrl-shift-z -> include undo/redo buttons on toolbar
 - drop and drop ordering (in-progress)
 
+- build the preview
+
 - bug: file viewer not updating after renaming. ✔
 
 - authentication (navbar) ✔
@@ -31,17 +33,7 @@ Segoe UI: https://gist.github.com/AndrewCraswell/106143d1bb5d4162689b9e1d89a2d0f
 Screen size:
 1) google docs -> default width = 816px; ✔
 
-
-
-
-
-
-
-
-
-
-
-
+-----------------------------------------------
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 

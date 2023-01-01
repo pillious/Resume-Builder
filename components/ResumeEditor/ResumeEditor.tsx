@@ -10,6 +10,8 @@ import AppContext from "../../store/AppContext";
 import Header from "./Header/Header";
 import Section from "./Section/Section";
 import AuthContext from "../../store/AuthContext";
+import { Reorder } from "framer-motion";
+import { ISection, guid } from "../../custom2";
 
 const ResumeEditor: React.FC = () => {
     const {
@@ -36,6 +38,7 @@ const ResumeEditor: React.FC = () => {
         updateHeaderName,
         updateHeaderInfo,
         updateSectionName,
+        updateSectionOrder,
         updateExperienceName,
         updateExperienceDate,
         updateItemContent,
@@ -45,6 +48,10 @@ const ResumeEditor: React.FC = () => {
         deleteExperience,
         deleteItem,
     } = useResumeState(sectionRef);
+
+    const sections: ISection[] | undefined = resume?.sections.sort(
+        (prev, curr) => prev.order - curr.order
+    );
 
     return (
         <main className={classes.section} tabIndex={-1} ref={sectionRef}>
@@ -102,57 +109,72 @@ const ResumeEditor: React.FC = () => {
 
                             <Divider />
 
-                            {resume?.sections.map((section, idx) => (
-                                <Section
-                                    key={`${section.id}-${idx}`}
-                                    name={section.name}
-                                    id={section.id}
-                                    areToolsActive={areToolsActive}
-                                    updateSectionName={updateSectionName}
-                                    deleteSection={deleteSection}
-                                    addExperience={addExperience}
-                                >
-                                    <>
-                                        {section.items.map(
-                                            (experience, idx) => (
-                                                <Experience
-                                                    key={`${experience.id}-${idx}`}
-                                                    id={experience.id}
-                                                    sectionId={section.id}
-                                                    title={experience.name}
-                                                    items={
-                                                        experience.items || []
-                                                    }
-                                                    startDate={
-                                                        experience.startDate
-                                                    }
-                                                    endDate={experience.endDate}
-                                                    areToolsActive={
-                                                        areToolsActive
-                                                    }
-                                                    addItem={addItem}
-                                                    updateExperienceName={
-                                                        updateExperienceName
-                                                    }
-                                                    updateExperienceDate={
-                                                        updateExperienceDate
-                                                    }
-                                                    updateItemContent={
-                                                        updateItemContent
-                                                    }
-                                                    updateItemOrder={
-                                                        updateItemOrder
-                                                    }
-                                                    deleteItem={deleteItem}
-                                                    deleteExperience={
-                                                        deleteExperience
-                                                    }
-                                                />
-                                            )
-                                        )}
-                                    </>
-                                </Section>
-                            ))}
+                            <Reorder.Group
+                                axis="y"
+                                values={sections?.map((s) => s.id) || []}
+                                style={{ padding: 0 }}
+                                onReorder={(order: guid[]) =>
+                                    updateSectionOrder(order)
+                                }
+                            >
+                                {sections?.map((section, idx) => (
+                                    <Section
+                                        key={`${section.id}-${idx}`}
+                                        name={section.name}
+                                        id={section.id}
+                                        areToolsActive={areToolsActive}
+                                        updateSectionName={updateSectionName}
+                                        deleteSection={deleteSection}
+                                        addExperience={addExperience}
+                                    >
+                                        <>
+                                            {section.items
+                                                .sort(
+                                                    (prev, curr) =>
+                                                        prev.order - curr.order
+                                                )
+                                                .map((experience, idx) => (
+                                                    <Experience
+                                                        key={`${experience.id}-${idx}`}
+                                                        id={experience.id}
+                                                        sectionId={section.id}
+                                                        title={experience.name}
+                                                        items={
+                                                            experience.items ||
+                                                            []
+                                                        }
+                                                        startDate={
+                                                            experience.startDate
+                                                        }
+                                                        endDate={
+                                                            experience.endDate
+                                                        }
+                                                        areToolsActive={
+                                                            areToolsActive
+                                                        }
+                                                        addItem={addItem}
+                                                        updateExperienceName={
+                                                            updateExperienceName
+                                                        }
+                                                        updateExperienceDate={
+                                                            updateExperienceDate
+                                                        }
+                                                        updateItemContent={
+                                                            updateItemContent
+                                                        }
+                                                        updateItemOrder={
+                                                            updateItemOrder
+                                                        }
+                                                        deleteItem={deleteItem}
+                                                        deleteExperience={
+                                                            deleteExperience
+                                                        }
+                                                    />
+                                                ))}
+                                        </>
+                                    </Section>
+                                ))}
+                            </Reorder.Group>
 
                             {areToolsActive && (
                                 <AddSection addSection={addSection} />

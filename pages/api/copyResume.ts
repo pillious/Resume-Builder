@@ -6,7 +6,6 @@ import dbConnect from "../../utils/database";
 import { ApiResponse, IFile } from "../../custom2.d";
 import { HydratedDocument } from "mongoose";
 import nanoid from "../../utils/guid";
-import { inspect } from "util";
 
 const handler = async (
     req: NextApiRequest,

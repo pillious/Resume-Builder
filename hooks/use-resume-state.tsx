@@ -21,10 +21,7 @@ const resetModList = (): ModList => ({
 });
 
 const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
-    const {
-        activeResumeId,
-        updateActiveResumeObj,
-    } = useContext(AppContext);
+    const { activeResumeId, updateActiveResumeObj } = useContext(AppContext);
     const { userId } = useContext(AuthContext);
 
     const { data } = useResumeById(activeResumeId, userId);
@@ -279,6 +276,16 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
             });
             setHasUnsavedChanges(true);
         }
+    };
+
+    const updateSectionOrder = (order: guid[]) => {
+        dispatch({
+            type: "updateSectionOrder",
+            payload: { order },
+        });
+
+        // setModList((prev) => {});
+        setHasUnsavedChanges(true);
     };
 
     const updateExperienceName = (
@@ -624,6 +631,7 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
         updateHeaderName,
         updateHeaderInfo,
         updateSectionName,
+        updateSectionOrder,
         updateExperienceName,
         updateExperienceDate,
         updateItemContent,

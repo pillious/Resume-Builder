@@ -10,6 +10,7 @@ export const experienceSchema = new Schema<IExperience>(
         sectionId: { type: String, required: true },
         startDate: { type: String, default: "" },
         endDate: { type: String, default: "" },
+        order: {type: Number, required: true},
     },
     { _id: false }
 );

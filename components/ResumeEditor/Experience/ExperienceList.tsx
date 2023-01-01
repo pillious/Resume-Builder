@@ -26,17 +26,20 @@ const ExperienceList: React.FC<IProps> = (props) => {
         <List sx={{ p: "1rem" }}>
             <Reorder.Group
                 axis="y"
-                values={props.items}
+                values={props.items.map((i) => i.id)}
                 style={{ padding: 0 }}
-                onReorder={(list: IItem[]) => {
-                    const order: guid[] = list.map((item) => item.id);
-                    props.updateItemOrder(props.sectionId, props.experienceId, order);
-                }}
+                onReorder={(order: guid[]) =>
+                    props.updateItemOrder(
+                        props.sectionId,
+                        props.experienceId,
+                        order
+                    )
+                }
             >
                 {props.items.map((item) => (
                     <Reorder.Item
                         key={item.id}
-                        value={item}
+                        value={item.id}
                         style={{ listStyle: "none" }}
                     >
                         <Item

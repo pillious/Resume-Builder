@@ -1,12 +1,13 @@
 import { Schema, model, models } from "mongoose";
 import { ISection } from "../custom2.d";
-import { experienceSchema } from './ExperienceModel.model';
+import { experienceSchema } from "./ExperienceModel.model";
 
 export const sectionSchema = new Schema<ISection>(
     {
         name: { type: String, default: "" },
         items: [{ type: experienceSchema, default: [] }],
         id: { type: String, required: true },
+        order: { type: Number, required: true },
     },
     { _id: false }
 );

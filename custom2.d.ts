@@ -57,6 +57,7 @@ export interface ISection {
     name: string;
     items: IExperience[];
     id: guid;
+    order: number;
 }
 
 export interface IExperience {
@@ -66,6 +67,7 @@ export interface IExperience {
     sectionId: guid;
     startDate: string;
     endDate: string;
+    order: number;
 }
 
 export interface IItem {
