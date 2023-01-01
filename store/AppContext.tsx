@@ -1,5 +1,5 @@
 import { createContext, useState, useCallback, useMemo } from "react";
-import { mutate } from "swr";
+import { useSWRConfig } from "swr";
 import { guid, IFile } from "../custom2";
 import fetcher from "../utils/fetcher";
 import { Pdf } from "../utils/pdfgen";
@@ -21,9 +21,10 @@ interface IAppContext {
     updateFileIds: (ids: guid | guid[]) => void; // unused
     updateActiveResumeId: (id: guid | null) => void;
     updateActiveResumeObj: (file: IFile | null) => void;
-    deleteFile: (id: guid, userId: guid) => void;
-    renameFile: (id: guid, name: string, userId: guid) => void;
+    deleteFile: (id: guid, userId: guid) => Promise<void>;
+    renameFile: (id: guid, name: string, userId: guid) => Promise<void>;
     downloadFile: (id?: guid) => void;
+    copyFile: (id: guid, userId: guid) => Promise<void>;
     togglePreview: () => void;
     toggleTools: () => void;
     toggleNav: () => void;
@@ -39,9 +40,16 @@ const defaultValues: IAppContext = {
     updateFileIds: () => ({}),
     updateActiveResumeId: () => ({}),
     updateActiveResumeObj: () => ({}),
-    deleteFile: () => ({}),
-    renameFile: () => ({}),
+    deleteFile: async () => {
+        return;
+    },
+    renameFile: async () => {
+        return;
+    },
     downloadFile: () => ({}),
+    copyFile: async () => {
+        return;
+    },
     togglePreview: () => ({}),
     toggleTools: () => ({}),
     toggleNav: () => ({}),
@@ -51,6 +59,8 @@ const defaultValues: IAppContext = {
 const AppContext = createContext<IAppContext>(defaultValues);
 
 export const AppContextProvider: React.FC<IProps> = (props) => {
+    const { mutate } = useSWRConfig();
+
     const [activeResumeId, setActiveResumeId] = useState(
         defaultValues.activeResumeId
     );
@@ -119,34 +129,32 @@ export const AppContextProvider: React.FC<IProps> = (props) => {
                 await fetcher("/api/deleteResumeById", {
                     method: "POST",
                     body: JSON.stringify({ fileId: id, userId }),
+                }).then(() => {
+                    mutate(`/api/getResumeIds?userId=${userId}`);
+                    if (id === activeResumeId) updateActiveResumeId(null);
                 });
-                if (id === activeResumeId) updateActiveResumeId(null);
-                mutate("/api/getResumeIds"); // update filesystem.
             }
         },
-        [activeResumeId, updateActiveResumeId]
+        [activeResumeId, mutate, updateActiveResumeId]
     );
 
     // Rename file
     const renameFile = useCallback(
-        (id: guid, name: string, userId: guid) => {
+        async (id: guid, name: string, userId: guid) => {
             if (id && name && userId) {
-                fetcher("/api/updateResumeName", {
+                await fetcher("/api/updateResumeName", {
                     method: "POST",
                     body: JSON.stringify({
                         fileId: id,
                         fileName: name,
                         userId,
                     }),
-                });
-                mutate("/api/getResumeIds"); // update filesystem.
-
-                // update active resume
-                if (id === activeResumeId)
-                    mutate(["/api/getResumeById", `?id=${activeResumeId}`]);
+                }).then(() => mutate(`/api/getResumeIds?userId=${userId}`));
+                // await mutate("/api/getResumeIds");
+                // mutate(["/api/getResumeById", `?id=${id}`]);
             }
         },
-        [activeResumeId]
+        [mutate]
     );
 
     const downloadFile = useCallback(
@@ -159,6 +167,18 @@ export const AppContextProvider: React.FC<IProps> = (props) => {
             }
         },
         [activeResumeId, activeResumeObj]
+    );
+
+    const copyFile = useCallback(
+        async (id: guid, userId: guid) => {
+            if (id && userId) {
+                await fetcher("/api/copyResume", {
+                    method: "POST",
+                    body: JSON.stringify({ fileId: id, userId }),
+                }).then(() => mutate(`/api/getResumeIds?userId=${userId}`));
+            }
+        },
+        [mutate]
     );
 
     const toggleTools = useCallback(
@@ -182,6 +202,7 @@ export const AppContextProvider: React.FC<IProps> = (props) => {
             deleteFile,
             renameFile,
             downloadFile,
+            copyFile,
             togglePreview,
             toggleTools,
             toggleNav,
@@ -199,6 +220,7 @@ export const AppContextProvider: React.FC<IProps> = (props) => {
             deleteFile,
             renameFile,
             downloadFile,
+            copyFile,
             togglePreview,
             toggleTools,
             toggleNav,

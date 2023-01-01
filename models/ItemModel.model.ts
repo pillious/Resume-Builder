@@ -3,7 +3,7 @@ import { IItem } from "../custom2.d";
 
 export const itemSchema = new Schema<IItem>(
     {
-        content: { type: String, required: true },
+        content: { type: String, default: "" },
         order: { type: Number, required: true },
         id: { type: String, required: true },
     },

@@ -1,12 +1,13 @@
 # TODO:
-- change toolbox to a toolbar across the top of the resume editor (think about mobile design)
+- change toolbox to a toolbar across the top of the resume editor (think about mobile design) ✔
 - add ctrl-z/ctrl-y, ctrl-shift-z -> include undo/redo buttons on toolbar
-- drop and drop ordering
+- drop and drop ordering (in-progress)
 
-- bug: file viewer not updating after renaming.
+- bug: file viewer not updating after renaming. ✔
 
-- use the userUserId hook instead?
-- authentication (navbar)
+- authentication (navbar) ✔
+
+- create a mui theme (dark mode & fonts).
 
 Ideas (future):
 - navbar uses monospace font.
@@ -18,8 +19,8 @@ Ideas (future):
 (terminal cmds: open files, CRUD files, CRUD sections/items, save)
 
 1) MUI skeleton for loading states.
-2) MUI speed dial for toolbar.
-3) Override ctrl+s -> saves file
+2) MUI speed dial for toolbar. (changed to toolbar) ✔
+3) Override ctrl+s -> saves file ✔
 
 4) try Lato font for file viewer
 
@@ -28,7 +29,7 @@ VSCODE fonts:
 Segoe UI: https://gist.github.com/AndrewCraswell/106143d1bb5d4162689b9e1d89a2d0fb
 
 Screen size:
-1) google docs -> default width = 816px;
+1) google docs -> default width = 816px; ✔
 
 
 

@@ -13,10 +13,11 @@ import AuthContext from "../../store/AuthContext";
 
 const ResumeEditor: React.FC = () => {
     const {
-        activeResumeId: ctxActiveResumeId,
+        activeResumeId,
         renameFile,
         deleteFile,
         downloadFile,
+        copyFile,
         togglePreview,
         areToolsActive,
     } = useContext(AppContext);
@@ -52,24 +53,34 @@ const ResumeEditor: React.FC = () => {
                     <Toolbox
                         fileName={resume.name}
                         save={saveChanges}
-                        copy={() => console.log("copy")}
+                        copy={() => {
+                            if (activeResumeId && userId !== null) {
+                                copyFile(activeResumeId, userId);
+                            }
+                        }}
                         download={() => {
-                            if (ctxActiveResumeId) downloadFile();
+                            if (activeResumeId) downloadFile();
                         }}
                         preview={() => {
-                            if (ctxActiveResumeId) togglePreview();
+                            if (activeResumeId) togglePreview();
                         }}
                         rename={(name) => {
-                            if (ctxActiveResumeId && name && userId !== null)
-                                renameFile(ctxActiveResumeId, name, userId);
+                            if (activeResumeId && name && userId !== null)
+                                renameFile(activeResumeId, name, userId);
                         }}
                         delete={() => {
-                            if (ctxActiveResumeId && userId !== null) {
-                                deleteFile(ctxActiveResumeId, userId);
+                            if (activeResumeId && userId !== null) {
+                                deleteFile(activeResumeId, userId);
                             }
                         }}
                     />
-                    <Box sx={{ overflowY: "scroll", pt: "1rem", height: "calc(100% - 34px)"}}>
+                    <Box
+                        sx={{
+                            overflowY: "scroll",
+                            pt: "1rem",
+                            height: "calc(100% - 34px)",
+                        }}
+                    >
                         <Box
                             sx={{
                                 p: "1rem",
