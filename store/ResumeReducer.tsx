@@ -37,7 +37,7 @@ type ACTIONTYPE =
       }
     | {
           type: "updateExperienceOrder";
-          payload: { sectionId: guid; experienceId: guid; order: guid[] };
+          payload: { sectionId: guid; order: guid[] };
       }
     | {
           type: "updateItemContent";
@@ -257,8 +257,34 @@ const resumeReducer = (
                 return { ...state, sections };
             }
             case "updateExperienceOrder": {
-                return state;
-                // TODO
+                const secIdx = state.sections.findIndex(
+                    (section) => section.id === action.payload.sectionId
+                );
+                if (secIdx === -1) return state;
+
+                const sections: ISection[] = JSON.parse(
+                    JSON.stringify(state.sections)
+                );
+                const experiences: IExperience[] = JSON.parse(
+                    JSON.stringify(sections[secIdx].items)
+                );
+
+                const updatedExps: IExperience[] = action.payload.order.map(
+                    (id, idx) => {
+                        const exp = experiences.find((e) => e.id === id);
+                        if (exp) {
+                            exp.order = idx;
+                            return exp;
+                        }
+
+                        // shouldn't ever reach this.
+                        return experiences[0];
+                    }
+                );
+
+                sections[secIdx].items = updatedExps;
+
+                return { ...state, sections };
             }
             case "updateItemContent": {
                 const secIdx = state.sections.findIndex(

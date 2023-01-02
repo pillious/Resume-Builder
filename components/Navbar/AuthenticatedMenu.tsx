@@ -43,12 +43,6 @@ const AuthenticatedMenu: React.FC<IProps> = (props) => {
                 open={Boolean(props.anchorElem)}
                 onClose={props.handleMenuClose}
             >
-                <MenuItem>
-                    <Typography textAlign="center">Profile</Typography>
-                </MenuItem>
-                <MenuItem>
-                    <Typography textAlign="center">Account</Typography>
-                </MenuItem>
                 <MenuItem onClick={props.handleSignOut}>
                     <Typography textAlign="center">Logout</Typography>
                 </MenuItem>

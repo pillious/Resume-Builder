@@ -41,6 +41,7 @@ const ResumeEditor: React.FC = () => {
         updateSectionOrder,
         updateExperienceName,
         updateExperienceDate,
+        updateExperienceOrder,
         updateItemContent,
         updateItemOrder,
         deleteHeaderInfo,
@@ -61,9 +62,8 @@ const ResumeEditor: React.FC = () => {
                         fileName={resume.name}
                         save={saveChanges}
                         copy={() => {
-                            if (activeResumeId && userId !== null) {
+                            if (activeResumeId && userId !== null)
                                 copyFile(activeResumeId, userId);
-                            }
                         }}
                         download={() => {
                             if (activeResumeId) downloadFile();
@@ -127,7 +127,21 @@ const ResumeEditor: React.FC = () => {
                                         deleteSection={deleteSection}
                                         addExperience={addExperience}
                                     >
-                                        <>
+                                        <Reorder.Group
+                                            axis="y"
+                                            values={
+                                                section.items.map(
+                                                    (s) => s.id
+                                                ) || []
+                                            }
+                                            style={{ padding: 0 }}
+                                            onReorder={(order: guid[]) =>
+                                                updateExperienceOrder(
+                                                    section.id,
+                                                    order
+                                                )
+                                            }
+                                        >
                                             {section.items
                                                 .sort(
                                                     (prev, curr) =>
@@ -171,7 +185,7 @@ const ResumeEditor: React.FC = () => {
                                                         }
                                                     />
                                                 ))}
-                                        </>
+                                        </Reorder.Group>
                                     </Section>
                                 ))}
                             </Reorder.Group>

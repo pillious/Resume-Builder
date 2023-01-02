@@ -1,4 +1,5 @@
-import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 interface IProps {
     deleteSection: () => void;
@@ -6,25 +7,22 @@ interface IProps {
 
 const DeleteSection: React.FC<IProps> = (props) => {
     return (
-        <Button
-            size="small"
-            variant="contained"
-            sx={{
-                bgcolor: "#ff355a",
-                fontSize: "10px",
-                lineHeight: "16px",
-                p: "4px 0",
-                ml: "8px",
-                fontWeight: "600",
-                "&:hover": {
-                    bgcolor: "#fc5674",
-                    transform: "translateY(-2px)",
-                },
-            }}
+        <IconButton
+            color="error"
+            title="Delete section"
             onClick={props.deleteSection}
         >
-            DELETE
-        </Button>
+            <DeleteOutlineIcon
+                sx={{
+                    color: "#ff355a",
+                    "&:hover": {
+                        transform: "scale(1.25)",
+                        cursor: "pointer",
+                    },
+                    transition: "200ms",
+                }}
+            />
+        </IconButton>
     );
 };
 

@@ -4,7 +4,10 @@ import { guid } from "../../../custom2";
 import DebouncedTextarea from "../../UI/DebouncedTextarea";
 import DeleteSection from "./DeleteSection";
 import AddExperience from "./AddExperience";
-import { Reorder } from "framer-motion";
+import { Reorder, useDragControls } from "framer-motion";
+import DragIndicator from "../../UI/DragIndicator";
+import { useState } from "react";
+import Overlay from "../../UI/Overlay";
 
 interface IProps {
     name: string;
@@ -17,12 +20,18 @@ interface IProps {
 }
 
 const Section: React.FC<IProps> = (props) => {
+    const [showOverlay, setShowOverlay] = useState<boolean>(false);
+    const controls = useDragControls();
+
     return (
         <Reorder.Item
             key={props.id}
             value={props.id}
-            style={{ listStyle: "none" }}
+            dragListener={false}
+            dragControls={controls}
+            style={{ listStyle: "none", position: "relative" }}
         >
+            <Overlay show={showOverlay} styles={{ zIndex: 2 }} />
             <Box
                 sx={{
                     display: "flex",
@@ -31,6 +40,16 @@ const Section: React.FC<IProps> = (props) => {
                     mt: "0.5rem",
                 }}
             >
+                {props.areToolsActive && (
+                    <div
+                        onPointerDown={(e) => controls.start(e)}
+                        onPointerOver={() => setShowOverlay(true)}
+                        onPointerLeave={() => setShowOverlay(false)}
+                        style={{ zIndex: 2 }}
+                    >
+                        <DragIndicator />
+                    </div>
+                )}
                 <DebouncedTextarea
                     sx={{
                         fontSize: "1.15rem",
@@ -49,9 +68,15 @@ const Section: React.FC<IProps> = (props) => {
                 />
 
                 {props.areToolsActive && (
-                    <DeleteSection
-                        deleteSection={() => props.deleteSection(props.id)}
-                    />
+                    <div
+                        onPointerOver={() => setShowOverlay(true)}
+                        onPointerLeave={() => setShowOverlay(false)}
+                        style={{ zIndex: 2 }}
+                    >
+                        <DeleteSection
+                            deleteSection={() => props.deleteSection(props.id)}
+                        />
+                    </div>
                 )}
             </Box>
 

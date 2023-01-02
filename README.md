@@ -1,37 +1,26 @@
 # TODO:
 - change toolbox to a toolbar across the top of the resume editor (think about mobile design) ✔
-- add ctrl-z/ctrl-y, ctrl-shift-z -> include undo/redo buttons on toolbar
-- drop and drop ordering (in-progress)
-
-- build the preview
-
+- add ctrl-z/ctrl-y, ctrl-shift-z -> include undo/redo buttons on toolbar ✖
+- drop and drop ordering ✔
+- build the preview ✖
 - bug: file viewer not updating after renaming. ✔
-
 - authentication (navbar) ✔
-
-- create a mui theme (dark mode & fonts).
+- redesign database: section/exps have order ✔
+- override ctrl+s -> saves file ✔
+- resume tools in a toolbar (changed to toolbar) ✔
 
 Ideas (future):
-- navbar uses monospace font.
-
-1) Redesign database: ✔
-- section -> {...existing, order}
-2) put resume reducer into context, so that commands can be sent from terminal.
+1) Terminal:
+- put resume reducer into context, so that commands can be sent from terminal.
 (the terminal will probably only work for the current active resume).
 (terminal cmds: open files, CRUD files, CRUD sections/items, save)
 
-1) MUI skeleton for loading states.
-2) MUI speed dial for toolbar. (changed to toolbar) ✔
-3) Override ctrl+s -> saves file ✔
+2)  MUI skeleton for loading states.
 
-4) try Lato font for file viewer
-
-VSCODE fonts:
-1) file system: size: 13px, line height: 22px, font: Segoe WP Semibold, fontweight: 600
+3)  try Lato font for file viewer
+- create a mui theme (dark mode & fonts).
+- navbar uses monospace font.
 Segoe UI: https://gist.github.com/AndrewCraswell/106143d1bb5d4162689b9e1d89a2d0fb
-
-Screen size:
-1) google docs -> default width = 816px; ✔
 
 -----------------------------------------------
 

@@ -5,11 +5,11 @@
 .top {
     display: flex;
     align-items: center;
-    gap: 1rem;
     padding-bottom: 0.5rem;
 }
 
 .button_group {
+    margin-left: 1rem;
     border-radius: 8px;
     border: 1px solid #908cd3;
     display: flex;

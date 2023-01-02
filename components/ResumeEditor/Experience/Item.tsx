@@ -1,9 +1,9 @@
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import DebouncedTextarea from "../../UI/DebouncedTextarea";
-import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import { guid, IItem } from "../../../custom2";
 import classes from "./Item.module.css";
+import DragIndicator from "../../UI/DragIndicator";
 
 interface IProps {
     item: IItem;
@@ -47,14 +47,7 @@ const Item: React.FC<IProps> = (props) => {
                         );
                     }}
                 />
-                <DragIndicatorIcon
-                    sx={{
-                        color: "#aaa",
-                        cursor: "grab",
-                        display: "none",
-                        "&:active": { cursor: "grabbing" },
-                    }}
-                />
+                <DragIndicator styles={{display: "none"}}/>
             </ListItem>
             <ListItemIcon
                 sx={{ color: "#000", minWidth: "unset" }}
