@@ -9,15 +9,39 @@
 - override ctrl+s -> saves file ✔
 - resume tools in a toolbar (changed to toolbar) ✔
 
+- PDF (generation step: convert markdown like text to pdf)
+- markdown support: 
+1) bold (text enclosed in __text__ or **text**)
+1) italic (text enclosed in _text_ or *text*)
+1) headers (starts w/ # - #x6)
+1) bullet (starts w/ * or -)
+
+maybe:
+1) links (`[text](http://a.com)`)
+1) images (`![alt](cat.png)`)
+1) (new page)?
+
+# h1
+## h2
+### h3
+#### h4
+##### h5
+###### h6
+p
+
 Ideas (future):
+1) Allow pdfs to be viewed on a public link
+- toggle resumes between public/private.
+- changes to resume auto pushed to live link (if public)
+
 1) Terminal:
 - put resume reducer into context, so that commands can be sent from terminal.
 (the terminal will probably only work for the current active resume).
 (terminal cmds: open files, CRUD files, CRUD sections/items, save)
 
-2)  MUI skeleton for loading states.
+1)  MUI skeleton for loading states.
 
-3)  try Lato font for file viewer
+1)  try Lato font for file viewer
 - create a mui theme (dark mode & fonts).
 - navbar uses monospace font.
 Segoe UI: https://gist.github.com/AndrewCraswell/106143d1bb5d4162689b9e1d89a2d0fb
