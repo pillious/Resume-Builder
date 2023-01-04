@@ -6,6 +6,7 @@ import dbConnect from "../../utils/database";
 import { ApiResponse, IFile } from "../../custom2.d";
 import { HydratedDocument } from "mongoose";
 import nanoid from "../../utils/guid";
+import { FILE_GUID_LEN } from '../../utils/constants';
 
 const handler = async (
     req: NextApiRequest,
@@ -35,13 +36,12 @@ const handler = async (
                         });
                         const obj = resp.toObject();
                         delete obj._id;
-                        obj.id = nanoid(20);
+                        obj.id = nanoid(FILE_GUID_LEN);
                         obj.name = `${obj.name} copy`;
                         const file: HydratedDocument<IFile> = new FileModel(
                             obj
                         );
                         resp = await file.save();
-                        console.log(resp);
 
                         res.status(200).json({
                             data: { message: "Successfully copied file." },
@@ -68,7 +68,7 @@ const handler = async (
                 });
         }
     } catch (ex) {
-        console.log(ex);
+        console.error(ex);
         res.status(500).json({
             error: { code: 500, message: "Internal Server Error" },
         });

@@ -6,6 +6,7 @@ import {
     useReducer,
     useState,
 } from "react";
+import { useSWRConfig } from "swr";
 import { guid, ModState, ModList } from "../custom2.d";
 import resumeReducer from "../store/ResumeReducer";
 import nanoid from "../utils/guid";
@@ -21,6 +22,8 @@ const resetModList = (): ModList => ({
 });
 
 const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
+    const { mutate } = useSWRConfig();
+
     const { activeResumeId, updateActiveResumeObj } = useContext(AppContext);
     const { userId } = useContext(AuthContext);
 
@@ -51,11 +54,16 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
             fetcher("/api/updateResume", {
                 method: "POST",
                 body: JSON.stringify({ resume, modList, userId }),
+            }).then(() => {
+                if (resume && "id" in resume)
+                    mutate(
+                        `/api/getResumeById?id=${resume.id}&userId=${userId}`
+                    );
             });
             setHasUnsavedChanges(false);
             setModList(resetModList());
         }
-    }, [hasUnsavedChanges, modList, resume, userId]);
+    }, [hasUnsavedChanges, modList, mutate, resume, userId]);
 
     // override ctrl+s shortcut to save resume
     useEffect(() => {

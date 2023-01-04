@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 // Misc.
 export type guid = string;
@@ -16,6 +16,8 @@ export type ModList = {
 };
 
 // PDF Properties
+export type pt = number;
+
 export interface PDFStyles {
     margin: [number, number, number, number];
     textAlign: "left" | "center" | "right";
@@ -90,7 +92,7 @@ type ApiResponseSuccess = {
     data:
         | { file: IFile | Record<string, never> }
         | { files: IFile[] }
-        | { fileIdentifiers: { name: string; id: guid }[]}
+        | { fileIdentifiers: { name: string; id: guid }[] }
         | { message: string }
         | { user: IUser | Record<string, never> };
 };

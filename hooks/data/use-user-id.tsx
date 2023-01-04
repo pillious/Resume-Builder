@@ -5,8 +5,6 @@ import fetcher from "../../utils/fetcher";
 const useUserId = (userId: guid | null) => {
     const { data, error } = useSWR(`/api/getUserId?userId=${userId}`, fetcher);
 
-    console.log({ data, error });
-
     const isLoading = !error && !data;
     const isError = error;
     const isSuccessful =

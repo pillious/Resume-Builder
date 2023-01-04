@@ -4,6 +4,7 @@ import DebouncedTextarea from "../../UI/DebouncedTextarea";
 import Info from "./Info";
 import { guid, IItem } from "../../../custom2";
 import HeaderButtonGroup from "./HeaderButtonGroup";
+import { sortByOrder } from "../../../utils/utils";
 
 interface IProps {
     name: string;
@@ -31,7 +32,7 @@ const Header: React.FC<IProps> = ({
                 ...prev,
                 <Info
                     key={item.id}
-                    placeholder="Personal info..."
+                    placeholder="Personal info"
                     defaultValue={item.content ?? ""}
                     onChange={(value: string) => {
                         updateHeaderInfo(item.id, value);
@@ -44,9 +45,7 @@ const Header: React.FC<IProps> = ({
 
     useEffect(() => {
         setInfo([]);
-        items
-            .sort((prev, curr) => prev.order - curr.order)
-            .forEach((item) => addInfo(item));
+        sortByOrder<IItem>(items).forEach((item) => addInfo(item));
     }, [items, addInfo]);
 
     return (

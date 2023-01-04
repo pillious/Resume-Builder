@@ -79,16 +79,15 @@ export const AppContextProvider: React.FC<IProps> = (props) => {
     const updateActiveResumeObj = useCallback(
         async (file: IFile | null) => {
             const pdf = file
-                ? (
-                      await activeResumeObj.pdf
-                          .reset()
-                          .loadAndSetFont(
-                              "/fonts/Proxima-Nova-Reg.ttf",
-                              "Proxima-Nova-Reg",
-                              "normal",
-                              400
-                          )
-                  ).generate(file)
+                ? activeResumeObj.pdf
+                      .reset()
+                      //   .loadAndSetFont(
+                      //       "/fonts/Proxima-Nova-Reg.ttf",
+                      //       "Proxima-Nova-Reg",
+                      //       "normal",
+                      //       400
+                      //   )
+                      .generate(file)
                 : activeResumeObj.pdf.reset();
             setActiveResumeObj({ file, pdf });
         },
@@ -150,8 +149,6 @@ export const AppContextProvider: React.FC<IProps> = (props) => {
                         userId,
                     }),
                 }).then(() => mutate(`/api/getResumeIds?userId=${userId}`));
-                // await mutate("/api/getResumeIds");
-                // mutate(["/api/getResumeById", `?id=${id}`]);
             }
         },
         [mutate]

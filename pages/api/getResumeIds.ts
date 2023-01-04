@@ -46,7 +46,7 @@ const handler = async (
                 throw new Error(`${req.method} is not allowed`);
         }
     } catch (ex) {
-        console.log(ex);
+        console.error(ex);
         res.status(500).json({
             error: { code: 500, message: "Internal Server Error" },
         });

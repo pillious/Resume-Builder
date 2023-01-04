@@ -7,6 +7,7 @@ import guid from "../../utils/guid";
 import { ApiResponse, IFile } from "../../custom2.d";
 import HeaderModel from "../../models/HeaderModel.model";
 import mongoose, { HydratedDocument } from "mongoose";
+import { FILE_GUID_LEN } from '../../utils/constants';
 
 const handler = async (
     req: NextApiRequest,
@@ -39,7 +40,7 @@ const handler = async (
                     const doc: HydratedDocument<IFile> = new FileModel({
                         userId: new mongoose.Types.ObjectId(userId),
                         name: fileName || "Untitled Resume",
-                        id: guid(20),
+                        id: guid(FILE_GUID_LEN),
                         header: new HeaderModel({
                             id: guid(),
                         }),
@@ -55,7 +56,7 @@ const handler = async (
                             })
                         )
                         .catch((err) => {
-                            console.log(err);
+                            console.error(err);
                             return res.status(404).json({
                                 error: {
                                     code: 404,

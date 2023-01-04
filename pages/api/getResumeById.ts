@@ -52,7 +52,7 @@ const handler = async (
                 });
         }
     } catch (ex) {
-        console.log(ex);
+        console.error(ex);
         res.status(500).json({
             error: { code: 500, message: "Internal Server Error" },
         });

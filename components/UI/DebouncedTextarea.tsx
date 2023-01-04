@@ -28,10 +28,7 @@ const Textarea: React.FC<IProps> = ({
     // Debounce saving to reducer.
     useEffect(() => {
         let identifier: NodeJS.Timeout;
-        if (
-            typeof onChange === "function" &&
-            value.trim() !== prevValue.trim()
-        ) {
+        if (typeof onChange === "function" && value !== prevValue) {
             identifier = setTimeout(() => {
                 onChange(value);
                 setPrevValue(value);

@@ -14,13 +14,9 @@ export const authOptions: AuthOptions = {
     ],
     callbacks: {
         async signIn({ account, profile }) {
-            console.log({ account, profile });
             if (account && account.provider === "google") {
                 const prof: GoogleProfile = profile as GoogleProfile;
-                if (
-                    prof.email_verified &&
-                    prof.email.endsWith("@gmail.com")
-                )
+                if (prof.email_verified && prof.email.endsWith("@gmail.com"))
                     return true;
 
                 // if email not verified, redirect.

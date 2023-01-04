@@ -1,14 +1,17 @@
-import ListItem from "@mui/material/ListItem";
+import Box from "@mui/material/Box";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import DebouncedTextarea from "../../UI/DebouncedTextarea";
 import { guid, IItem } from "../../../custom2";
 import classes from "./Item.module.css";
 import DragIndicator from "../../UI/DragIndicator";
+import { DragControls } from "framer-motion";
 
 interface IProps {
     item: IItem;
     experienceId: guid;
     sectionId: guid;
+    dragControls: DragControls;
+    areToolsActive: boolean;
     updateItemContent: (
         sectionId: guid,
         experienceId: guid,
@@ -20,24 +23,21 @@ interface IProps {
 
 const Item: React.FC<IProps> = (props) => {
     return (
-        <div className={classes.list_item_wrapper}>
-            <ListItem
-                sx={[
-                    {
-                        "&:hover": {
-                            backgroundColor: "#eee",
-                        },
+        <div
+            className={classes.list_item_wrapper}
+            data-are-tools-active={props.areToolsActive}
+        >
+            <Box
+                sx={{
+                    "& .MuiInput-root": {
+                        width: "100%",
                     },
-                ]}
+                }}
                 className={classes.list_item}
-                disablePadding
             >
                 <DebouncedTextarea
-                    sx={{
-                        width: "100%",
-                    }}
                     defaultValue={props.item.content}
-                    placeholder="Type here. . ."
+                    placeholder="Type here . . ."
                     onChange={(content) => {
                         props.updateItemContent(
                             props.sectionId,
@@ -46,11 +46,27 @@ const Item: React.FC<IProps> = (props) => {
                             content
                         );
                     }}
+                    sx={{ fontSize: "0.85rem" }}
                 />
-                <DragIndicator styles={{display: "none"}}/>
-            </ListItem>
+                {props.areToolsActive && (
+                    <div
+                        onPointerDown={(e) => {
+                            props.dragControls.start(e);
+                        }}
+                    >
+                        <DragIndicator
+                            styles={{
+                                display: "none",
+                                position: "absolute",
+                                right: 0,
+                                top: "50%",
+                                transform: "translateY(-50%)",
+                            }}
+                        />
+                    </div>
+                )}
+            </Box>
             <ListItemIcon
-                sx={{ color: "#000", minWidth: "unset" }}
                 className={classes.list_style}
                 onClick={() =>
                     props.deleteItem(
@@ -59,7 +75,7 @@ const Item: React.FC<IProps> = (props) => {
                         props.item.id
                     )
                 }
-            ></ListItemIcon>
+            />
         </div>
     );
 };

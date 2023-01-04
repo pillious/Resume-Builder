@@ -1,9 +1,6 @@
 import { customAlphabet } from "nanoid";
+import {CHARACTER_SET, GUID_LEN} from "./constants";
 
-const characterSet =
-    "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-const idLength = 6;
-
-const nanoid = (length = idLength) => customAlphabet(characterSet, length)();
+const nanoid = (length = GUID_LEN) => customAlphabet(CHARACTER_SET, length)();
 
 export default nanoid;

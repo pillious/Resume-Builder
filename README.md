@@ -1,33 +1,25 @@
 # TODO:
 - change toolbox to a toolbar across the top of the resume editor (think about mobile design) ✔
-- add ctrl-z/ctrl-y, ctrl-shift-z -> include undo/redo buttons on toolbar ✖
 - drop and drop ordering ✔
-- build the preview ✖
+- build the preview (in progress)
 - bug: file viewer not updating after renaming. ✔
-- authentication (navbar) ✔
 - redesign database: section/exps have order ✔
 - override ctrl+s -> saves file ✔
 - resume tools in a toolbar (changed to toolbar) ✔
-
-- PDF (generation step: convert markdown like text to pdf)
-- markdown support: 
-1) bold (text enclosed in __text__ or **text**)
-1) italic (text enclosed in _text_ or *text*)
-1) headers (starts w/ # - #x6)
-1) bullet (starts w/ * or -)
+- some kind of icon to show the file is not saved (are you sure you want to leave prompt?)
+- add ctrl-z/ctrl-y, ctrl-shift-z -> include undo/redo buttons on toolbar ✖
+- authentication (navbar - unauthed login/register - register just goes to the login page) ✖
+- generate pdf (generation step: convert markdown like text to pdf) ✖
+    - markdown support: 
+    1) bold (text enclosed in __text__ or **text**)
+    1) italic (text enclosed in _text_ or *text*)
+    1) headers (starts w/ # - #x6)
+    1) bullet (starts w/ * or -)
 
 maybe:
 1) links (`[text](http://a.com)`)
 1) images (`![alt](cat.png)`)
 1) (new page)?
-
-# h1
-## h2
-### h3
-#### h4
-##### h5
-###### h6
-p
 
 Ideas (future):
 1) Allow pdfs to be viewed on a public link
@@ -40,6 +32,8 @@ Ideas (future):
 (terminal cmds: open files, CRUD files, CRUD sections/items, save)
 
 1)  MUI skeleton for loading states.
+
+1) Tutorial (some kind of app walk through)
 
 1)  try Lato font for file viewer
 - create a mui theme (dark mode & fonts).

@@ -1,12 +1,13 @@
 import List from "@mui/material/List";
 import Item from "./Item";
-import { Reorder } from "framer-motion";
+import { Reorder, useDragControls } from "framer-motion";
 import { guid, IItem } from "../../../custom2";
 
 interface IProps {
     items: IItem[];
     experienceId: guid;
     sectionId: guid;
+    areToolsActive: boolean;
     updateItemContent: (
         sectionId: guid,
         experienceId: guid,
@@ -22,6 +23,8 @@ interface IProps {
 }
 
 const ExperienceList: React.FC<IProps> = (props) => {
+    const controls = useDragControls();
+
     return (
         <List sx={{ p: "1rem" }}>
             <Reorder.Group
@@ -40,7 +43,11 @@ const ExperienceList: React.FC<IProps> = (props) => {
                     <Reorder.Item
                         key={item.id}
                         value={item.id}
-                        style={{ listStyle: "none" }}
+                        style={{
+                            listStyle: "none",
+                        }}
+                        dragListener={false}
+                        dragControls={controls}
                     >
                         <Item
                             key={item.id}
@@ -49,6 +56,8 @@ const ExperienceList: React.FC<IProps> = (props) => {
                             experienceId={props.experienceId}
                             updateItemContent={props.updateItemContent}
                             deleteItem={props.deleteItem}
+                            dragControls={controls}
+                            areToolsActive={props.areToolsActive}
                         />
                     </Reorder.Item>
                 ))}

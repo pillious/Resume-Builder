@@ -61,22 +61,24 @@ const Experience: React.FC<IProps> = (props) => {
             <Overlay show={showOverlay} />
             <Card elevation={0} className={classes.Card}>
                 <div className={classes.top}>
-                    <div
-                        onPointerDown={(e) => {
-                            controls.start(e);
-                            setShowOverlay(true);
-                        }}
-                        onPointerOver={() => setShowOverlay(true)}
-                        onPointerLeave={() => setShowOverlay(false)}
-                        style={{ zIndex: 2 }}
-                    >
-                        <DragIndicator />
-                    </div>
+                    {props.areToolsActive && (
+                        <div
+                            onPointerDown={(e) => {
+                                controls.start(e);
+                                setShowOverlay(true);
+                            }}
+                            onPointerOver={() => setShowOverlay(true)}
+                            onPointerLeave={() => setShowOverlay(false)}
+                            style={{ zIndex: 2 }}
+                        >
+                            <DragIndicator />
+                        </div>
+                    )}
                     <DebouncedTextarea
                         sx={{
                             borderBottom: "1px solid #bbb",
-                            width: "max-content",
                             backgroundColor: "#f5f5f5",
+                            width: "35%",
                             pl: "0.5rem",
                             justifySelf: "left",
                             "&:hover": {
@@ -136,6 +138,7 @@ const Experience: React.FC<IProps> = (props) => {
                             updateItemContent={props.updateItemContent}
                             updateItemOrder={props.updateItemOrder}
                             deleteItem={props.deleteItem}
+                            areToolsActive={props.areToolsActive}
                         />
                     </Card>
                 )}
