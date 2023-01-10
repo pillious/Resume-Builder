@@ -107,9 +107,9 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
         modList.experiences,
     ]);
 
-    useEffect(() => {
-        console.log(modList);
-    }, [modList]);
+    // useEffect(() => {
+    //     console.log(modList);
+    // }, [modList]);
 
     /**
      * REDUCER ACTIONS

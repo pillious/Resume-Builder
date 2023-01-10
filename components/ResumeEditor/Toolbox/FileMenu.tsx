@@ -46,8 +46,8 @@ const FileMenu: React.FC<IProps> = (props) => {
                     variant="text"
                     size="small"
                     sx={{
-                        fontSize: "12px",
-                        px: "4px",
+                        fontSize: "1rem",
+                        p: "1px 4px",
                         textTransform: "capitalize",
                         minWidth: "32px",
                         color: "#000",

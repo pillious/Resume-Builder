@@ -52,7 +52,11 @@ const FileItem: React.FC<IProps> = ({
                             htmlColor={iconColor || HSLColor}
                         />
                     </ListItemIcon>
-                    <Typography fontWeight={600} color="rgb(80,80,80)">
+                    <Typography
+                        fontWeight={600}
+                        color="rgb(80,80,80)"
+                        fontSize="1rem"
+                    >
                         {name}
                     </Typography>
                 </ListItemButton>

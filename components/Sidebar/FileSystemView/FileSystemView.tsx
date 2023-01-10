@@ -49,7 +49,7 @@ const FileSystemView: React.FC<IProps> = ({ close }) => {
                     >
                         <Button
                             startIcon={<ChevronLeftIcon />}
-                            sx={{ textTransform: "none" }}
+                            sx={{ textTransform: "none", fontSize: "0.85rem" }}
                             onClick={close}
                         >
                             Close File Viewer

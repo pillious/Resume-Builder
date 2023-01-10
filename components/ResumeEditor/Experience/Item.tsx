@@ -46,7 +46,7 @@ const Item: React.FC<IProps> = (props) => {
                             content
                         );
                     }}
-                    sx={{ fontSize: "0.85rem" }}
+                    sx={{ fontSize: "0.9rem" }}
                 />
                 {props.areToolsActive && (
                     <div

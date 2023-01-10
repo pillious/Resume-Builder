@@ -56,7 +56,7 @@ const Toolbox: React.FC<IProps> = (props) => {
                 variant="text"
                 size="small"
                 sx={{
-                    fontSize: "12px",
+                    fontSize: "1rem",
                     px: "4px",
                     textTransform: "capitalize",
                     minWidth: "32px",
@@ -70,7 +70,7 @@ const Toolbox: React.FC<IProps> = (props) => {
                 selected={isPreviewActive}
                 onChange={props.preview}
                 sx={{
-                    fontSize: "12px",
+                    fontSize: "1rem",
                     px: "4px",
                     textTransform: "capitalize",
                     minWidth: "32px",
@@ -79,21 +79,6 @@ const Toolbox: React.FC<IProps> = (props) => {
                 }}
             >
                 Preview
-            </ToggleButton>
-            <ToggleButton
-                value="Preview"
-                selected={isPreviewActive}
-                onChange={() => updateActiveResumeObj(activeResumeObj.file)}
-                sx={{
-                    fontSize: "12px",
-                    px: "4px",
-                    textTransform: "capitalize",
-                    minWidth: "32px",
-                    color: "#000",
-                    border: "none",
-                }}
-            >
-                TEST
             </ToggleButton>
             <Divider orientation="vertical" flexItem />
             <IconButton sx={{ p: "4px" }} title="save" onClick={props.save}>
