@@ -15,6 +15,7 @@
     1) italic (text enclosed in _text_ or *text*)
     1) headers (starts w/ # - #x6)
     1) bullet (starts w/ * or -)
+- simple markdown parser ✖
 
 maybe:
 1) links (`[text](http://a.com)`)
