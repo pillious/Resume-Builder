@@ -26,9 +26,9 @@ enum Token {
  * H4 -> #### Text | H5
  * H5 -> ##### Text | H6
  * H6 -> ###### Text | Text
- * Text -> string Text | Bold | Italic
- * Bold -> ** Text **end Text | epsilon
- * Italic -> _ Text _end Text | epsilon
+ * Text -> string Text | Bold
+ * Bold -> ** Text | **end Text | Italic
+ * Italic -> _ Text | _end Text | epsilon
  */
 
 /**
@@ -149,11 +149,7 @@ const parser = (tokens: (Token | string)[]): AST => {
                 }
 
                 parseText();
-            } else if (lookahead() === Token.TOK_BOLD) {
-                parseBold();
-            } else {
-                parseItalic();
-            }
+            } else parseBold();
         }
     };
 
@@ -162,12 +158,13 @@ const parser = (tokens: (Token | string)[]): AST => {
             fontStyle.push("bold");
             matchTok(Token.TOK_BOLD);
             parseText();
-
-            if (lookahead() === Token.TOK_BOLD_END)
-                matchTok(Token.TOK_BOLD_END);
-
-            fontStyle.pop();
+        } else if (lookahead() === Token.TOK_BOLD_END && curr != null) {
+            matchTok(Token.TOK_BOLD_END);
+            const idx = fontStyle.lastIndexOf("bold");
+            if (idx !== -1) fontStyle.splice(idx, 1);
             parseText();
+        } else {
+            parseItalic();
         }
     };
 
@@ -176,11 +173,10 @@ const parser = (tokens: (Token | string)[]): AST => {
             fontStyle.push("italic");
             matchTok(Token.TOK_ITALIC);
             parseText();
-
-            if (lookahead() === Token.TOK_ITALIC_END)
-                matchTok(Token.TOK_ITALIC_END);
-
-            fontStyle.pop();
+        } else if (lookahead() === Token.TOK_ITALIC_END) {
+            matchTok(Token.TOK_ITALIC_END);
+            const idx = fontStyle.lastIndexOf("italic");
+            if (idx !== -1) fontStyle.splice(idx, 1);
             parseText();
         }
     };

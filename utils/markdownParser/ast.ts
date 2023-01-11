@@ -7,6 +7,22 @@ export class AST {
     constructor(head?: Node) {
         this.head = head ?? null;
     }
+
+    public reverse(): AST {
+        function reverse(node: Node): Node {
+            if (!node || !node.next) {
+                return node;
+            }
+            const tmp = reverse(node.next);
+            node.next.next = node;
+            node.next = null;
+            return tmp;
+        }
+
+        if (this.head) this.head = reverse(this.head);
+
+        return this;
+    }
 }
 
 export class Node {
@@ -23,7 +39,7 @@ export class Node {
         italic?: boolean,
         bullet?: boolean,
         heading?: "none" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6",
-        next?: Node
+        next?: Node | null
     ) {
         this.text = text;
         this.bold = bold ?? false;
@@ -31,5 +47,26 @@ export class Node {
         this.bullet = bullet ?? false;
         this.heading = heading ?? "none";
         this.next = next ?? null;
+    }
+
+    public setText(text: string): Node {
+        this.text = text;
+        return this;
+    }
+
+    public splitNode(text1: string, text2: string): Node {
+        const node = new Node(
+            text2,
+            this.bold,
+            this.italic,
+            this.bullet,
+            this.heading,
+            this.next
+        );
+
+        this.text = text1;
+        this.next = node;
+
+        return this;
     }
 }
