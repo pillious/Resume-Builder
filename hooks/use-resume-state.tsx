@@ -672,6 +672,7 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
 
     return {
         resume,
+        hasUnsavedChanges,
         saveChanges,
         addHeaderInfo,
         addExperience,

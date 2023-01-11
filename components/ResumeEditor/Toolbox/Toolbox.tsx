@@ -1,5 +1,6 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Chip from "@mui/material/Chip";
 import IconButton from "@mui/material/IconButton";
 import ToggleButton from "@mui/material/ToggleButton";
 import Divider from "@mui/material/Divider";
@@ -11,9 +12,11 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import FileMenu from "./FileMenu";
 import { useContext } from "react";
 import AppContext from "../../../store/AppContext";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface IProps {
     fileName: string;
+    hasUnsavedChanges: boolean;
     copy: () => void;
     save: () => void;
     download: () => void;
@@ -23,14 +26,8 @@ interface IProps {
 }
 
 const Toolbox: React.FC<IProps> = (props) => {
-    const {
-        isPreviewActive,
-        toggleTools,
-        areToolsActive,
-        isNavActive,
-        activeResumeObj,
-        updateActiveResumeObj,
-    } = useContext(AppContext);
+    const { isPreviewActive, toggleTools, areToolsActive, isNavActive } =
+        useContext(AppContext);
 
     return (
         <Box
@@ -38,7 +35,7 @@ const Toolbox: React.FC<IProps> = (props) => {
                 height: "38px",
                 display: "flex",
                 gap: 0.5,
-                p: "4px 1rem",
+                p: "6px 1rem",
                 pl: `${!isNavActive ? "2.5rem" : "1rem"}`,
                 borderBottom: "1px solid #eee",
             }}
@@ -56,7 +53,7 @@ const Toolbox: React.FC<IProps> = (props) => {
                 variant="text"
                 size="small"
                 sx={{
-                    fontSize: "1rem",
+                    fontSize: "0.875rem",
                     px: "4px",
                     textTransform: "capitalize",
                     minWidth: "32px",
@@ -70,7 +67,7 @@ const Toolbox: React.FC<IProps> = (props) => {
                 selected={isPreviewActive}
                 onChange={props.preview}
                 sx={{
-                    fontSize: "1rem",
+                    fontSize: "0.875rem",
                     px: "4px",
                     textTransform: "capitalize",
                     minWidth: "32px",
@@ -84,6 +81,23 @@ const Toolbox: React.FC<IProps> = (props) => {
             <IconButton sx={{ p: "4px" }} title="save" onClick={props.save}>
                 <SaveIcon fontSize="small" />
             </IconButton>
+            <AnimatePresence>
+                {props.hasUnsavedChanges && (
+                    <motion.div
+                        initial={{ opacity: 0, width: 0 }}
+                        animate={{ opacity: 1, width: "initial" }}
+                        transition={{ duration: 0.2 }}
+                        exit={{ opacity: 0, width: 0 }}
+                    >
+                        <Chip
+                            label="Save Changes"
+                            size="small"
+                            color="primary"
+                            onClick={props.save}
+                        />
+                    </motion.div>
+                )}
+            </AnimatePresence>
             <Divider orientation="vertical" flexItem />
             <div>
                 <IconButton

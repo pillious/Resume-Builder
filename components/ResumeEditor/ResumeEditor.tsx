@@ -31,6 +31,7 @@ const ResumeEditor: React.FC = () => {
 
     const {
         resume,
+        hasUnsavedChanges,
         saveChanges,
         addHeaderInfo,
         addExperience,
@@ -61,6 +62,7 @@ const ResumeEditor: React.FC = () => {
                 <>
                     <Toolbox
                         fileName={resume.name}
+                        hasUnsavedChanges={hasUnsavedChanges}
                         save={saveChanges}
                         copy={() => {
                             if (activeResumeId && userId !== null)
