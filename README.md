@@ -5,7 +5,7 @@
 - redesign database: section/exps have order ✔
 - override ctrl+s -> saves file ✔
 - resume tools in a toolbar (changed to toolbar) ✔
-- some kind of icon to show the file is not saved (are you sure you want to leave prompt?) (in progress)
+- some kind of icon to show the file is not saved (are you sure you want to leave prompt?) ✔
 - add ctrl-z/ctrl-y, ctrl-shift-z -> include undo/redo buttons on toolbar ✖
 - authentication (navbar - unauthed login/register - register just goes to the login page) ✔
 - simple markdown parser ✔

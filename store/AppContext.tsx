@@ -8,9 +8,6 @@ interface IProps {
     children: JSX.Element;
 }
 
-// Data structure (probably array) to store resumes/previews -> keep track of open tabs.
-// maybe just store ids in one array, and the actual components in another array?
-
 interface IAppContext {
     activeResumeId: guid | null;
     isPreviewActive: boolean;
@@ -18,6 +15,8 @@ interface IAppContext {
     fileIds: guid[]; // unused
     areToolsActive: boolean;
     isNavActive: boolean;
+    hasUnsavedChanges: boolean;
+    updateHasUnsavedChanges: (bool: boolean) => void;
     updateFileIds: (ids: guid | guid[]) => void; // unused
     updateActiveResumeId: (id: guid | null) => void;
     updateActiveResumeObj: (file: IFile | null) => void;
@@ -37,6 +36,8 @@ const defaultValues: IAppContext = {
     fileIds: [],
     areToolsActive: true,
     isNavActive: true,
+    hasUnsavedChanges: false,
+    updateHasUnsavedChanges: () => ({}),
     updateFileIds: () => ({}),
     updateActiveResumeId: () => ({}),
     updateActiveResumeObj: () => ({}),
@@ -71,10 +72,18 @@ export const AppContextProvider: React.FC<IProps> = (props) => {
         defaultValues.activeResumeObj
     );
     const [fileIds, setFileIds] = useState(defaultValues.fileIds);
+    const [hasUnsavedChanges, setHasUnsavedChanges] = useState(
+        defaultValues.hasUnsavedChanges
+    );
     const [areToolsActive, setAreToolsActive] = useState(
         defaultValues.areToolsActive
     );
     const [isNavActive, setIsNavActive] = useState(defaultValues.isNavActive);
+
+    const updateHasUnsavedChanges = useCallback(
+        (bool: boolean) => setHasUnsavedChanges(bool),
+        []
+    );
 
     const updateActiveResumeObj = useCallback(
         async (file: IFile | null) => {
@@ -156,7 +165,6 @@ export const AppContextProvider: React.FC<IProps> = (props) => {
 
     const downloadFile = useCallback(
         (id?: guid) => {
-            // const fileId = id ?? activeResumeId ?? null;
             const fileId = id ?? activeResumeId ?? null;
 
             if (fileId) {
@@ -193,6 +201,8 @@ export const AppContextProvider: React.FC<IProps> = (props) => {
             fileIds,
             areToolsActive,
             isNavActive,
+            hasUnsavedChanges,
+            updateHasUnsavedChanges,
             updateFileIds,
             updateActiveResumeId,
             updateActiveResumeObj,
@@ -211,6 +221,8 @@ export const AppContextProvider: React.FC<IProps> = (props) => {
             fileIds,
             areToolsActive,
             isNavActive,
+            hasUnsavedChanges,
+            updateHasUnsavedChanges,
             updateFileIds,
             updateActiveResumeId,
             updateActiveResumeObj,

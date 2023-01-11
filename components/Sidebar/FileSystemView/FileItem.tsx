@@ -23,7 +23,7 @@ const FileItem: React.FC<IProps> = ({
     iconSize,
     iconColor,
 }) => {
-    const { updateActiveResumeId } = useContext(AppContext);
+    const { updateActiveResumeId, hasUnsavedChanges } = useContext(AppContext);
 
     const clickHandler = () => {
         updateActiveResumeId(id);
@@ -37,7 +37,18 @@ const FileItem: React.FC<IProps> = ({
                 <ListItemButton
                     sx={{ m: 0, p: 0.5 }}
                     selected={active}
-                    onClick={clickHandler}
+                    onClick={() => {
+                        if (!active) {
+                            if (hasUnsavedChanges) {
+                                if (
+                                    confirm(
+                                        "Are you sure you want to discard your changes?"
+                                    ) === true
+                                )
+                                    clickHandler();
+                            } else clickHandler();
+                        }
+                    }}
                 >
                     <ListItemIcon
                         sx={{

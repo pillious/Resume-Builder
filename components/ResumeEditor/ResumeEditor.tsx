@@ -1,4 +1,4 @@
-import { useRef, useContext } from "react";
+import { useRef, useContext, useEffect } from "react";
 import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
 import AddSection from "./Section/AddSection";
@@ -12,7 +12,7 @@ import Section from "./Section/Section";
 import AuthContext from "../../store/AuthContext";
 import { Reorder } from "framer-motion";
 import { ISection, IExperience, guid } from "../../types";
-import { sortByOrder } from "../../utils/utils";
+import { sortByOrder, unsavedChangesConfirmation } from "../../utils/utils";
 
 const ResumeEditor: React.FC = () => {
     const {
@@ -51,6 +51,18 @@ const ResumeEditor: React.FC = () => {
         deleteExperience,
         deleteItem,
     } = useResumeState(sectionRef);
+
+    // Confirmation when user closes tab while there are unsaved changes.
+    useEffect(() => {
+        window.addEventListener("beforeunload", unsavedChangesConfirmation);
+
+        // Clean up function
+        return () =>
+            window.removeEventListener(
+                "beforeUnload",
+                unsavedChangesConfirmation
+            );
+    }, [hasUnsavedChanges]);
 
     const sections: ISection[] | undefined = resume
         ? sortByOrder<ISection>(resume.sections)

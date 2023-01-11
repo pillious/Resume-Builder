@@ -25,7 +25,8 @@ const resetModList = (): ModList => ({
 const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
     const { mutate } = useSWRConfig();
 
-    const { activeResumeId, updateActiveResumeObj } = useContext(AppContext);
+    const { activeResumeId, updateActiveResumeObj, updateHasUnsavedChanges } =
+        useContext(AppContext);
     const { userId } = useContext(AuthContext);
 
     const { data } = useResumeById(activeResumeId, userId);
@@ -42,6 +43,10 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
         setModList(resetModList());
         setHasUnsavedChanges(false);
     }, [data, updateActiveResumeObj]);
+
+    useEffect(() => {
+        updateHasUnsavedChanges(hasUnsavedChanges);
+    }, [hasUnsavedChanges, updateHasUnsavedChanges]);
 
     // Save Resume
     const saveChanges = useCallback(() => {
