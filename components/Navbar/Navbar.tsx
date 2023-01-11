@@ -1,5 +1,5 @@
 import { MouseEvent, useContext, useState } from "react";
-import { signOut } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
@@ -9,7 +9,7 @@ import Container from "@mui/material/Container";
 import IconButton from "@mui/material/IconButton";
 import AdbIcon from "@mui/icons-material/Adb";
 import OpenInFullIcon from "@mui/icons-material/OpenInFull";
-import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen';
+import CloseFullscreenIcon from "@mui/icons-material/CloseFullscreen";
 import { useSession } from "next-auth/react";
 import AuthenticatedMenu from "./AuthenticatedMenu";
 import UnauthenticatedMenu from "./UnauthenticatedMenu";
@@ -98,12 +98,8 @@ const Navbar: React.FC = () => {
                                     />
                                 ) : (
                                     <UnauthenticatedMenu
-                                        handleSignIn={() =>
-                                            console.log("TODO: signin")
-                                        }
-                                        handleRegister={() =>
-                                            console.log("TODO: register")
-                                        }
+                                        handleSignIn={signIn}
+                                        handleRegister={signIn}
                                     />
                                 )}
                             </Box>

@@ -22,14 +22,10 @@ import {
 } from "./constants";
 import lexer from "./markdownParser/lexer";
 import parser from "./markdownParser/parser";
-
-// to track normal,bold,italic, use an array like a stack
-// push to stack when item is bold, if nested item is italic, push italic to stack.
-// when leaving nested item, remove from stack.
+import { Node } from "./markdownParser/ast";
 
 export class Pdf {
     private _doc: jsPDF;
-    private _startXPos: pt;
     private _nextYPos: pt;
     private _fontSize: pt;
     private _lineSpacing: pt;
@@ -42,13 +38,12 @@ export class Pdf {
 
     constructor() {
         this._doc = new jsPDF(PDF_OPTIONS);
-        this._startXPos = PAGE_MARGIN.X;
-        this._nextYPos = PAGE_MARGIN.Y;
         this._fontSize = DEFAULT_FONT_SIZE;
         this._lineSpacing = DEFAULT_LINE_SPACING;
+        this._bulletIndentation = BULLET_INDENTATION;
+        this._nextYPos = PAGE_MARGIN.Y;
         this._xMargin = PAGE_MARGIN.X;
         this._yMargin = PAGE_MARGIN.Y;
-        this._bulletIndentation = BULLET_INDENTATION;
 
         this._PAGE_HEIGHT =
             this._doc.internal.pageSize.height ||
@@ -61,6 +56,7 @@ export class Pdf {
     generate(file: IFile): Pdf {
         // Initial setup
         this._doc.setProperties({ title: file.name });
+        this._doc.setFont(FONT_FAMILY);
 
         // Generate text
         this._buildHeader(file.header)._nextLine();
@@ -111,15 +107,43 @@ export class Pdf {
             allowBullets: false,
         })._nextLine();
 
-        // Prints personal information
-        const maxWidth = this._PAGE_WIDTH - 2 * this._xMargin;
-        let currWidth = 0;
-        this._p()._normal();
-        const dividerWidth = this._doc.getTextWidth(DIVIDER);
+        this._p()._normal(); // set to default font size & font style.
 
-        const options: TextOptionsLight = { align: "center" };
-        const align = "left";
-        for (let i = 0; i < header.items.length; i++) {
+        // Initialize variables
+        const maxWidth = this._PAGE_WIDTH - 2 * this._xMargin;
+        const dividerWidth = this._doc.getTextWidth(DIVIDER);
+        let pos: number[] = []; // gives the starting x pos for each new line.
+        let i = 0;
+
+        // calculate the starting x pos for each new line.
+        for (let j = 0; j < header.items.length; j++) {
+            let textWidth = this._doc.getTextWidth(header.items[j].content);
+            if (j !== header.items.length - 1) textWidth += dividerWidth;
+
+            if (pos[i] === undefined) pos[i] = 0;
+
+            if (pos[i] + textWidth <= maxWidth) pos[i] += textWidth;
+            else pos[++i] = textWidth;
+        }
+        pos = pos.map((p) => (maxWidth - p) / 2);
+
+        // Print peronal info text according to AST
+        i = 0;
+        while (i < header.items.length) {
+            const textWidth = this._doc.getTextWidth(header.items[i].content);
+
+            // Handles text overflow
+            if (textWidth > maxWidth) {
+                // fallback -> prevent infinite loop.
+                this._printLine(header.items[i].content)._nextLine();
+                i++;
+                continue;
+            } else if (pos[0] + textWidth > maxWidth) {
+                this._nextLine();
+                pos.shift();
+                continue;
+            }
+
             let ast = parser(
                 lexer(header.items[i].content, {
                     allowBullets: false,
@@ -127,98 +151,22 @@ export class Pdf {
                 })
             ).head;
 
-            let isHeading = false;
-            let isListItem = false;
-
             this._p()._normal(); // set font size/style to defaults.
 
             while (ast !== null) {
-                if (ast.bullet === true) isListItem = true;
-                else if (ast.heading !== "none") {
-                    isHeading = true;
+                this._applyStyles(ast);
 
-                    // Set font size.
-                    switch (ast.heading) {
-                        case "h1":
-                            this._h1();
-                            break;
-                        case "h2":
-                            this._h2();
-                            break;
-                        case "h3":
-                            this._h3();
-                            break;
-                        case "h4":
-                            this._h4();
-                            break;
-                        case "h5":
-                            this._h5();
-                            break;
-                        case "h6":
-                            this._h6();
-                            break;
-                    }
-                } else {
-                    // Set font style.
-                    if ((isHeading || ast.bold) && ast.italic)
-                        this._boldItalic();
-                    else if (isHeading || ast.bold) this._bold();
-                    else if (ast.italic) this._italic();
-                    else this._normal();
-
-                    if (isListItem) {
-                        console.log("bulleted");
-                    }
-
-                    let text = ast.text;
-                    let textWidth = this._doc.getTextWidth(ast.text);
-                    let addNewLine = false;
-
-                    // If text doesn't fit on current line.
-                    if (currWidth + textWidth > maxWidth) {
-                        const textArr = text.split(" ");
-                        let subtext = "";
-                        let subtextLen = 0;
-
-                        let i;
-                        for (i = 0; i < textArr.length; i++) {
-                            const len = this._doc.getTextWidth(textArr[0]);
-                            if (currWidth + subtextLen + len <= maxWidth) {
-                                subtextLen += len;
-                                subtext += " " + textArr.shift();
-                            } else break;
-                        }
-
-                        ast.text = textArr.splice(i - 1).join(" ");
-                        text = subtext;
-                        textWidth = subtextLen;
-                        addNewLine = true;
-                    }
-
-                    // Print text w/ the proper alignment.
-                    if (align === undefined || align === "left")
-                        this._printTextLeft(text, currWidth);
-                    else if (align === "center")
-                        this._printTextCenter(text, currWidth, options);
-                    else this._printTextRight(text, currWidth, options);
-
-                    currWidth += textWidth;
-
-                    if (addNewLine) {
-                        currWidth = 0;
-                        addNewLine = false;
-                        this._nextLine();
-                    } else if (
-                        i !== header.items.length - 1 &&
-                        ast.next === null
-                    ) {
-                        this._p()._normal()._printTextLeft(DIVIDER, currWidth);
-                        currWidth += dividerWidth;
-                    }
+                this._printTextLeft(ast.text, pos[0]);
+                pos[0] += textWidth;
+                if (i !== header.items.length - 1 && ast.next === null) {
+                    this._p()._normal()._printTextLeft(DIVIDER, pos[0]);
+                    pos[0] += dividerWidth;
                 }
 
                 ast = ast.next;
             }
+
+            i++;
         }
 
         return this;
@@ -252,69 +200,43 @@ export class Pdf {
         lexerOptions?: LexerOptions
     ): Pdf {
         // Abstract syntax tree representation of the input text.
-        let ast = parser(lexer(line, lexerOptions)).head;
+        const ast = parser(lexer(line, lexerOptions));
 
-        console.log(this._doc.internal.pageSize.getHeight());
-        console.log(this._doc.internal.pageSize.getWidth());
+        if (align === "right") ast.reverse(); // handles align right
+        let node = ast.head;
 
         // initialization
         const maxWidth = this._PAGE_WIDTH - 2 * this._xMargin;
         offset = offset ?? 0;
-        let pos = offset;
+        let pos = offset; // a pointer for the current x position
         let isHeading = false;
-        let isListItem = false;
-        let goToNextNode = true;
+        let nodeIsBullet = false;
+        let goToNextNode = true; // determines when to set ast = ast.next
 
         this._p()._normal(); // set font size/style to defaults.
 
-        while (ast !== null) {
+        while (node !== null) {
             goToNextNode = true;
-            console.log(ast);
-            if (ast.bullet === true) isListItem = true;
-            else if (ast.heading !== "none") {
+
+            this._applyStyles(node, isHeading);
+
+            if (node.bullet === true) nodeIsBullet = true;
+            else if (node.heading !== "none") {
                 isHeading = true;
-
-                // Set font size.
-                switch (ast.heading) {
-                    case "h1":
-                        this._h1();
-                        break;
-                    case "h2":
-                        this._h2();
-                        break;
-                    case "h3":
-                        this._h3();
-                        break;
-                    case "h4":
-                        this._h4();
-                        break;
-                    case "h5":
-                        this._h5();
-                        break;
-                    case "h6":
-                        this._h6();
-                        break;
-                }
             } else {
-                // Set font style.
-                if ((isHeading || ast.bold) && ast.italic) this._boldItalic();
-                else if (isHeading || ast.bold) this._bold();
-                else if (ast.italic) this._italic();
-                else this._normal();
-
-                let text = ast.text;
+                let text = node.text;
                 let textWidth = this._doc.getTextWidth(text);
                 let addNewLine = false;
 
                 // Add bullet character & indentation if needed.
-                if (isListItem) {
+                if (nodeIsBullet) {
                     text = BULLET_ICON + text;
-                    pos += BULLET_INDENTATION;
-                    isListItem = false;
+                    pos += this._bulletIndentation;
+                    nodeIsBullet = false;
 
-                    // handles the indentation of the new line in case of text overflow
+                    // handles indentation of a new line in case of text overflow
                     offset +=
-                        BULLET_INDENTATION +
+                        this._bulletIndentation +
                         this._doc.getTextWidth(BULLET_ICON);
                 }
 
@@ -332,7 +254,7 @@ export class Pdf {
                             subtext += textArr[i] + " ";
                         } else break;
                     }
-                    ast.text = textArr.splice(i).join(" ");
+                    node.setText(textArr.splice(i).join(" "));
                     text = subtext;
                     textWidth = subtextLen;
                     addNewLine = true;
@@ -368,7 +290,7 @@ export class Pdf {
                 }
             }
 
-            if (goToNextNode) ast = ast.next;
+            if (goToNextNode) node = node.next;
         }
 
         return this;
@@ -429,9 +351,41 @@ export class Pdf {
         return this;
     }
 
-    private _splitText(text: string, size: pt): string[] {
-        const arr: string[] = this._doc.splitTextToSize(text, size);
-        return arr;
+    /**
+     * Apply font size & font style based on the node's properties
+     */
+    private _applyStyles(node: Node, isHeading?: boolean): Pdf {
+        if (node.heading !== "none") {
+            // Set font size.
+            switch (node.heading) {
+                case "h1":
+                    this._h1();
+                    break;
+                case "h2":
+                    this._h2();
+                    break;
+                case "h3":
+                    this._h3();
+                    break;
+                case "h4":
+                    this._h4();
+                    break;
+                case "h5":
+                    this._h5();
+                    break;
+                case "h6":
+                    this._h6();
+                    break;
+            }
+        } else {
+            // Set font style.
+            if ((isHeading || node.bold) && node.italic) this._boldItalic();
+            else if (isHeading || node.bold) this._bold();
+            else if (node.italic) this._italic();
+            else this._normal();
+        }
+
+        return this;
     }
 
     // POSITIONAL METHODS
@@ -503,6 +457,10 @@ export class Pdf {
     }
 
     // PUBLIC UTILITY METHODS
+
+    /**
+     * Generates a new jsPDF object & deletes the current one
+     */
     reset() {
         this._doc = new jsPDF(PDF_OPTIONS);
         this._nextYPos = PAGE_MARGIN.Y;
@@ -520,6 +478,9 @@ export class Pdf {
         return true;
     }
 
+    /**
+     * Used as the src for an iframe to display the pdf.
+     */
     getUri(fileName?: string) {
         return this._doc
             ? this._doc.output("datauristring", {

@@ -78,11 +78,9 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
                         Object.keys(modList.sections).length !== 0 ||
                         Object.keys(modList.experiences).length !== 0)
                 ) {
-                    console.log("save begin");
-
                     identifier = setTimeout(() => {
                         saveChanges();
-                        console.log("save end");
+                        console.log("saved");
                     }, 275);
                 } else {
                     console.log("No new changes to save.");
@@ -106,10 +104,6 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
         modList.sections,
         modList.experiences,
     ]);
-
-    // useEffect(() => {
-    //     console.log(modList);
-    // }, [modList]);
 
     /**
      * REDUCER ACTIONS

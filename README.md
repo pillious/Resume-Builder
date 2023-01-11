@@ -5,19 +5,19 @@
 - redesign database: section/exps have order ✔
 - override ctrl+s -> saves file ✔
 - resume tools in a toolbar (changed to toolbar) ✔
-- some kind of icon to show the file is not saved (are you sure you want to leave prompt?) ✖
+- some kind of icon to show the file is not saved (are you sure you want to leave prompt?) (in progress)
 - add ctrl-z/ctrl-y, ctrl-shift-z -> include undo/redo buttons on toolbar ✖
-- authentication (navbar - unauthed login/register - register just goes to the login page) ✖
+- authentication (navbar - unauthed login/register - register just goes to the login page) ✔
 - simple markdown parser ✔
-- build the preview (in progress)
-- generate pdf (generation step: convert markdown like text to pdf) (in progress)
+- build the preview ✔
+- generate pdf (generation step: convert markdown like text to pdf) ✔
     - markdown support: 
     1) bold (text enclosed in **)
     1) italic (text enclosed in _)
     1) headers (starts w/ # ... ######)
     1) bullet (starts w/ *)
 
-TODO: add AST support for right aligned text & fix centering issue in header.
+TODO: fix signin page styles
 
 maybe:
 1) support multiple pages

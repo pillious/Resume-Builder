@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
+// import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import IconButton from "@mui/material/IconButton";
 import ToggleButton from "@mui/material/ToggleButton";
@@ -49,7 +49,7 @@ const Toolbox: React.FC<IProps> = (props) => {
                 rename={props.rename}
                 delete={props.delete}
             />
-            <Button
+            {/* <Button
                 variant="text"
                 size="small"
                 sx={{
@@ -61,7 +61,7 @@ const Toolbox: React.FC<IProps> = (props) => {
                 }}
             >
                 Format
-            </Button>
+            </Button> */}
             <ToggleButton
                 value="Preview"
                 selected={isPreviewActive}
