@@ -7,7 +7,8 @@ import {
     useState,
 } from "react";
 import { useSWRConfig } from "swr";
-import { guid, ModState, ModList } from "../custom2.d";
+import { guid, ModList } from "../types";
+import { ModState } from "../enums";
 import resumeReducer from "../store/ResumeReducer";
 import nanoid from "../utils/guid";
 import AppContext from "../store/AppContext";

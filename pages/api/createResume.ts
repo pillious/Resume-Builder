@@ -4,7 +4,7 @@ import { authOptions } from "./auth/[...nextauth]";
 import FileModel from "../../models/FileModel.model";
 import dbConnect from "../../utils/database";
 import guid from "../../utils/guid";
-import { ApiResponse, IFile } from "../../custom2.d";
+import { ApiResponse, IFile } from "../../types";
 import HeaderModel from "../../models/HeaderModel.model";
 import mongoose, { HydratedDocument } from "mongoose";
 import { FILE_GUID_LEN } from '../../utils/constants';

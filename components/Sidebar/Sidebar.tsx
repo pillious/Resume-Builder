@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { ActiveView } from "../../custom2.d";
+import { ActiveView } from "../../enums";
 import { createTheme, ThemeProvider } from "@mui/material";
 import FileSystemView from "./FileSystemView/FileSystemView";
 import HomeView from "./HomeView/HomeView";

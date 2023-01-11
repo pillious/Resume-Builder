@@ -1,5 +1,5 @@
 import { Schema, model, models } from "mongoose";
-import { IHeader } from "../custom2.d";
+import { IHeader } from "../types";
 import { itemSchema } from './ItemModel.model';
 
 export const headerSchema = new Schema<IHeader>(

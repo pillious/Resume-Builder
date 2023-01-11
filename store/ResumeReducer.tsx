@@ -1,4 +1,4 @@
-import { IFile, IHeader, ISection, IExperience, IItem, guid } from "../custom2";
+import { IFile, IHeader, ISection, IExperience, IItem, guid } from "../types";
 
 type ACTIONTYPE =
     | { type: "setResume"; payload: IFile | null }

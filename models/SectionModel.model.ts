@@ -1,5 +1,5 @@
 import { Schema, model, models } from "mongoose";
-import { ISection } from "../custom2.d";
+import { ISection } from "../types";
 import { experienceSchema } from "./ExperienceModel.model";
 
 export const sectionSchema = new Schema<ISection>(

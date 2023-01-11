@@ -5,7 +5,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Typography from "@mui/material/Typography";
 import AppContext from "../../../store/AppContext";
-import { guid } from "../../../custom2";
+import { guid } from "../../../types";
 import { buildHSLString, pastelHSLColor } from "../../../utils/utils";
 
 interface IProps {

@@ -2,7 +2,7 @@ import Card from "@mui/material/Card";
 import classes from "./Experience.module.css";
 import AddListItem from "./AddListItem";
 import DebouncedTextarea from "../../UI/DebouncedTextarea";
-import { IItem, guid } from "../../../custom2";
+import { IItem, guid } from "../../../types";
 import DeleteExperience from "./DeleteExperience";
 import Date from "./Date";
 import ExperienceList from "./ExperienceList";

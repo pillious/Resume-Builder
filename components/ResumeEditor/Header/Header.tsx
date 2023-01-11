@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import Box from "@mui/material/Box";
 import DebouncedTextarea from "../../UI/DebouncedTextarea";
 import Info from "./Info";
-import { guid, IItem } from "../../../custom2";
+import { guid, IItem } from "../../../types";
 import HeaderButtonGroup from "./HeaderButtonGroup";
 import { sortByOrder } from "../../../utils/utils";
 

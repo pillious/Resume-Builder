@@ -3,7 +3,7 @@ import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "./auth/[...nextauth]";
 import FileModel from "../../models/FileModel.model";
 import dbConnect from "../../utils/database";
-import { ApiResponse, IFile } from "../../custom2.d";
+import { ApiResponse, IFile } from "../../types";
 import { HydratedDocument } from "mongoose";
 import nanoid from "../../utils/guid";
 import { FILE_GUID_LEN } from '../../utils/constants';

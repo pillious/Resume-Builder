@@ -3,7 +3,7 @@ import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "./auth/[...nextauth]";
 import dbConnect from "../../utils/database";
 import UserModel from "../../models/UserModel.model";
-import { ApiResponse, IUser } from "../../custom2.d";
+import { ApiResponse, IUser } from "../../types";
 
 const handler = async (
     req: NextApiRequest,

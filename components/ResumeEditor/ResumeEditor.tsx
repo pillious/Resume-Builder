@@ -11,7 +11,7 @@ import Header from "./Header/Header";
 import Section from "./Section/Section";
 import AuthContext from "../../store/AuthContext";
 import { Reorder } from "framer-motion";
-import { ISection, IExperience, guid } from "../../custom2";
+import { ISection, IExperience, guid } from "../../types";
 import { sortByOrder } from "../../utils/utils";
 
 const ResumeEditor: React.FC = () => {

@@ -18,16 +18,15 @@ export const authOptions: AuthOptions = {
                 const prof: GoogleProfile = profile as GoogleProfile;
                 if (prof.email_verified && prof.email.endsWith("@gmail.com"))
                     return true;
-
-                // if email not verified, redirect.
-                // res.redirect("/auth/verification");
+                else if (!prof.email_verified) return "/auth/verify";
             }
-            return false; // Do different verification for other providers that don't have `email_verified`
+            return false;
         },
     },
     secret: process.env.NEXTAUTH_SECRET,
     pages: {
         signIn: "/auth/signin",
+        verifyRequest: "/auth/verify",
     },
 };
 

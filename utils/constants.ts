@@ -1,5 +1,5 @@
 import { jsPDFOptions } from "jspdf";
-import { pt } from "../custom2";
+import { pt } from "../types";
 
 // GUID
 export const CHARACTER_SET =

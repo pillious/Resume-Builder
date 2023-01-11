@@ -1,5 +1,5 @@
 import { createContext, useState, useMemo, useCallback } from "react";
-import { guid } from "../custom2";
+import { guid } from "../types";
 
 interface IProps {
     children: JSX.Element;

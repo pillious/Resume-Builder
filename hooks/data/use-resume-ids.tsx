@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import { guid } from "../../custom2";
+import { guid } from "../../types";
 import fetcher from "../../utils/fetcher";
 
 const useResumeIds = (userId: guid | null) => {

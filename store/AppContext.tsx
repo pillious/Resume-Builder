@@ -1,6 +1,6 @@
 import { createContext, useState, useCallback, useMemo } from "react";
 import { useSWRConfig } from "swr";
-import { guid, IFile } from "../custom2";
+import { guid, IFile } from "../types";
 import fetcher from "../utils/fetcher";
 import { Pdf } from "../utils/pdfgen";
 

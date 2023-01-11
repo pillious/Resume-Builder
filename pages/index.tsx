@@ -8,8 +8,6 @@ import Sidebar from "../components/Sidebar/Sidebar";
 import AuthContext from "../store/AuthContext";
 import fetcher from "../utils/fetcher";
 
-// import TabList from "../components/TabList/TabList";
-
 const Previewer = dynamic(import("../components/Previewer/Previewer"), {
     ssr: false,
 });
@@ -44,7 +42,6 @@ const Home: NextPage = () => {
                 overflow: "hidden",
             }}
         >
-            {/* <Box><TabList /></Box> */}
             {status === "authenticated" && (
                 <>
                     <Sidebar />

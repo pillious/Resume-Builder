@@ -7,7 +7,7 @@ import {
     IItem,
     pt,
     LexerOptions,
-} from "../custom2";
+} from "../types";
 import { sortByOrder } from "./utils";
 import {
     BULLET_ICON,

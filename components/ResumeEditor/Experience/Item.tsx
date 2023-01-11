@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import DebouncedTextarea from "../../UI/DebouncedTextarea";
-import { guid, IItem } from "../../../custom2";
+import { guid, IItem } from "../../../types";
 import classes from "./Item.module.css";
 import DragIndicator from "../../UI/DragIndicator";
 import { DragControls } from "framer-motion";

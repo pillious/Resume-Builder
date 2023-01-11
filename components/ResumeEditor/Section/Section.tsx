@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
-import { guid } from "../../../custom2";
+import { guid } from "../../../types";
 import DebouncedTextarea from "../../UI/DebouncedTextarea";
 import DeleteSection from "./DeleteSection";
 import AddExperience from "./AddExperience";

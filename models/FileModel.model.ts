@@ -1,5 +1,5 @@
 import { Schema, model, models } from "mongoose";
-import { IFile } from "../custom2.d";
+import { IFile } from "../types";
 import { headerSchema } from './HeaderModel.model';
 import { sectionSchema } from "./SectionModel.model";
 

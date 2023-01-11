@@ -1,21 +1,5 @@
-// import { Token } from "../../custom2";
-
-import { LexerOptions } from "../../custom2";
-
-enum Token {
-    TOK_BULLET = "TOK_BULLET",
-    TOK_BOLD = "TOK_BOLD",
-    TOK_BOLD_END = "TOK_BOLD_END",
-    TOK_ITALIC = "TOK_ITALIC",
-    TOK_ITALIC_END = "TOK_ITALIC_END",
-    TOK_STRING = "TOK_STRING", // TOK_STRING must be immedeatly followed by a string.
-    TOK_H1 = "TOK_H1",
-    TOK_H2 = "TOK_H2",
-    TOK_H3 = "TOK_H3",
-    TOK_H4 = "TOK_H4",
-    TOK_H5 = "TOK_H5",
-    TOK_H6 = "TOK_H6",
-}
+import { Token } from "../../enums";
+import { LexerOptions } from "../../types";
 
 const BULLET_RE = /^\* /;
 const H1_RE = /^# /;

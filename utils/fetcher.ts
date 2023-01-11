@@ -1,4 +1,4 @@
-import { ApiResponse } from "../custom2";
+import { ApiResponse } from "../types";
 
 export default async function fetcher(
     url: RequestInfo,
