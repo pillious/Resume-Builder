@@ -120,6 +120,11 @@ type ApiResponseError = {
 //     TOK_H6 = "TOK_H6",
 // }
 
+export type LexerOptions = {
+    allowBullets?: boolean;
+    allowHeadings?: boolean;
+};
+
 // Sidebar views
 export enum ActiveView {
     HomeView = 0,

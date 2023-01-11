@@ -1,26 +1,28 @@
 # TODO:
 - change toolbox to a toolbar across the top of the resume editor (think about mobile design) ✔
 - drop and drop ordering ✔
-- build the preview (in progress)
 - bug: file viewer not updating after renaming. ✔
 - redesign database: section/exps have order ✔
 - override ctrl+s -> saves file ✔
 - resume tools in a toolbar (changed to toolbar) ✔
-- some kind of icon to show the file is not saved (are you sure you want to leave prompt?)
+- some kind of icon to show the file is not saved (are you sure you want to leave prompt?) ✖
 - add ctrl-z/ctrl-y, ctrl-shift-z -> include undo/redo buttons on toolbar ✖
 - authentication (navbar - unauthed login/register - register just goes to the login page) ✖
-- generate pdf (generation step: convert markdown like text to pdf) ✖
+- simple markdown parser ✔
+- build the preview (in progress)
+- generate pdf (generation step: convert markdown like text to pdf) (in progress)
     - markdown support: 
-    1) bold (text enclosed in __text__ or **text**)
-    1) italic (text enclosed in _text_ or *text*)
-    1) headers (starts w/ # - #x6)
-    1) bullet (starts w/ * or -)
-- simple markdown parser ✖
+    1) bold (text enclosed in **)
+    1) italic (text enclosed in _)
+    1) headers (starts w/ # ... ######)
+    1) bullet (starts w/ *)
+
+TODO: add AST support for right aligned text & fix centering issue in header.
 
 maybe:
+1) support multiple pages
 1) links (`[text](http://a.com)`)
 1) images (`![alt](cat.png)`)
-1) (new page)?
 
 Ideas (future):
 1) Allow pdfs to be viewed on a public link

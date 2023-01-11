@@ -18,11 +18,10 @@ export const PAGE_MARGIN: { X: pt; Y: pt } = {
     X: 36, // 0.5 in
     Y: 36, // 0.5 in
 };
-export const BULLET_TEXT = "* ";
 export const BULLET_ICON = "• ";
 export const DIVIDER = " | ";
 export const BULLET_INDENTATION: pt = 15;
-export const DEFAULT_FONT_SIZE: pt = 10.5;
+export const DEFAULT_FONT_SIZE: pt = 11;
 export const DEFAULT_LINE_SPACING: pt = 4;
 export const FONT_SIZE_MULTIPLIER = {
     H1: 2,

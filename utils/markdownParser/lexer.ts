@@ -1,5 +1,7 @@
 // import { Token } from "../../custom2";
 
+import { LexerOptions } from "../../custom2";
+
 enum Token {
     TOK_BULLET = "TOK_BULLET",
     TOK_BOLD = "TOK_BOLD",
@@ -29,8 +31,20 @@ const ITALIC_RE = /(?:_)/;
 /**
  * Converts a string into an array of tokens.
  */
-const lexer = (input: string): (Token | string)[] => {
+const lexer = (input: string, options?: LexerOptions): (Token | string)[] => {
     if (input === "") return [];
+
+    // Options default to true if not specified.
+    const allowBullets = options
+        ? options.allowBullets === undefined
+            ? true
+            : options.allowBullets
+        : true;
+    const allowHeadings = options
+        ? options.allowHeadings === undefined
+            ? true
+            : options.allowHeadings
+        : true;
 
     const tokens: (Token | string)[] = [];
 
@@ -38,27 +52,29 @@ const lexer = (input: string): (Token | string)[] => {
     let italicCount = 0; // track number of TOK_ITALIC/TOK_ITALIC_END
 
     // bullets & headers are only allowed to appear at the beginning of the string
-    if (input.search(BULLET_RE) === 0) {
+    if (input.search(BULLET_RE) === 0 && allowBullets) {
         tokens.push(Token.TOK_BULLET);
         input = input.substring(2);
-    } else if (input.search(H6_RE) === 0) {
-        tokens.push(Token.TOK_H6);
-        input = input.substring(7);
-    } else if (input.search(H5_RE) === 0) {
-        tokens.push(Token.TOK_H5);
-        input = input.substring(6);
-    } else if (input.search(H4_RE) === 0) {
-        tokens.push(Token.TOK_H4);
-        input = input.substring(5);
-    } else if (input.search(H3_RE) === 0) {
-        tokens.push(Token.TOK_H3);
-        input = input.substring(4);
-    } else if (input.search(H2_RE) === 0) {
-        tokens.push(Token.TOK_H2);
-        input = input.substring(3);
-    } else if (input.search(H1_RE) === 0) {
-        tokens.push(Token.TOK_H1);
-        input = input.substring(2);
+    } else if (allowHeadings) {
+        if (input.search(H6_RE) === 0) {
+            tokens.push(Token.TOK_H6);
+            input = input.substring(7);
+        } else if (input.search(H5_RE) === 0) {
+            tokens.push(Token.TOK_H5);
+            input = input.substring(6);
+        } else if (input.search(H4_RE) === 0) {
+            tokens.push(Token.TOK_H4);
+            input = input.substring(5);
+        } else if (input.search(H3_RE) === 0) {
+            tokens.push(Token.TOK_H3);
+            input = input.substring(4);
+        } else if (input.search(H2_RE) === 0) {
+            tokens.push(Token.TOK_H2);
+            input = input.substring(3);
+        } else if (input.search(H1_RE) === 0) {
+            tokens.push(Token.TOK_H1);
+            input = input.substring(2);
+        }
     }
 
     // Recursive helper function (tokenizes bold, italics, text)
