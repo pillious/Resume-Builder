@@ -5,6 +5,7 @@ import { guid, IItem } from "../../../types";
 import classes from "./Item.module.css";
 import DragIndicator from "../../UI/DragIndicator";
 import { DragControls } from "framer-motion";
+import { useTheme } from "@mui/material";
 
 interface IProps {
     item: IItem;
@@ -22,13 +23,18 @@ interface IProps {
 }
 
 const Item: React.FC<IProps> = (props) => {
+    const theme = useTheme();
+
     return (
-        <div
+        <Box
             className={classes.list_item_wrapper}
             data-are-tools-active={props.areToolsActive}
+            sx={{ width: "100%", display: "flex", alignItems: "center" }}
         >
             <Box
                 sx={{
+                    width: "100%",
+                    position: "relative",
                     "& .MuiInput-root": {
                         width: "100%",
                     },
@@ -46,7 +52,12 @@ const Item: React.FC<IProps> = (props) => {
                             content
                         );
                     }}
-                    sx={{ fontSize: "0.9rem" }}
+                    sx={{
+                        fontSize: "0.9rem",
+                        "&:hover": {
+                            bgcolor: `${theme.palette.overlay} !important`,
+                        },
+                    }}
                 />
                 {props.areToolsActive && (
                     <div
@@ -68,6 +79,15 @@ const Item: React.FC<IProps> = (props) => {
             </Box>
             <ListItemIcon
                 className={classes.list_style}
+                sx={{
+                    transition: "1s content",
+                    width: "calc(6.5px + 0.5rem)",
+                    minWidth: "unset !important",
+                    cursor: "pointer",
+                    "&::before": {
+                        content: "''",
+                    },
+                }}
                 onClick={() =>
                     props.deleteItem(
                         props.sectionId,
@@ -76,7 +96,7 @@ const Item: React.FC<IProps> = (props) => {
                     )
                 }
             />
-        </div>
+        </Box>
     );
 };
 
