@@ -7,7 +7,7 @@ import guid from "../../utils/guid";
 import { ApiResponse, IFile } from "../../types";
 import HeaderModel from "../../models/HeaderModel.model";
 import mongoose, { HydratedDocument } from "mongoose";
-import { FILE_GUID_LEN } from '../../utils/constants';
+import { FILE_GUID_LEN } from "../../utils/constants";
 
 const handler = async (
     req: NextApiRequest,
@@ -51,7 +51,7 @@ const handler = async (
                         .then(() =>
                             res.status(200).json({
                                 data: {
-                                    message: "Successfully created file.",
+                                    id: doc.id,
                                 },
                             })
                         )

@@ -1,16 +1,11 @@
 import { useContext, useEffect } from "react";
 import type { NextPage } from "next";
-import dynamic from "next/dynamic";
 import { useSession, signIn } from "next-auth/react";
 import Box from "@mui/material/Box";
-import ResumeEditor from "../components/ResumeEditor/ResumeEditor";
 import Sidebar from "../components/Sidebar/Sidebar";
 import AuthContext from "../store/AuthContext";
 import fetcher from "../utils/fetcher";
-
-const Previewer = dynamic(import("../components/Previewer/Previewer"), {
-    ssr: false,
-});
+import Main from "../components/Main/Main";
 
 const Home: NextPage = () => {
     const { data: session, status } = useSession();
@@ -45,8 +40,7 @@ const Home: NextPage = () => {
             {status === "authenticated" && (
                 <>
                     <Sidebar />
-                    <ResumeEditor />
-                    <Previewer />
+                    <Main />
                 </>
             )}
         </Box>

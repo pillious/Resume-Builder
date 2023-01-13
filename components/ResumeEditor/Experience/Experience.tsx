@@ -10,6 +10,7 @@ import { Reorder, useDragControls } from "framer-motion";
 import Overlay from "../../UI/Overlay";
 import { useState } from "react";
 import DragIndicator from "../../UI/DragIndicator";
+import { Divider } from "@mui/material";
 
 interface IProps {
     id: guid;
@@ -78,7 +79,7 @@ const Experience: React.FC<IProps> = (props) => {
                         sx={{
                             borderBottom: "1px solid #bbb",
                             backgroundColor: "#f5f5f5",
-                            width: "35%",
+                            width: "max(40%, 300px)",
                             pl: "0.5rem",
                             justifySelf: "left",
                             "&:hover": {
@@ -103,6 +104,11 @@ const Experience: React.FC<IProps> = (props) => {
                                 addItem={() =>
                                     props.addItem(props.sectionId, props.id)
                                 }
+                            />
+                            <Divider
+                                orientation="vertical"
+                                flexItem
+                                sx={{ my: 1 }}
                             />
                             <DeleteExperience
                                 deleteExperience={() =>

@@ -12,7 +12,7 @@ import Section from "./Section/Section";
 import AuthContext from "../../store/AuthContext";
 import { Reorder } from "framer-motion";
 import { ISection, IExperience, guid } from "../../types";
-import { sortByOrder, unsavedChangesConfirmation } from "../../utils/utils";
+import { sortByOrder } from "../../utils/utils";
 
 const ResumeEditor: React.FC = () => {
     const {
@@ -54,14 +54,20 @@ const ResumeEditor: React.FC = () => {
 
     // Confirmation when user closes tab while there are unsaved changes.
     useEffect(() => {
-        window.addEventListener("beforeunload", unsavedChangesConfirmation);
+        const confirmation = (e: BeforeUnloadEvent) => {
+            const confirmationMessage =
+                "The changes you've made will not be saved.";
+
+            (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+            return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+        };
+
+        if (hasUnsavedChanges)
+            window.addEventListener("beforeunload", confirmation);
+        else window.removeEventListener("beforeUnload", confirmation);
 
         // Clean up function
-        return () =>
-            window.removeEventListener(
-                "beforeUnload",
-                unsavedChangesConfirmation
-            );
+        return () => window.removeEventListener("beforeUnload", confirmation);
     }, [hasUnsavedChanges]);
 
     const sections: ISection[] | undefined = resume
@@ -107,7 +113,7 @@ const ResumeEditor: React.FC = () => {
                             sx={{
                                 p: "1rem",
                                 m: "auto",
-                                maxWidth: "816px",
+                                maxWidth: "1000px",
                                 minHeight: "100%",
                                 border: "1px solid #eee",
                             }}

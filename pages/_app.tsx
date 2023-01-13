@@ -7,6 +7,7 @@ import { AppContextProvider } from "../store/AppContext";
 import { AuthContextProvider } from "../store/AuthContext";
 import Box from "@mui/material/Box";
 import Navbar from "../components/Navbar/Navbar";
+import AppThemeProvider from "../components/Theme";
 
 const App = ({
     Component,
@@ -16,17 +17,19 @@ const App = ({
         <SessionProvider session={session}>
             <AuthContextProvider>
                 <AppContextProvider>
-                    <Box
-                        sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            width: "100%",
-                            height: "100%",
-                        }}
-                    >
-                        <Navbar />
-                        <Component {...pageProps} />
-                    </Box>
+                    {/* <AppThemeProvider> */}
+                        <Box
+                            sx={{
+                                display: "flex",
+                                flexDirection: "column",
+                                width: "100%",
+                                height: "100%",
+                            }}
+                        >
+                            <Navbar />
+                            <Component {...pageProps} />
+                        </Box>
+                    {/* </AppThemeProvider> */}
                 </AppContextProvider>
             </AuthContextProvider>
         </SessionProvider>

@@ -1,11 +1,11 @@
 import Box from "@mui/material/Box";
-// import Button from "@mui/material/Button";
+import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import IconButton from "@mui/material/IconButton";
 import ToggleButton from "@mui/material/ToggleButton";
 import Divider from "@mui/material/Divider";
-import UndoIcon from "@mui/icons-material/Undo";
-import RedoIcon from "@mui/icons-material/Redo";
+// import UndoIcon from "@mui/icons-material/Undo";
+// import RedoIcon from "@mui/icons-material/Redo";
 import SaveIcon from "@mui/icons-material/Save";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
@@ -75,8 +75,21 @@ const Toolbox: React.FC<IProps> = (props) => {
                     border: "none",
                 }}
             >
-                Preview
+                Preview PDF
             </ToggleButton>
+            <Button
+                variant="text"
+                size="small"
+                sx={{
+                    fontSize: "0.875rem",
+                    px: "4px",
+                    textTransform: "capitalize",
+                    minWidth: "32px",
+                    color: "#000",
+                }}
+            >
+                Help
+            </Button>
             <Divider orientation="vertical" flexItem />
             <IconButton sx={{ p: "4px" }} title="save" onClick={props.save}>
                 <SaveIcon fontSize="small" />
@@ -99,7 +112,7 @@ const Toolbox: React.FC<IProps> = (props) => {
                 )}
             </AnimatePresence>
             <Divider orientation="vertical" flexItem />
-            <div>
+            {/* <div>
                 <IconButton
                     sx={{ p: "4px" }}
                     title="undo"
@@ -115,7 +128,7 @@ const Toolbox: React.FC<IProps> = (props) => {
                     <RedoIcon fontSize="small" />
                 </IconButton>
             </div>
-            <Divider orientation="vertical" flexItem />
+            <Divider orientation="vertical" flexItem /> */}
             <ToggleButton
                 value="ToggleTools"
                 selected={!areToolsActive}

@@ -88,6 +88,7 @@ type ApiResponseSuccess = {
         | { files: IFile[] }
         | { fileIdentifiers: { name: string; id: guid }[] }
         | { message: string }
+        | { id: guid }
         | { user: IUser | Record<string, never> };
 };
 

@@ -6,7 +6,6 @@
 - override ctrl+s -> saves file ✔
 - resume tools in a toolbar (changed to toolbar) ✔
 - some kind of icon to show the file is not saved (are you sure you want to leave prompt?) ✔
-- add ctrl-z/ctrl-y, ctrl-shift-z -> include undo/redo buttons on toolbar ✖
 - authentication (navbar - unauthed login/register - register just goes to the login page) ✔
 - simple markdown parser ✔
 - build the preview ✔
@@ -16,8 +15,7 @@
     1) italic (text enclosed in _)
     1) headers (starts w/ # ... ######)
     1) bullet (starts w/ *)
-
-TODO: fix signin page styles
+- fix signin page styles ✔
 
 maybe:
 1) support multiple pages
@@ -28,6 +26,8 @@ Ideas (future):
 1) Allow pdfs to be viewed on a public link
 - toggle resumes between public/private.
 - changes to resume auto pushed to live link (if public)
+
+1) Add ctrl-z/ctrl-y, ctrl-shift-z -> include undo/redo buttons on toolbar
 
 1) Terminal:
 - put resume reducer into context, so that commands can be sent from terminal.

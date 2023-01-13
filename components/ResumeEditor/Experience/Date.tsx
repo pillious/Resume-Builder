@@ -15,13 +15,14 @@ const Date: React.FC<IProps> = ({ startDate, endDate, updateDate }) => {
                 gap: "0.5rem",
                 alignItems: "center",
                 marginLeft: "auto",
+                width: "clamp(150px, 25%, 300px)",
             }}
         >
             <DebouncedTextarea
                 sx={{
                     borderBottom: "1px solid #bbb",
                     fontSize: "0.9rem",
-                    maxWidth: "64px",
+                    minWidth: "64px",
                     "&:hover": {
                         backgroundColor: "#ddd",
                     },
@@ -37,7 +38,7 @@ const Date: React.FC<IProps> = ({ startDate, endDate, updateDate }) => {
                 sx={{
                     borderBottom: "1px solid #bbb",
                     fontSize: "0.9rem",
-                    maxWidth: "64px",
+                    minWidth: "64px",
                     "&:hover": {
                         backgroundColor: "#ddd",
                     },

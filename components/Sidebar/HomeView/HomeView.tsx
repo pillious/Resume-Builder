@@ -1,15 +1,15 @@
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import TerminalIcon from "@mui/icons-material/Terminal";
+// import ListItem from "@mui/material/ListItem";
+// import ListItemButton from "@mui/material/ListItemButton";
+// import ListItemIcon from "@mui/material/ListItemIcon";
+// import TerminalIcon from "@mui/icons-material/Terminal";
 import CreateButton from "./CreateButton";
 import FileSystemButton from "./FileSystemButton";
-import { Tooltip } from "@mui/material";
+// import { Tooltip } from "@mui/material";
 
-const iconSize = 32;
+// const iconSize = 32;
 const drawerWidth = 48;
 
 interface IProps {
@@ -41,7 +41,7 @@ const HomeView: React.FC<IProps> = ({ openFileSystem }) => {
 
                     <FileSystemButton open={openFileSystem} />
 
-                    <ListItem disablePadding>
+                    {/* <ListItem disablePadding>
                         <Tooltip title="Terminal" placement="right">
                             <ListItemButton
                                 sx={{
@@ -56,7 +56,7 @@ const HomeView: React.FC<IProps> = ({ openFileSystem }) => {
                                 </ListItemIcon>
                             </ListItemButton>
                         </Tooltip>
-                    </ListItem>
+                    </ListItem> */}
                 </List>
             </Drawer>
         </Box>

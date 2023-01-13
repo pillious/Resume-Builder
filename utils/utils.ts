@@ -8,11 +8,3 @@ export const buildHSLString = (vals: number[]) =>
 // Sort array of objects by "order" property in ascending order.
 export const sortByOrder = <T extends { order: number }>(arr: T[]): T[] =>
     arr.sort((prev, curr) => prev.order - curr.order);
-
-export const unsavedChangesConfirmation = (e: BeforeUnloadEvent) => {
-    const confirmationMessage =
-        "The changes you've made will not be saved.";
-
-    (e || window.event).returnValue = confirmationMessage; //Gecko + IE
-    return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
-};

@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
+import { Divider } from "@mui/material";
 
 interface IProps {
     providers: Provider[];
@@ -19,35 +20,42 @@ const SignIn: React.FC<IProps> = ({ providers }) => {
                 height: "100%",
                 display: "flex",
                 justifyContent: "center",
-                alignContent: "center",
+                alignItems: "center",
             }}
         >
-            <Paper sx={{ height: "20%" }}>
-                <Box>
-                    <AdbIcon sx={{ mx: 1 }} />
+            <Paper sx={{ p: 5 }}>
+                <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                    }}
+                >
+                    <AdbIcon sx={{ m: "auto" }} fontSize="large" />
                     <Typography
                         variant="h6"
                         noWrap
-                        component="a"
-                        href="/"
                         sx={{
-                            mr: 2,
                             fontFamily: "monospace",
                             fontWeight: 700,
-                            letterSpacing: ".3rem",
+                            fontSize: 24,
+                            letterSpacing: ".15rem",
                             color: "inherit",
                             textDecoration: "none",
+                            textAlign: "center",
                         }}
                     >
-                        LOGO
+                        Resume App
                     </Typography>
                 </Box>
+                <Divider flexItem sx={{ my: 2 }} />
+
                 {Object.values(providers).map((provider) => (
                     <Button
                         onClick={() => signIn(provider.id)}
-                        variant="outlined"
-                        startIcon={<GoogleIcon htmlColor="#333" />}
+                        variant="contained"
+                        startIcon={<GoogleIcon />}
                         key={provider.name}
+                        sx={{ mx: 1, borderRadius: "2rem" }}
                     >
                         Sign in with {provider.name}
                     </Button>
