@@ -1,4 +1,3 @@
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import IconButton from "@mui/material/IconButton";
@@ -13,6 +12,7 @@ import FileMenu from "./FileMenu";
 import { useContext } from "react";
 import AppContext from "../../../store/AppContext";
 import { AnimatePresence, motion } from "framer-motion";
+import { Paper, useTheme } from "@mui/material";
 
 interface IProps {
     fileName: string;
@@ -29,15 +29,17 @@ const Toolbox: React.FC<IProps> = (props) => {
     const { isPreviewActive, toggleTools, areToolsActive, isNavActive } =
         useContext(AppContext);
 
+    const theme = useTheme();
+
     return (
-        <Box
+        <Paper
             sx={{
                 height: "38px",
                 display: "flex",
                 gap: 0.5,
-                p: "6px 1rem",
+                p: "4px 1rem",
                 pl: `${!isNavActive ? "2.5rem" : "1rem"}`,
-                borderBottom: "1px solid #eee",
+                borderRadius: 0,
             }}
         >
             {!isNavActive && <Divider orientation="vertical" flexItem />}
@@ -49,19 +51,6 @@ const Toolbox: React.FC<IProps> = (props) => {
                 rename={props.rename}
                 delete={props.delete}
             />
-            {/* <Button
-                variant="text"
-                size="small"
-                sx={{
-                    fontSize: "0.875rem",
-                    px: "4px",
-                    textTransform: "capitalize",
-                    minWidth: "32px",
-                    color: "#000",
-                }}
-            >
-                Format
-            </Button> */}
             <ToggleButton
                 value="Preview"
                 selected={isPreviewActive}
@@ -70,8 +59,6 @@ const Toolbox: React.FC<IProps> = (props) => {
                     fontSize: "0.875rem",
                     px: "4px",
                     textTransform: "capitalize",
-                    minWidth: "32px",
-                    color: "#000",
                     border: "none",
                 }}
             >
@@ -85,13 +72,18 @@ const Toolbox: React.FC<IProps> = (props) => {
                     px: "4px",
                     textTransform: "capitalize",
                     minWidth: "32px",
-                    color: "#000",
+                    color: theme.palette.white,
+                    "&:hover": { backgroundColor: "rgba(255, 255, 255, 0.08)" },
                 }}
             >
                 Help
             </Button>
             <Divider orientation="vertical" flexItem />
-            <IconButton sx={{ p: "4px" }} title="save" onClick={props.save}>
+            <IconButton
+                sx={{ p: "4px", borderRadius: "4px" }}
+                title="Save"
+                onClick={props.save}
+            >
                 <SaveIcon fontSize="small" />
             </IconButton>
             <AnimatePresence>
@@ -127,12 +119,11 @@ const Toolbox: React.FC<IProps> = (props) => {
                 >
                     <RedoIcon fontSize="small" />
                 </IconButton>
-            </div>
-            <Divider orientation="vertical" flexItem /> */}
+            </div> */}
             <ToggleButton
                 value="ToggleTools"
                 selected={!areToolsActive}
-                title={areToolsActive ? "hide tools" : "show tools"}
+                title={areToolsActive ? "Hide Tools" : "Show Tools"}
                 onChange={toggleTools}
                 sx={{
                     px: "4px",
@@ -146,7 +137,7 @@ const Toolbox: React.FC<IProps> = (props) => {
                     <VisibilityOffIcon fontSize="small" />
                 )}
             </ToggleButton>
-        </Box>
+        </Paper>
     );
 };
 

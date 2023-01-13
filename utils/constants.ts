@@ -1,6 +1,11 @@
 import { jsPDFOptions } from "jspdf";
 import { pt } from "../types";
 
+// UI
+export const navHeight = 48;
+export const homeDrawerWidth = 48;
+export const filesDrawerWidth = 160;
+
 // GUID
 export const CHARACTER_SET =
     "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";

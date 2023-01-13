@@ -65,7 +65,6 @@ const FileItem: React.FC<IProps> = ({
                     </ListItemIcon>
                     <Typography
                         fontWeight={600}
-                        color="rgb(80,80,80)"
                         fontSize="0.875rem"
                     >
                         {name}

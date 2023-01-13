@@ -25,7 +25,7 @@ const HeaderButtonGroup: React.FC<IProps> = (props) => {
                     },
                 }}
                 size="small"
-                color="info"
+                color="primary"
                 aria-label="add"
                 onClick={props.addHeaderInfo}
             >
@@ -44,7 +44,7 @@ const HeaderButtonGroup: React.FC<IProps> = (props) => {
                     },
                 }}
                 size="small"
-                color="warning"
+                color="error"
                 aria-label="remove"
                 onClick={props.deleteHeaderInfo}
             >

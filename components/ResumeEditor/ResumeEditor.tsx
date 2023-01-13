@@ -2,7 +2,6 @@ import { useRef, useContext, useEffect } from "react";
 import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
 import AddSection from "./Section/AddSection";
-import classes from "./ResumeEditor.module.css";
 import Experience from "./Experience/Experience";
 import Toolbox from "./Toolbox/Toolbox";
 import useResumeState from "../../hooks/use-resume-state";
@@ -13,8 +12,12 @@ import AuthContext from "../../store/AuthContext";
 import { Reorder } from "framer-motion";
 import { ISection, IExperience, guid } from "../../types";
 import { sortByOrder } from "../../utils/utils";
+import { Paper, useTheme } from "@mui/material";
 
 const ResumeEditor: React.FC = () => {
+    const sectionRef = useRef<HTMLBaseElement>(null);
+    const theme = useTheme();
+
     const {
         activeResumeId,
         renameFile,
@@ -26,8 +29,6 @@ const ResumeEditor: React.FC = () => {
     } = useContext(AppContext);
 
     const { userId } = useContext(AuthContext);
-
-    const sectionRef = useRef<HTMLBaseElement>(null);
 
     const {
         resume,
@@ -75,7 +76,11 @@ const ResumeEditor: React.FC = () => {
         : undefined;
 
     return (
-        <main className={classes.section} tabIndex={-1} ref={sectionRef}>
+        <Box
+            tabIndex={-1}
+            ref={sectionRef}
+            sx={{ position: "relative", height: "100%", flex: 1 }}
+        >
             {resume && (
                 <>
                     <Toolbox
@@ -109,13 +114,13 @@ const ResumeEditor: React.FC = () => {
                             height: "calc(100% - 34px)",
                         }}
                     >
-                        <Box
+                        <Paper
                             sx={{
                                 p: "1rem",
                                 m: "auto",
                                 maxWidth: "1000px",
                                 minHeight: "100%",
-                                border: "1px solid #eee",
+                                border: `1px solid ${theme.palette.divider}`,
                             }}
                         >
                             <Header
@@ -208,11 +213,11 @@ const ResumeEditor: React.FC = () => {
                             {areToolsActive && (
                                 <AddSection addSection={addSection} />
                             )}
-                        </Box>
+                        </Paper>
                     </Box>
                 </>
             )}
-        </main>
+        </Box>
     );
 };
 

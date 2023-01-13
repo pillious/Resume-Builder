@@ -5,7 +5,6 @@ import { guid, IItem } from "../../../types";
 import classes from "./Item.module.css";
 import DragIndicator from "../../UI/DragIndicator";
 import { DragControls } from "framer-motion";
-import { useMediaQuery } from "@mui/material";
 
 interface IProps {
     item: IItem;
@@ -23,8 +22,6 @@ interface IProps {
 }
 
 const Item: React.FC<IProps> = (props) => {
-    const matches = useMediaQuery("(max-width: 800px)");
-
     return (
         <div
             className={classes.list_item_wrapper}
@@ -49,7 +46,7 @@ const Item: React.FC<IProps> = (props) => {
                             content
                         );
                     }}
-                    sx={{ fontSize: `${matches ? "0.75rem" : "0.9rem"}` }}
+                    sx={{ fontSize: "0.9rem" }}
                 />
                 {props.areToolsActive && (
                     <div

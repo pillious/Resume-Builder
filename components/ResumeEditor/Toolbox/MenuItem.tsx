@@ -24,7 +24,6 @@ const MenuItem: React.FC<IProps> = (props) => {
                         px: "1rem",
                         textTransform: "capitalize",
                         minWidth: "32px",
-                        color: "#000",
                     },
                 }}
             >

@@ -7,13 +7,15 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
-import { Divider } from "@mui/material";
+import { Divider, useTheme } from "@mui/material";
 
 interface IProps {
     providers: Provider[];
 }
 
 const SignIn: React.FC<IProps> = ({ providers }) => {
+    const theme = useTheme();
+
     return (
         <Box
             sx={{
@@ -30,7 +32,11 @@ const SignIn: React.FC<IProps> = ({ providers }) => {
                         flexDirection: "column",
                     }}
                 >
-                    <AdbIcon sx={{ m: "auto" }} fontSize="large" />
+                    <AdbIcon
+                        sx={{ m: "auto" }}
+                        fontSize="large"
+                        htmlColor={theme.palette.info.main}
+                    />
                     <Typography
                         variant="h6"
                         noWrap
@@ -39,9 +45,9 @@ const SignIn: React.FC<IProps> = ({ providers }) => {
                             fontWeight: 700,
                             fontSize: 24,
                             letterSpacing: ".15rem",
-                            color: "inherit",
                             textDecoration: "none",
                             textAlign: "center",
+                            color: theme.palette.info.main,
                         }}
                     >
                         Resume App
@@ -53,6 +59,7 @@ const SignIn: React.FC<IProps> = ({ providers }) => {
                     <Button
                         onClick={() => signIn(provider.id)}
                         variant="contained"
+                        color="secondary"
                         startIcon={<GoogleIcon />}
                         key={provider.name}
                         sx={{ mx: 1, borderRadius: "2rem" }}

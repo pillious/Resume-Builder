@@ -1,40 +1,8 @@
 import React, { useContext, useState } from "react";
 import { ActiveView } from "../../enums";
-import { createTheme, ThemeProvider } from "@mui/material";
 import FileSystemView from "./FileSystemView/FileSystemView";
 import HomeView from "./HomeView/HomeView";
 import AppContext from "../../store/AppContext";
-
-const theme = createTheme({
-    typography: {
-        fontFamily: "Segoe UI",
-        fontSize: 13,
-    },
-    components: {
-        MuiCssBaseline: {
-            styleOverrides: `
-                @font-face {
-                    font-family: SegoeUI;
-                    src:
-                        local("Segoe UI"),
-                        url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/normal/latest.woff2) format("woff2"),
-                        url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/normal/latest.woff) format("woff"),
-                        url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/normal/latest.ttf) format("truetype");
-                    font-weight: 400;
-                },
-                @font-face {
-                    font-family: SegoeUI;
-                    src:
-                        local("Segoe UI Semibold"),
-                        url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/semibold/latest.woff2) format("woff2"),
-                        url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/semibold/latest.woff) format("woff"),
-                        url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/semibold/latest.ttf) format("truetype");
-                    font-weight: 600;
-                }
-        `,
-        },
-    },
-});
 
 const Sidebar: React.FC = () => {
     const { isNavActive } = useContext(AppContext);
@@ -63,11 +31,7 @@ const Sidebar: React.FC = () => {
             break;
     }
 
-    return (
-        <>
-            {isNavActive && <ThemeProvider theme={theme}>{view}</ThemeProvider>}
-        </>
-    );
+    return <>{isNavActive && view}</>;
 };
 
 export default Sidebar;

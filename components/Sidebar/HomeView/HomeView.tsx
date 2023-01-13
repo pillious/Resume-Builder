@@ -1,16 +1,9 @@
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
-// import ListItem from "@mui/material/ListItem";
-// import ListItemButton from "@mui/material/ListItemButton";
-// import ListItemIcon from "@mui/material/ListItemIcon";
-// import TerminalIcon from "@mui/icons-material/Terminal";
 import CreateButton from "./CreateButton";
 import FileSystemButton from "./FileSystemButton";
-// import { Tooltip } from "@mui/material";
-
-// const iconSize = 32;
-const drawerWidth = 48;
+import { homeDrawerWidth, navHeight } from "../../../utils/constants";
 
 interface IProps {
     openFileSystem: () => void;
@@ -25,22 +18,20 @@ const HomeView: React.FC<IProps> = ({ openFileSystem }) => {
         >
             <Drawer
                 sx={{
-                    width: drawerWidth,
+                    width: homeDrawerWidth,
                     flexShrink: 0,
                     "& .MuiDrawer-paper": {
-                        width: drawerWidth,
-                        boxSizing: "border-box",
-                        mt: "48px", //height of navbar
+                        width: homeDrawerWidth,
+                        mt: `${navHeight}px`,
+                        bgcolor: "#1e1e1e",
                     },
                 }}
                 variant="permanent"
                 anchor="left"
             >
                 <List>
-                    <CreateButton />
-
                     <FileSystemButton open={openFileSystem} />
-
+                    <CreateButton />
                     {/* <ListItem disablePadding>
                         <Tooltip title="Terminal" placement="right">
                             <ListItemButton

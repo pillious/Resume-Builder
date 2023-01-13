@@ -1,5 +1,4 @@
 import Card from "@mui/material/Card";
-import classes from "./Experience.module.css";
 import AddListItem from "./AddListItem";
 import DebouncedTextarea from "../../UI/DebouncedTextarea";
 import { IItem, guid } from "../../../types";
@@ -10,7 +9,7 @@ import { Reorder, useDragControls } from "framer-motion";
 import Overlay from "../../UI/Overlay";
 import { useState } from "react";
 import DragIndicator from "../../UI/DragIndicator";
-import { Divider } from "@mui/material";
+import { Box, Divider, useTheme } from "@mui/material";
 
 interface IProps {
     id: guid;
@@ -49,6 +48,7 @@ interface IProps {
 
 const Experience: React.FC<IProps> = (props) => {
     const controls = useDragControls();
+    const theme = useTheme();
 
     const [showOverlay, setShowOverlay] = useState<boolean>(false);
 
@@ -60,8 +60,8 @@ const Experience: React.FC<IProps> = (props) => {
             style={{ listStyle: "none", position: "relative" }}
         >
             <Overlay show={showOverlay} />
-            <Card elevation={0} className={classes.Card}>
-                <div className={classes.top}>
+            <Card elevation={2} sx={{ mt: 1 }}>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
                     {props.areToolsActive && (
                         <div
                             onPointerDown={(e) => {
@@ -70,20 +70,20 @@ const Experience: React.FC<IProps> = (props) => {
                             }}
                             onPointerOver={() => setShowOverlay(true)}
                             onPointerLeave={() => setShowOverlay(false)}
-                            style={{ zIndex: 2 }}
+                            style={{ zIndex: 3 }}
                         >
                             <DragIndicator />
                         </div>
                     )}
                     <DebouncedTextarea
                         sx={{
-                            borderBottom: "1px solid #bbb",
-                            backgroundColor: "#f5f5f5",
+                            borderBottom: `1px solid ${theme.palette.divider}`,
                             width: "max(40%, 300px)",
-                            pl: "0.5rem",
+                            pl: 1,
+                            mb: 1,
                             justifySelf: "left",
                             "&:hover": {
-                                backgroundColor: "#ddd",
+                                backgroundColor: theme.palette.overlay,
                             },
                         }}
                         defaultValue={props.title}
@@ -99,7 +99,7 @@ const Experience: React.FC<IProps> = (props) => {
                     />
 
                     {props.areToolsActive && (
-                        <span className={classes.button_group}>
+                        <Box sx={{ borderRadius: "0.5rem", display: "flex" }}>
                             <AddListItem
                                 addItem={() =>
                                     props.addItem(props.sectionId, props.id)
@@ -118,7 +118,7 @@ const Experience: React.FC<IProps> = (props) => {
                                     )
                                 }
                             />
-                        </span>
+                        </Box>
                     )}
 
                     <Date
@@ -133,10 +133,9 @@ const Experience: React.FC<IProps> = (props) => {
                             )
                         }
                     />
-                </div>
+                </Box>
                 {props.items.length > 0 && (
-                    <Card elevation={2} sx={{ mx: "2px", p: 0 }}>
-                        {/* 2px margin to fix boxshadow */}
+                    <Card elevation={3} sx={{ p: 0 }}>
                         <ExperienceList
                             items={props.items}
                             sectionId={props.sectionId}

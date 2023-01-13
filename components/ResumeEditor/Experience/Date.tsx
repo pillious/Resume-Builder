@@ -1,3 +1,4 @@
+import { useTheme } from "@mui/material";
 import Box from "@mui/material/Box";
 import DebouncedTextarea from "../../UI/DebouncedTextarea";
 
@@ -8,6 +9,8 @@ interface IProps {
 }
 
 const Date: React.FC<IProps> = ({ startDate, endDate, updateDate }) => {
+    const theme = useTheme();
+
     return (
         <Box
             sx={{
@@ -20,11 +23,11 @@ const Date: React.FC<IProps> = ({ startDate, endDate, updateDate }) => {
         >
             <DebouncedTextarea
                 sx={{
-                    borderBottom: "1px solid #bbb",
+                    borderBottom: `1px solid ${theme.palette.divider}`,
                     fontSize: "0.9rem",
                     minWidth: "64px",
                     "&:hover": {
-                        backgroundColor: "#ddd",
+                        backgroundColor: theme.palette.overlay,
                     },
                     "& input": { textAlign: "center" },
                 }}
@@ -33,14 +36,14 @@ const Date: React.FC<IProps> = ({ startDate, endDate, updateDate }) => {
                 multiline={false}
                 onChange={(date) => updateDate(true, date)}
             />
-            <span>-</span>
+            <Box sx={{color: theme.palette.grey[300]}}>-</Box>
             <DebouncedTextarea
                 sx={{
-                    borderBottom: "1px solid #bbb",
+                    borderBottom: `1px solid ${theme.palette.divider}`,
                     fontSize: "0.9rem",
                     minWidth: "64px",
                     "&:hover": {
-                        backgroundColor: "#ddd",
+                        backgroundColor: theme.palette.overlay,
                     },
                     "& input": { textAlign: "center" },
                 }}

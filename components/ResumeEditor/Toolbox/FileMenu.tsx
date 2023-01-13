@@ -10,6 +10,7 @@ import FileCopyIcon from "@mui/icons-material/FileCopy";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useTheme } from "@mui/material";
 
 interface IProps {
     fileName: string;
@@ -21,6 +22,8 @@ interface IProps {
 }
 
 const FileMenu: React.FC<IProps> = (props) => {
+    const theme = useTheme();
+
     const [anchorElem, setAnchorElem] = useState<null | HTMLElement>(null);
     const handleMenuOpen = (event: MouseEvent<HTMLButtonElement>) =>
         setAnchorElem(event.currentTarget);
@@ -50,7 +53,10 @@ const FileMenu: React.FC<IProps> = (props) => {
                         p: "1px 4px",
                         textTransform: "capitalize",
                         minWidth: "32px",
-                        color: "#000",
+                        color: theme.palette.white,
+                        "&:hover": {
+                            backgroundColor: "rgba(255, 255, 255, 0.08)",
+                        },
                     }}
                 >
                     File

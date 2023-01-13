@@ -3,7 +3,6 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import Avatar from "@mui/material/Avatar";
-import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 
 interface IProps {
@@ -18,15 +17,13 @@ interface IProps {
 const AuthenticatedMenu: React.FC<IProps> = (props) => {
     return (
         <>
-            <Tooltip title="Open settings">
-                <IconButton onClick={props.handleMenuOpen} sx={{ p: 0 }}>
-                    <Avatar
-                        alt={props.profileName ?? ""}
-                        src={props.profileImg ?? ""}
-                        imgProps={{ referrerPolicy: "no-referrer" }}
-                    />
-                </IconButton>
-            </Tooltip>
+            <IconButton onClick={props.handleMenuOpen} sx={{ p: 0 }}>
+                <Avatar
+                    alt={props.profileName ?? ""}
+                    src={props.profileImg ?? ""}
+                    imgProps={{ referrerPolicy: "no-referrer" }}
+                />
+            </IconButton>
             <Menu
                 sx={{ mt: "45px" }}
                 id="menu-appbar"

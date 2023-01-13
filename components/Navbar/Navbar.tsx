@@ -15,11 +15,14 @@ import AuthenticatedMenu from "./AuthenticatedMenu";
 import UnauthenticatedMenu from "./UnauthenticatedMenu";
 import { useRouter } from "next/router";
 import AppContext from "../../store/AppContext";
+import { useTheme } from "@mui/material";
+import { navHeight } from "../../utils/constants";
 
 const Navbar: React.FC = () => {
     const { data: session, status } = useSession();
-    const router = useRouter();
     const { isNavActive, toggleNav } = useContext(AppContext);
+    const router = useRouter();
+    const theme = useTheme();
 
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
@@ -41,25 +44,30 @@ const Navbar: React.FC = () => {
                         <Toolbar
                             disableGutters
                             sx={{
-                                minHeight: "48px !important",
-                                maxHeight: "48px",
-                                height: "48px",
+                                minHeight: `${navHeight}px !important`,
+                                maxHeight: `${navHeight}px`,
+                                height: `${navHeight}px`,
                             }}
                         >
                             <IconButton
-                                aria-label="hide navbars"
+                                aria-label="Hide navbars"
                                 title="Hide navbars"
                                 sx={{
                                     mx: 1.5,
                                     transform: "rotate(90deg)",
-                                    color: "#fff",
+                                    color: theme.palette.info.main,
                                 }}
                                 onClick={toggleNav}
                             >
                                 <OpenInFullIcon />
                             </IconButton>
                             <Divider orientation="vertical" />
-                            <AdbIcon sx={{ mx: 1 }} />
+                            <AdbIcon
+                                sx={{
+                                    mx: 1,
+                                    color: theme.palette.info.main,
+                                }}
+                            />
                             <Typography
                                 variant="h6"
                                 noWrap
@@ -70,7 +78,7 @@ const Navbar: React.FC = () => {
                                     fontFamily: "monospace",
                                     fontWeight: 700,
                                     letterSpacing: ".3rem",
-                                    color: "inherit",
+                                    color: theme.palette.info.main,
                                     textDecoration: "none",
                                 }}
                             >
@@ -112,11 +120,11 @@ const Navbar: React.FC = () => {
                     title="Show navbars"
                     sx={{
                         transform: "rotate(90deg)",
-                        color: "#000",
                         zIndex: 100,
                         position: "absolute",
                         top: 0,
                         left: 0,
+                        color: theme.palette.info.main,
                     }}
                     onClick={toggleNav}
                 >

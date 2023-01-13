@@ -16,14 +16,12 @@ const DeleteExperience: React.FC<IProps> = (props) => {
         >
             <DeleteOutlineIcon
                 sx={{
-                    color: "#ff355a",
                     "&:hover": {
                         transform: "scale(1.25)",
                         cursor: "pointer",
                     },
                     transition: "200ms",
                 }}
-                
             />
         </IconButton>
     );

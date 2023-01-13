@@ -1,4 +1,4 @@
-import { Box, Button, Divider } from "@mui/material";
+import { Box, Button, Divider, useTheme } from "@mui/material";
 
 interface IProps {
     closePreview: () => void;
@@ -6,6 +6,8 @@ interface IProps {
 }
 
 const ClosePreview: React.FC<IProps> = (props) => {
+    const theme = useTheme();
+
     return (
         <Box
             sx={{
@@ -13,15 +15,15 @@ const ClosePreview: React.FC<IProps> = (props) => {
                 display: "flex",
                 gap: 0.5,
                 p: "6px 1rem",
-                pl: `${!props.isNavActive ? "2.5rem" : "0.5rem"}`,
-                borderBottom: "1px solid #eee",
+                pl: `${!props.isNavActive ? 5 : 1}`,
+                borderBottom: `1px solid ${theme.palette.divider}`,
             }}
         >
             {!props.isNavActive && (
                 <Divider
                     orientation="vertical"
                     flexItem
-                    sx={{ mr: "0.5rem" }}
+                    sx={{ mr: 1 }}
                 />
             )}
             <Button

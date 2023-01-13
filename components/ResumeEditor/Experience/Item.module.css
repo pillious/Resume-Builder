@@ -5,10 +5,12 @@
 }
 
 .list_item_wrapper:hover .list_item {
-    background-color: #eee;
+    background-color: rgba(255, 255, 255, 0.25);
 }
 
-.list_item_wrapper[data-are-tools-active="true"]:hover .list_item + .list_style::after,
+.list_item_wrapper[data-are-tools-active="true"]:hover
+    .list_item
+    + .list_style::after,
 .list_item_wrapper[data-are-tools-active="true"] .list_style:hover::after {
     content: "\00d7";
     scale: 1.5;

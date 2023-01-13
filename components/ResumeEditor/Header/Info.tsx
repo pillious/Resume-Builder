@@ -1,3 +1,4 @@
+import { useTheme } from '@mui/material';
 import DebouncedTextarea from "../../UI/DebouncedTextarea";
 
 interface IProps {
@@ -7,14 +8,17 @@ interface IProps {
 }
 
 const Info: React.FC<IProps> = (props) => {
+    const theme = useTheme();
+
     return (
         <DebouncedTextarea
             sx={{
-                borderBottom: "1px solid #bbb",
+                mr: 0.5,
+                borderBottom: `1px solid ${theme.palette.divider}`,
                 fontSize: "0.9rem",
-                maxWidth: "136px",
+                width: "max(75px, 18%)",
                 "&:hover": {
-                    backgroundColor: "#ddd",
+                    backgroundColor: theme.palette.overlay,
                 },
                 "& input": { textAlign: "center" },
             }}

@@ -8,6 +8,7 @@ import { Reorder, useDragControls } from "framer-motion";
 import DragIndicator from "../../UI/DragIndicator";
 import { useState } from "react";
 import Overlay from "../../UI/Overlay";
+import { useTheme } from "@mui/material";
 
 interface IProps {
     name: string;
@@ -20,8 +21,10 @@ interface IProps {
 }
 
 const Section: React.FC<IProps> = (props) => {
-    const [showOverlay, setShowOverlay] = useState<boolean>(false);
     const controls = useDragControls();
+    const theme = useTheme();
+
+    const [showOverlay, setShowOverlay] = useState<boolean>(false);
 
     return (
         <Reorder.Item
@@ -37,7 +40,7 @@ const Section: React.FC<IProps> = (props) => {
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    mt: "0.5rem",
+                    mt: 1,
                 }}
             >
                 {props.areToolsActive && (
@@ -45,7 +48,7 @@ const Section: React.FC<IProps> = (props) => {
                         onPointerDown={(e) => controls.start(e)}
                         onPointerOver={() => setShowOverlay(true)}
                         onPointerLeave={() => setShowOverlay(false)}
-                        style={{ zIndex: 2 }}
+                        style={{ zIndex: 3 }}
                     >
                         <DragIndicator />
                     </div>
@@ -53,11 +56,11 @@ const Section: React.FC<IProps> = (props) => {
                 <DebouncedTextarea
                     sx={{
                         fontSize: "1.15rem",
-                        width: "max-content",
-                        backgroundColor: "#f5f5f5",
+                        width: "max(225px, 35%)",
                         px: "4px",
+                        borderBottom: `1px solid ${theme.palette.divider}`,
                         "&:hover": {
-                            backgroundColor: "#ddd",
+                            backgroundColor: theme.palette.overlay,
                         },
                         "& input": { textAlign: "center" },
                     }}
@@ -71,7 +74,7 @@ const Section: React.FC<IProps> = (props) => {
                     <div
                         onPointerOver={() => setShowOverlay(true)}
                         onPointerLeave={() => setShowOverlay(false)}
-                        style={{ zIndex: 2 }}
+                        style={{ zIndex: 3 }}
                     >
                         <DeleteSection
                             deleteSection={() => props.deleteSection(props.id)}

@@ -1,7 +1,7 @@
 import React from "react";
 import IconButton from "@mui/material/IconButton";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import classes from "./AddListItem.module.css";
+import { Box } from "@mui/material";
 
 interface IProps {
     addItem: () => void;
@@ -12,9 +12,15 @@ const AddListItem: React.FC<IProps> = ({ addItem, hidden = false }) => {
     return (
         <>
             {hidden === false && (
-                <div className={classes.wrapper}>
+                <Box
+                    sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}
+                >
                     <IconButton
-                        color="secondary"
+                        color="primary"
                         aria-label="add item"
                         onClick={addItem}
                         title="Add item"
@@ -29,7 +35,7 @@ const AddListItem: React.FC<IProps> = ({ addItem, hidden = false }) => {
                             }}
                         />
                     </IconButton>
-                </div>
+                </Box>
             )}
         </>
     );

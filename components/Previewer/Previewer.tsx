@@ -1,8 +1,11 @@
+import { useTheme } from "@mui/material";
 import { Box } from "@mui/system";
 import { useContext } from "react";
 import AppContext from "../../store/AppContext";
 
 const Previewer: React.FC = () => {
+    const theme = useTheme();
+
     const { activeResumeObj, isPreviewActive } = useContext(AppContext);
 
     return (
@@ -15,7 +18,7 @@ const Previewer: React.FC = () => {
                         )}
                         style={{
                             border: "none",
-                            borderLeft: "1px solid #e0e0e0",
+                            borderLeft: `1px solid ${theme.palette.divider}`,
                             height: "100%",
                             width: "100%",
                         }}

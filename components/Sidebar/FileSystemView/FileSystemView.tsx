@@ -11,14 +11,14 @@ import useResumeIds from "../../../hooks/data/use-resume-ids";
 import FileItem from "./FileItem";
 import AppContext from "../../../store/AppContext";
 import AuthContext from "../../../store/AuthContext";
-
-const drawerWidth = 160;
+import { filesDrawerWidth, navHeight } from "../../../utils/constants";
 
 interface IProps {
     close: () => void;
 }
 
 const FileSystemView: React.FC<IProps> = ({ close }) => {
+
     const { activeResumeId } = useContext(AppContext);
     const { userId } = useContext(AuthContext);
     const { data: payload } = useResumeIds(userId);
@@ -27,16 +27,18 @@ const FileSystemView: React.FC<IProps> = ({ close }) => {
         <Box sx={{ display: "flex" }}>
             <Drawer
                 sx={{
-                    width: drawerWidth,
+                    width: filesDrawerWidth,
                     flexShrink: 0,
                     "& .MuiDrawer-paper": {
-                        width: drawerWidth,
-                        boxSizing: "border-box",
-                        mt: "48px", // height of navbar
+                        width: filesDrawerWidth,
+                        mt: `${navHeight}px`,
+                        border: "none",
+                        bgcolor: "#1e1e1e",
                     },
                 }}
                 variant="permanent"
                 anchor="left"
+                
             >
                 <List>
                     <ListItem
@@ -49,6 +51,7 @@ const FileSystemView: React.FC<IProps> = ({ close }) => {
                     >
                         <Button
                             startIcon={<ChevronLeftIcon />}
+                            color="info"
                             sx={{ textTransform: "none", fontSize: "0.85rem" }}
                             onClick={close}
                         >

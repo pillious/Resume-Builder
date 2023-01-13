@@ -7,7 +7,7 @@ import { AppContextProvider } from "../store/AppContext";
 import { AuthContextProvider } from "../store/AuthContext";
 import Box from "@mui/material/Box";
 import Navbar from "../components/Navbar/Navbar";
-import AppThemeProvider from "../components/Theme";
+import AppThemeProvider from "../components/UI/Theme";
 
 const App = ({
     Component,
@@ -17,7 +17,7 @@ const App = ({
         <SessionProvider session={session}>
             <AuthContextProvider>
                 <AppContextProvider>
-                    {/* <AppThemeProvider> */}
+                    <AppThemeProvider>
                         <Box
                             sx={{
                                 display: "flex",
@@ -29,7 +29,7 @@ const App = ({
                             <Navbar />
                             <Component {...pageProps} />
                         </Box>
-                    {/* </AppThemeProvider> */}
+                    </AppThemeProvider>
                 </AppContextProvider>
             </AuthContextProvider>
         </SessionProvider>

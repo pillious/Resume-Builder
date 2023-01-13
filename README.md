@@ -16,6 +16,7 @@
     1) headers (starts w/ # ... ######)
     1) bullet (starts w/ *)
 - fix signin page styles ✔
+- DARK THEME ✔
 
 maybe:
 1) support multiple pages

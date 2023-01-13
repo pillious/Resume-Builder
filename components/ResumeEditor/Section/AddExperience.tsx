@@ -11,7 +11,7 @@ const AddExperience: React.FC<IProps> = (props) => {
             <Button
                 size="small"
                 variant="outlined"
-                color="secondary"
+                color="primary"
                 onClick={props.addExperience}
                 sx={{
                     fontSize: "12px",

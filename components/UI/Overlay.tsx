@@ -1,4 +1,4 @@
-import { SxProps } from "@mui/material";
+import { SxProps, useTheme } from "@mui/material";
 import Box from "@mui/material/Box";
 
 interface IProps {
@@ -8,6 +8,8 @@ interface IProps {
 }
 
 const Overlay: React.FC<IProps> = (props) => {
+    const theme = useTheme();
+
     return (
         <Box
             sx={{
@@ -16,9 +18,11 @@ const Overlay: React.FC<IProps> = (props) => {
                 left: 0,
                 height: "100%",
                 width: "100%",
-                bgcolor: `${props.color ? props.color : "#eee"}`,
-                opacity: 0.5,
+                bgcolor: `${
+                    props.color ? props.color : theme.palette.overlay
+                }`,
                 display: `${props.show ? "block" : "none"}`,
+                zIndex: 2,
                 ...props.styles,
             }}
         ></Box>

@@ -5,6 +5,7 @@ import Info from "./Info";
 import { guid, IItem } from "../../../types";
 import HeaderButtonGroup from "./HeaderButtonGroup";
 import { sortByOrder } from "../../../utils/utils";
+import { useTheme } from "@mui/material";
 
 interface IProps {
     name: string;
@@ -25,6 +26,8 @@ const Header: React.FC<IProps> = ({
     addHeaderInfo,
     deleteHeaderInfo,
 }) => {
+    const theme = useTheme();
+
     const [info, setInfo] = useState<JSX.Element[]>([]);
     const addInfo = useCallback(
         (item: IItem) => {
@@ -55,23 +58,26 @@ const Header: React.FC<IProps> = ({
                 flexDirection: "column",
                 flexWrap: "wrap",
                 alignItems: "center",
-                gap: "0.25rem",
-                mb: "0.5rem",
+                gap: 0.5,
+                mb: 1,
             }}
         >
             <Box
                 sx={{
-                    "& input": { textAlign: "center" },
+                    width: "max(200px, 40%)",
+                    "& input": {
+                        textAlign: "center",
+                    },
                 }}
             >
                 <DebouncedTextarea
                     sx={{
                         fontSize: "1.25rem",
                         fontWeight: "600",
-                        maxWidth: "300px",
-                        backgroundColor: "#f5f5f5",
+                        width: "100%",
+                        borderBottom: `1px solid ${theme.palette.divider}`,
                         "&:hover": {
-                            backgroundColor: "#ddd",
+                            backgroundColor: theme.palette.overlay,
                         },
                         "& input": { textAlign: "center" },
                     }}
