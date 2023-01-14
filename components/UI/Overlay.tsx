@@ -1,5 +1,4 @@
-import { SxProps, useTheme } from "@mui/material";
-import Box from "@mui/material/Box";
+import { SxProps, useTheme, Box } from "@mui/material";
 
 interface IProps {
     show: boolean;

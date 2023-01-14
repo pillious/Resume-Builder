@@ -1,11 +1,6 @@
 import { useContext } from "react";
+import { Box, Button, Divider, Drawer, List, ListItem } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Divider from "@mui/material/Divider";
-import Drawer from "@mui/material/Drawer";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
 import { guid } from "../../../types";
 import useResumeIds from "../../../hooks/data/use-resume-ids";
 import FileItem from "./FileItem";
@@ -18,7 +13,6 @@ interface IProps {
 }
 
 const FileSystemView: React.FC<IProps> = ({ close }) => {
-
     const { activeResumeId } = useContext(AppContext);
     const { userId } = useContext(AuthContext);
     const { data: payload } = useResumeIds(userId);
@@ -38,7 +32,6 @@ const FileSystemView: React.FC<IProps> = ({ close }) => {
                 }}
                 variant="permanent"
                 anchor="left"
-                
             >
                 <List>
                     <ListItem

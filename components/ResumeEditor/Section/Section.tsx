@@ -1,5 +1,3 @@
-import Box from "@mui/material/Box";
-import Divider from "@mui/material/Divider";
 import { guid } from "../../../types";
 import DebouncedTextarea from "../../UI/DebouncedTextarea";
 import DeleteSection from "./DeleteSection";
@@ -8,7 +6,7 @@ import { Reorder, useDragControls } from "framer-motion";
 import DragIndicator from "../../UI/DragIndicator";
 import { useState } from "react";
 import Overlay from "../../UI/Overlay";
-import { useTheme } from "@mui/material";
+import { Box, Divider, useTheme } from "@mui/material";
 
 interface IProps {
     name: string;

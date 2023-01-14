@@ -1,6 +1,5 @@
 import { useRef, useContext, useEffect } from "react";
-import Divider from "@mui/material/Divider";
-import Box from "@mui/material/Box";
+import { Box, Divider, Paper, useTheme } from "@mui/material";
 import AddSection from "./Section/AddSection";
 import Experience from "./Experience/Experience";
 import Toolbox from "./Toolbox/Toolbox";
@@ -12,7 +11,6 @@ import AuthContext from "../../store/AuthContext";
 import { Reorder } from "framer-motion";
 import { ISection, IExperience, guid } from "../../types";
 import { sortByOrder } from "../../utils/utils";
-import { Paper, useTheme } from "@mui/material";
 
 const ResumeEditor: React.FC = () => {
     const sectionRef = useRef<HTMLBaseElement>(null);

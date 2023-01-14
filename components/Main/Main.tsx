@@ -1,16 +1,18 @@
+import { useContext } from "react";
 import { Box, useMediaQuery } from "@mui/material";
 import dynamic from "next/dynamic";
-import { useContext } from "react";
+import { ResizableBox } from "react-resizable";
 import ResumeEditor from "../ResumeEditor/ResumeEditor";
 import AppContext from "../../store/AppContext";
 import ClosePreview from "./ClosePreview";
+import Background from "./Background";
 
 const Previewer = dynamic(import("../Previewer/Previewer"), {
     ssr: false,
 });
 
 const Main: React.FC = () => {
-    const { isPreviewActive, isNavActive, togglePreview } =
+    const { isPreviewActive, activeResumeId, isNavActive, togglePreview } =
         useContext(AppContext);
 
     const matches = useMediaQuery("(max-width: 1300px)");
@@ -27,13 +29,18 @@ const Main: React.FC = () => {
             {(!isPreviewActive || (isPreviewActive && !matches)) && (
                 <ResumeEditor />
             )}
-            {isPreviewActive && matches && (
-                <ClosePreview
-                    closePreview={togglePreview}
-                    isNavActive={isNavActive}
-                />
+            {isPreviewActive && (
+                <>
+                    <Previewer />
+                    {matches && (
+                        <ClosePreview
+                            closePreview={togglePreview}
+                            isNavActive={isNavActive}
+                        />
+                    )}
+                </>
             )}
-            <Previewer />
+            {!isPreviewActive && !activeResumeId && <Background />}
         </Box>
     );
 };

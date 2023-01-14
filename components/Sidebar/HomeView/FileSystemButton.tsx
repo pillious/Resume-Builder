@@ -1,8 +1,5 @@
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
+import { Tooltip, ListItem, ListItemButton, ListItemIcon } from "@mui/material";
 import FolderIcon from "@mui/icons-material/Folder";
-import { Tooltip } from "@mui/material";
 
 interface IProps {
     open: () => void;

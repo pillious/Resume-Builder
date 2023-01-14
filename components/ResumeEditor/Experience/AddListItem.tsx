@@ -1,7 +1,6 @@
 import React from "react";
-import IconButton from "@mui/material/IconButton";
+import { Box, IconButton } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import { Box } from "@mui/material";
 
 interface IProps {
     addItem: () => void;

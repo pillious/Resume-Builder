@@ -1,5 +1,6 @@
 import { createContext, useState, useCallback, useMemo } from "react";
 import { useSWRConfig } from "swr";
+import { ActiveView } from "../enums";
 import { guid, IFile } from "../types";
 import fetcher from "../utils/fetcher";
 import { Pdf } from "../utils/pdfgen";
@@ -15,8 +16,10 @@ interface IAppContext {
     fileIds: guid[]; // unused
     areToolsActive: boolean;
     isNavActive: boolean;
+    activeSidebarView: ActiveView;
     hasUnsavedChanges: boolean;
     updateHasUnsavedChanges: (bool: boolean) => void;
+    updateActiveSidebarView: (view: ActiveView) => void;
     updateFileIds: (ids: guid | guid[]) => void; // unused
     updateActiveResumeId: (id: guid | null) => void;
     updateActiveResumeObj: (file: IFile | null) => void;
@@ -36,8 +39,10 @@ const defaultValues: IAppContext = {
     fileIds: [],
     areToolsActive: true,
     isNavActive: true,
+    activeSidebarView: ActiveView.HomeView,
     hasUnsavedChanges: false,
     updateHasUnsavedChanges: () => ({}),
+    updateActiveSidebarView: () => ({}),
     updateFileIds: () => ({}),
     updateActiveResumeId: () => ({}),
     updateActiveResumeObj: () => ({}),
@@ -79,6 +84,9 @@ export const AppContextProvider: React.FC<IProps> = (props) => {
         defaultValues.areToolsActive
     );
     const [isNavActive, setIsNavActive] = useState(defaultValues.isNavActive);
+    const [activeSidebarView, setActiveSidebarView] = useState(
+        defaultValues.activeSidebarView
+    );
 
     const updateHasUnsavedChanges = useCallback(
         (bool: boolean) => setHasUnsavedChanges(bool),
@@ -125,6 +133,11 @@ export const AppContextProvider: React.FC<IProps> = (props) => {
             }
         },
         [fileIds]
+    );
+
+    const updateActiveSidebarView = useCallback(
+        (view: ActiveView) => setActiveSidebarView(view),
+        []
     );
 
     /**
@@ -201,8 +214,10 @@ export const AppContextProvider: React.FC<IProps> = (props) => {
             fileIds,
             areToolsActive,
             isNavActive,
+            activeSidebarView,
             hasUnsavedChanges,
             updateHasUnsavedChanges,
+            updateActiveSidebarView,
             updateFileIds,
             updateActiveResumeId,
             updateActiveResumeObj,
@@ -221,8 +236,10 @@ export const AppContextProvider: React.FC<IProps> = (props) => {
             fileIds,
             areToolsActive,
             isNavActive,
+            activeSidebarView,
             hasUnsavedChanges,
             updateHasUnsavedChanges,
+            updateActiveSidebarView,
             updateFileIds,
             updateActiveResumeId,
             updateActiveResumeObj,

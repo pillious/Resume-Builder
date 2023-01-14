@@ -1,4 +1,3 @@
-import Card from "@mui/material/Card";
 import AddListItem from "./AddListItem";
 import DebouncedTextarea from "../../UI/DebouncedTextarea";
 import { IItem, guid } from "../../../types";
@@ -9,7 +8,7 @@ import { Reorder, useDragControls } from "framer-motion";
 import Overlay from "../../UI/Overlay";
 import { useState } from "react";
 import DragIndicator from "../../UI/DragIndicator";
-import { Box, Divider, useTheme } from "@mui/material";
+import { Box, Card, Divider, useTheme } from "@mui/material";
 
 interface IProps {
     id: guid;
@@ -61,7 +60,7 @@ const Experience: React.FC<IProps> = (props) => {
         >
             <Overlay show={showOverlay} />
             <Card elevation={2} sx={{ mt: 1 }}>
-                <Box sx={{ display: "flex", alignItems: "center" }}>
+                <Box sx={{ display: "flex", alignItems: "center", mx: 1 }}>
                     {props.areToolsActive && (
                         <div
                             onPointerDown={(e) => {

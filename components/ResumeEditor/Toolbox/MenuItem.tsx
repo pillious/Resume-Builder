@@ -1,6 +1,8 @@
-import MuiMenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
+import {
+    MenuItem as MuiMenuItem,
+    ListItemIcon,
+    ListItemText,
+} from "@mui/material";
 import { ReactElement } from "react";
 
 interface IProps {
@@ -13,7 +15,10 @@ const MenuItem: React.FC<IProps> = (props) => {
     return (
         <MuiMenuItem onClick={props.handleClick}>
             <ListItemIcon
-                sx={{ minWidth: "unset !important", "& svg": { fontSize: "18px" } }}
+                sx={{
+                    minWidth: "unset !important",
+                    "& svg": { fontSize: "18px" },
+                }}
             >
                 {props.icon}
             </ListItemIcon>

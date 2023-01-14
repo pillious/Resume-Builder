@@ -1,22 +1,19 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { ActiveView } from "../../enums";
 import FileSystemView from "./FileSystemView/FileSystemView";
 import HomeView from "./HomeView/HomeView";
 import AppContext from "../../store/AppContext";
 
 const Sidebar: React.FC = () => {
-    const { isNavActive } = useContext(AppContext);
-
-    const [activeView, setActiveView] = useState<ActiveView>(
-        ActiveView.FileSystemView
-    );
+    const { isNavActive, activeSidebarView, updateActiveSidebarView } =
+        useContext(AppContext);
 
     const changeView = (view: ActiveView) => {
-        setActiveView(view);
+        updateActiveSidebarView(view);
     };
 
     let view;
-    switch (activeView) {
+    switch (activeSidebarView) {
         case ActiveView.HomeView:
             view = (
                 <HomeView

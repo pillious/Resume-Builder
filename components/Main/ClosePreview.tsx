@@ -1,4 +1,4 @@
-import { Box, Button, Divider, useTheme } from "@mui/material";
+import { useTheme, Box, Button, Divider } from "@mui/material";
 
 interface IProps {
     closePreview: () => void;
@@ -20,11 +20,7 @@ const ClosePreview: React.FC<IProps> = (props) => {
             }}
         >
             {!props.isNavActive && (
-                <Divider
-                    orientation="vertical"
-                    flexItem
-                    sx={{ mr: 1 }}
-                />
+                <Divider orientation="vertical" flexItem sx={{ mr: 1 }} />
             )}
             <Button
                 variant="outlined"

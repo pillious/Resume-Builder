@@ -1,8 +1,6 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import Box from "@mui/material/Box";
-import Link from "@mui/material/Link";
-import { Button, Typography } from "@mui/material";
+import { Box, Link, Button, Typography } from "@mui/material";
 
 const Verification: React.FC = () => {
     const { status } = useSession();

@@ -1,13 +1,16 @@
 import { GetServerSideProps, GetServerSidePropsResult } from "next";
 import { getProviders, signIn, getSession } from "next-auth/react";
 import { Provider } from "next-auth/providers";
+import {
+    Box,
+    Button,
+    Paper,
+    Typography,
+    Divider,
+    useTheme,
+} from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import AdbIcon from "@mui/icons-material/Adb";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Paper from "@mui/material/Paper";
-import { Divider, useTheme } from "@mui/material";
 
 interface IProps {
     providers: Provider[];

@@ -1,6 +1,5 @@
 import React from "react";
-import Fab from "@mui/material/Fab";
-import Tooltip from "@mui/material/Tooltip";
+import { Fab, Tooltip } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import classes from "./AddSection.module.css";
 
@@ -15,11 +14,7 @@ const AddSection: React.FC<IProps> = (props) => {
                 {/* Don't remove the empty span elements. CSS selectors operate on these. */}
                 <span />
                 <span>
-                    <Fab
-                        color="primary"
-                        size="medium"
-                        aria-label="add section"
-                    >
+                    <Fab color="primary" size="medium" aria-label="add section">
                         <AddIcon />
                     </Fab>
                 </span>

@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import type { NextPage } from "next";
 import { useSession, signIn } from "next-auth/react";
-import Box from "@mui/material/Box";
+import {Box} from "@mui/material";
 import Sidebar from "../components/Sidebar/Sidebar";
 import AuthContext from "../store/AuthContext";
 import fetcher from "../utils/fetcher";
@@ -34,7 +34,7 @@ const Home: NextPage = () => {
                 display: "flex",
                 width: "100%",
                 height: "100%",
-                overflow: "hidden",
+                overflowY: "hidden",
             }}
         >
             {status === "authenticated" && (

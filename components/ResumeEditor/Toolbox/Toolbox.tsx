@@ -1,8 +1,3 @@
-import Button from "@mui/material/Button";
-import Chip from "@mui/material/Chip";
-import IconButton from "@mui/material/IconButton";
-import ToggleButton from "@mui/material/ToggleButton";
-import Divider from "@mui/material/Divider";
 // import UndoIcon from "@mui/icons-material/Undo";
 // import RedoIcon from "@mui/icons-material/Redo";
 import SaveIcon from "@mui/icons-material/Save";
@@ -12,7 +7,15 @@ import FileMenu from "./FileMenu";
 import { useContext } from "react";
 import AppContext from "../../../store/AppContext";
 import { AnimatePresence, motion } from "framer-motion";
-import { Paper, useTheme } from "@mui/material";
+import {
+    Paper,
+    Button,
+    Chip,
+    IconButton,
+    ToggleButton,
+    Divider,
+    useTheme,
+} from "@mui/material";
 
 interface IProps {
     fileName: string;

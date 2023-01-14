@@ -1,5 +1,4 @@
-import Button from "@mui/material/Button";
-import Box from "@mui/system/Box";
+import { Button, Box } from "@mui/material";
 
 interface IProps {
     addExperience: () => void;

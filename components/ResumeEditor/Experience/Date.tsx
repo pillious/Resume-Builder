@@ -1,5 +1,4 @@
-import { useTheme } from "@mui/material";
-import Box from "@mui/material/Box";
+import {Box, useTheme} from "@mui/material";
 import DebouncedTextarea from "../../UI/DebouncedTextarea";
 
 interface IProps {

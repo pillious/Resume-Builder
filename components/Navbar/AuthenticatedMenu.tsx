@@ -1,9 +1,5 @@
 import { MouseEvent } from "react";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import Avatar from "@mui/material/Avatar";
-import MenuItem from "@mui/material/MenuItem";
+import { IconButton, Typography, Menu, Avatar, MenuItem } from "@mui/material";
 
 interface IProps {
     profileImg: string | null | undefined;

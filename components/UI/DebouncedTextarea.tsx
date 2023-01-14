@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { SxProps } from "@mui/material";
-import Input from "@mui/material/Input";
+import { SxProps, Input } from "@mui/material";
 import useInput from "../../hooks/use-input";
 
 interface IProps {

@@ -1,12 +1,15 @@
 import { MouseEvent, useContext, useState } from "react";
 import { signIn, signOut } from "next-auth/react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Divider from "@mui/material/Divider";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import IconButton from "@mui/material/IconButton";
+import {
+    AppBar,
+    Box,
+    Divider,
+    Toolbar,
+    Typography,
+    Container,
+    IconButton,
+    useTheme,
+} from "@mui/material";
 import AdbIcon from "@mui/icons-material/Adb";
 import OpenInFullIcon from "@mui/icons-material/OpenInFull";
 import CloseFullscreenIcon from "@mui/icons-material/CloseFullscreen";
@@ -15,7 +18,6 @@ import AuthenticatedMenu from "./AuthenticatedMenu";
 import UnauthenticatedMenu from "./UnauthenticatedMenu";
 import { useRouter } from "next/router";
 import AppContext from "../../store/AppContext";
-import { useTheme } from "@mui/material";
 import { navHeight } from "../../utils/constants";
 
 const Navbar: React.FC = () => {

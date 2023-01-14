@@ -1,5 +1,4 @@
-import Box from "@mui/material/Box";
-import Fab from "@mui/material/Fab";
+import { Box, Fab } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 

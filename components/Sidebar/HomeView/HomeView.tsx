@@ -1,6 +1,4 @@
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import List from "@mui/material/List";
+import { Box, Drawer, List } from "@mui/material";
 import CreateButton from "./CreateButton";
 import FileSystemButton from "./FileSystemButton";
 import { homeDrawerWidth, navHeight } from "../../../utils/constants";

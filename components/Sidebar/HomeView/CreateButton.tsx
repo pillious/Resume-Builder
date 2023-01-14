@@ -1,7 +1,5 @@
 import { useContext, useState } from "react";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
+import { ListItem, ListItemButton, ListItemIcon } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import fetcher from "../../../utils/fetcher";
 import { useSWRConfig } from "swr";

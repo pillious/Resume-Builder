@@ -17,6 +17,7 @@
     1) bullet (starts w/ *)
 - fix signin page styles ✔
 - DARK THEME ✔
+- Help menu
 
 maybe:
 1) support multiple pages
