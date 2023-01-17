@@ -1,6 +1,5 @@
 import "../styles/normalize.css";
 import "../styles/globals.css";
-import "../styles/react-resizable.css";
 import type { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
 import type { Session } from "next-auth";

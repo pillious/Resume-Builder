@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { Box, useMediaQuery } from "@mui/material";
 import dynamic from "next/dynamic";
-import { ResizableBox } from "react-resizable";
 import ResumeEditor from "../ResumeEditor/ResumeEditor";
 import AppContext from "../../store/AppContext";
 import ClosePreview from "./ClosePreview";
