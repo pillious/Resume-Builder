@@ -86,10 +86,7 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
                 ) {
                     identifier = setTimeout(() => {
                         saveChanges();
-                        console.log("saved");
                     }, 275);
-                } else {
-                    console.log("No new changes to save.");
                 }
             }
         };
