@@ -2,7 +2,6 @@
  * Database connection using mongoose.
  * Used in all api routes (except authentication).
  */
-
 import mongoose from "mongoose";
 
 const MONGODB_URI = process.env.MONGODB_URI || "";
@@ -37,6 +36,7 @@ async function dbConnect() {
         cached.promise = mongoose
             .connect(MONGODB_URI, opts)
             .then((mongoose) => {
+                mongoose.set('strictQuery', true);
                 return mongoose;
             });
     }
