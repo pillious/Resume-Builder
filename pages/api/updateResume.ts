@@ -46,9 +46,12 @@ const handler = async (
                     res.status(400).json({
                         error: { code: 400, message: "Invalid Parameters" },
                     });
+                    break;
                 }
 
-                const operations: AnyBulkWriteOperation<Document>[] = [];
+                // Work around for "Type instantiation is excessively deep and possibly infinite." ts error.
+                // const operations: AnyBulkWriteOperation<Document>[] = [];
+                const operations = [];
 
                 const modListCopy: ModList = JSON.parse(
                     JSON.stringify(modList)
@@ -221,7 +224,7 @@ const handler = async (
                 try {
                     await dbConnect();
                     if (operations.length > 0) {
-                        const resp = await FileModel.bulkWrite(operations);
+                        const resp = await FileModel.bulkWrite(operations as AnyBulkWriteOperation[]);
                         if (resp.result.ok > 0)
                             res.status(200).json({
                                 data: {
@@ -240,7 +243,6 @@ const handler = async (
                     console.error(err);
                     throw new Error("Bulk write operation failed.");
                 }
-
                 break;
             }
             default:
