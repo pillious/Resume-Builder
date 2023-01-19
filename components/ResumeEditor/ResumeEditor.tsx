@@ -63,10 +63,10 @@ const ResumeEditor: React.FC = () => {
 
         if (hasUnsavedChanges)
             window.addEventListener("beforeunload", confirmation);
-        else window.removeEventListener("beforeUnload", confirmation);
+        else window.removeEventListener("beforeunload", confirmation);
 
         // Clean up function
-        return () => window.removeEventListener("beforeUnload", confirmation);
+        return () => window.removeEventListener("beforeunload", confirmation);
     }, [hasUnsavedChanges]);
 
     const sections: ISection[] | undefined = resume

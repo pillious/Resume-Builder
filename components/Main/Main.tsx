@@ -30,13 +30,13 @@ const Main: React.FC = () => {
             )}
             {isPreviewActive && (
                 <>
-                    <Previewer />
                     {matches && (
                         <ClosePreview
                             closePreview={togglePreview}
                             isNavActive={isNavActive}
                         />
                     )}
+                    <Previewer />
                 </>
             )}
             {!isPreviewActive && !activeResumeId && <Background />}

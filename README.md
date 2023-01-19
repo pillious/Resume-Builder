@@ -1,4 +1,6 @@
 # TODO:
+- give files a constant color in the file viewer.
+
 - change toolbox to a toolbar across the top of the resume editor (think about mobile design) ✔
 - drop and drop ordering ✔
 - bug: file viewer not updating after renaming. ✔
@@ -15,9 +17,10 @@
     1) italic (text enclosed in _)
     1) headers (starts w/ # ... ######)
     1) bullet (starts w/ *)
-- fix signin page styles ✔
 - DARK THEME ✔
-- Help menu
+- Help menu ✔
+- Error pages ✔
+- Custom logo ✔
 
 maybe:
 1) support multiple pages

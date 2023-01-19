@@ -43,7 +43,7 @@ const Toolbox: React.FC<IProps> = (props) => {
                 sx={{
                     height: "38px",
                     display: "flex",
-                    gap: 0.5,
+                    gap: 1,
                     p: "4px 1rem",
                     pl: `${!isNavActive ? "2.5rem" : "1rem"}`,
                     borderRadius: 0,
