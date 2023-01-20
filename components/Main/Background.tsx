@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import { Box, Button, Divider } from "@mui/material";
-import AdbIcon from "@mui/icons-material/Adb";
 import AddIcon from "@mui/icons-material/Add";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { useSWRConfig } from "swr";
@@ -8,6 +7,7 @@ import AppContext from "../../store/AppContext";
 import AuthContext from "../../store/AuthContext";
 import fetcher from "../../utils/fetcher";
 import { ActiveView } from "../../enums";
+import Image from "next/image";
 
 const Background: React.FC = () => {
     const { isNavActive, toggleNav, updateActiveSidebarView } =
@@ -58,7 +58,13 @@ const Background: React.FC = () => {
                     gap: 1,
                 }}
             >
-                <AdbIcon color="info" sx={{ fontSize: 128, mb: 3 }} />
+                <Image
+                    src="/logo.svg"
+                    alt="logo"
+                    height={128}
+                    width={128}
+                    style={{ marginBottom: "1.5rem" }}
+                />
                 <Button
                     startIcon={
                         <OpenInNewIcon sx={{ transform: "rotate(-90deg)" }} />

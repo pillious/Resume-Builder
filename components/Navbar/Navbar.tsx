@@ -10,7 +10,6 @@ import {
     IconButton,
     useTheme,
 } from "@mui/material";
-import AdbIcon from "@mui/icons-material/Adb";
 import OpenInFullIcon from "@mui/icons-material/OpenInFull";
 import CloseFullscreenIcon from "@mui/icons-material/CloseFullscreen";
 import { useSession } from "next-auth/react";
@@ -64,27 +63,21 @@ const Navbar: React.FC = () => {
                                 <OpenInFullIcon />
                             </IconButton>
                             <Divider orientation="vertical" />
-                            <AdbIcon
-                                sx={{
-                                    mx: 1,
-                                    color: theme.palette.info.main,
-                                }}
-                            />
                             <Typography
                                 variant="h6"
                                 noWrap
                                 component="a"
                                 href="/"
                                 sx={{
-                                    mr: 2,
+                                    mx: 2,
                                     fontFamily: "monospace",
                                     fontWeight: 700,
-                                    letterSpacing: ".3rem",
+                                    letterSpacing: ".2rem",
                                     color: theme.palette.info.main,
                                     textDecoration: "none",
                                 }}
                             >
-                                LOGO
+                                Resume App
                             </Typography>
 
                             <Box sx={{ flexGrow: 1 }} />

@@ -79,7 +79,6 @@ const Experience: React.FC<IProps> = (props) => {
                             borderBottom: `1px solid ${theme.palette.divider}`,
                             width: "max(40%, 300px)",
                             pl: 1,
-                            mb: 1,
                             justifySelf: "left",
                             "&:hover": {
                                 backgroundColor: theme.palette.overlay,

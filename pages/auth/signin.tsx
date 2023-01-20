@@ -10,7 +10,7 @@ import {
     useTheme,
 } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
-import AdbIcon from "@mui/icons-material/Adb";
+import Image from "next/image";
 
 interface IProps {
     providers: Provider[];
@@ -35,10 +35,12 @@ const SignIn: React.FC<IProps> = ({ providers }) => {
                         flexDirection: "column",
                     }}
                 >
-                    <AdbIcon
-                        sx={{ m: "auto" }}
-                        fontSize="large"
-                        htmlColor={theme.palette.info.main}
+                    <Image
+                        src="/logo.svg"
+                        alt="logo"
+                        height={96}
+                        width={96}
+                        style={{ margin: "0 auto 1rem auto" }}
                     />
                     <Typography
                         variant="h6"

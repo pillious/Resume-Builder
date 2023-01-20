@@ -31,7 +31,7 @@ const Textarea: React.FC<IProps> = ({
             identifier = setTimeout(() => {
                 onChange(value);
                 setPrevValue(value);
-            }, 275);
+            }, 200);
         }
 
         return () => {
