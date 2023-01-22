@@ -1,9 +1,11 @@
+import { useState } from "react";
 import DebouncedTextarea from "../../UI/DebouncedTextarea";
 import { guid, IItem } from "../../../types";
 import classes from "./Item.module.css";
 import DragIndicator from "../../UI/DragIndicator";
 import { DragControls } from "framer-motion";
 import { Box, ListItemIcon, useTheme } from "@mui/material";
+import ConfirmationModal from "../../UI/ConfirmationModal";
 
 interface IProps {
     item: IItem;
@@ -23,78 +25,93 @@ interface IProps {
 const Item: React.FC<IProps> = (props) => {
     const theme = useTheme();
 
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
     return (
-        <Box
-            className={classes.list_item_wrapper}
-            data-are-tools-active={props.areToolsActive}
-            sx={{ width: "100%", display: "flex", alignItems: "center" }}
-        >
+        <>
             <Box
-                sx={{
-                    width: "100%",
-                    position: "relative",
-                    "& .MuiInput-root": {
-                        width: "100%",
-                    },
-                }}
-                className={classes.list_item}
+                className={classes.list_item_wrapper}
+                data-are-tools-active={props.areToolsActive}
+                sx={{ width: "100%", display: "flex", alignItems: "center" }}
             >
-                <DebouncedTextarea
-                    defaultValue={props.item.content}
-                    placeholder="Type here . . ."
-                    onChange={(content) => {
-                        props.updateItemContent(
-                            props.sectionId,
-                            props.experienceId,
-                            props.item.id,
-                            content
-                        );
-                    }}
+                <Box
                     sx={{
-                        fontSize: "0.9rem",
-                        "&:hover": {
-                            bgcolor: `${theme.palette.overlay} !important`,
+                        width: "100%",
+                        position: "relative",
+                        "& .MuiInput-root": {
+                            width: "100%",
                         },
                     }}
-                />
-                {props.areToolsActive && (
-                    <div
-                        onPointerDown={(e) => {
-                            props.dragControls.start(e);
+                    className={classes.list_item}
+                >
+                    <DebouncedTextarea
+                        defaultValue={props.item.content}
+                        placeholder="Type here . . ."
+                        onChange={(content) => {
+                            props.updateItemContent(
+                                props.sectionId,
+                                props.experienceId,
+                                props.item.id,
+                                content
+                            );
                         }}
-                    >
-                        <DragIndicator
-                            styles={{
-                                display: "none",
-                                position: "absolute",
-                                right: 0,
-                                top: "50%",
-                                transform: "translateY(-50%)",
+                        sx={{
+                            fontSize: "0.9rem",
+                            "&:hover": {
+                                bgcolor: `${theme.palette.overlay} !important`,
+                            },
+                        }}
+                    />
+                    {props.areToolsActive && (
+                        <div
+                            onPointerDown={(e) => {
+                                props.dragControls.start(e);
                             }}
-                        />
-                    </div>
-                )}
+                        >
+                            <DragIndicator
+                                styles={{
+                                    display: "none",
+                                    position: "absolute",
+                                    right: 0,
+                                    top: "50%",
+                                    transform: "translateY(-50%)",
+                                }}
+                            />
+                        </div>
+                    )}
+                </Box>
+                <ListItemIcon
+                    className={classes.list_style}
+                    sx={{
+                        transition: "1s content",
+                        width: "calc(6.5px + 0.5rem)",
+                        minWidth: "unset !important",
+                        cursor: "pointer",
+                        "&::before": {
+                            content: "''",
+                        },
+                    }}
+                    onClick={() => setIsModalOpen(true)}
+                />
             </Box>
-            <ListItemIcon
-                className={classes.list_style}
-                sx={{
-                    transition: "1s content",
-                    width: "calc(6.5px + 0.5rem)",
-                    minWidth: "unset !important",
-                    cursor: "pointer",
-                    "&::before": {
-                        content: "''",
-                    },
-                }}
-                onClick={() =>
+
+            <ConfirmationModal
+                open={isModalOpen}
+                title="Delete Confirmation"
+                text={`Do you want to permanently delete "${props.item.content.substring(
+                    0,
+                    30
+                )}${props.item.content.length > 30 ? "..." : ""}"?`}
+                handleConfirm={() =>
                     props.deleteItem(
                         props.sectionId,
                         props.experienceId,
                         props.item.id
                     )
                 }
+                handleClose={() => setIsModalOpen(false)}
             />
-        </Box>
+        </>
     );
 };
 

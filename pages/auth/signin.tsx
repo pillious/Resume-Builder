@@ -1,24 +1,16 @@
 import { GetServerSideProps, GetServerSidePropsResult } from "next";
 import { getProviders, signIn, getSession } from "next-auth/react";
 import { Provider } from "next-auth/providers";
-import {
-    Box,
-    Button,
-    Paper,
-    Typography,
-    Divider,
-    useTheme,
-} from "@mui/material";
+import { Box, Button, Paper, Divider } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
-import Image from "next/image";
+import LogoName from "../../components/UI/LogoName";
+import Logo from "../../components/UI/Logo";
 
 interface IProps {
     providers: Provider[];
 }
 
 const SignIn: React.FC<IProps> = ({ providers }) => {
-    const theme = useTheme();
-
     return (
         <Box
             sx={{
@@ -35,28 +27,12 @@ const SignIn: React.FC<IProps> = ({ providers }) => {
                         flexDirection: "column",
                     }}
                 >
-                    <Image
-                        src="/logo.svg"
-                        alt="logo"
+                    <Logo
                         height={96}
                         width={96}
                         style={{ margin: "0 auto 1rem auto" }}
                     />
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        sx={{
-                            fontFamily: "monospace",
-                            fontWeight: 700,
-                            fontSize: 24,
-                            letterSpacing: ".15rem",
-                            textDecoration: "none",
-                            textAlign: "center",
-                            color: theme.palette.info.main,
-                        }}
-                    >
-                        Resume App
-                    </Typography>
+                    <LogoName />
                 </Box>
                 <Divider flexItem sx={{ my: 2 }} />
 

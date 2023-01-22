@@ -1,6 +1,5 @@
 .add_section {
     --default-color: #3f51b5;
-    --hover-color: rgb(44, 56, 126);
 
     padding-top: 1.5rem;
     display: flex;
@@ -42,6 +41,6 @@
     }
 
     .add_section:hover span:nth-child(odd) {
-        background-color: var(--hover-color);
+        filter: brightness(0.75);
     }
 }

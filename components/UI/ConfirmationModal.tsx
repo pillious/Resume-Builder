@@ -32,7 +32,7 @@ const ConfirmationModal: React.FC<IProps> = (props) => {
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button onClick={props.handleClose} color="error">
+                <Button onClick={props.handleClose} color="error" autoFocus>
                     {props.cancelText ?? "Cancel"}
                 </Button>
                 <Button
