@@ -113,14 +113,20 @@ const Header: React.FC<IProps> = ({
             <ConfirmationModal
                 open={isModalOpen}
                 title="Delete Confirmation"
-                text={`Do you want to permanently delete "${items[
-                    items.length - 1
-                ].content.substring(0, 30)}"${
-                    items[items.length - 1].content.length > 30 ? "..." : ""
+                text={`Do you want to permanently delete "${
+                    items.length > 0
+                        ? items[items.length - 1].content.substring(0, 30)
+                        : "" 
+                }"${
+                    items.length > 0 &&
+                    items[items.length - 1].content.length > 30
+                        ? "..."
+                        : ""
                 }?`}
-                handleConfirm={() =>
-                    deleteHeaderInfo(items[items.length - 1].id)
-                }
+                handleConfirm={() => {
+                    if (items.length > 0)
+                        deleteHeaderInfo(items[items.length - 1].id);
+                }}
                 handleClose={() => setIsModalOpen(false)}
             />
         </>

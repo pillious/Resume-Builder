@@ -12,9 +12,8 @@ const LogoName: React.FC<IProps> = (props) => {
             fontWeight={700}
             fontSize={24}
             letterSpacing="0.1rem"
-            sx={{
-                ...props.sx,
-            }}
+            textAlign="center"
+            sx={props.sx}
         >
             <span style={{ color: "#64ffda" }}>Resume  </span>
             <span style={{ color: "#f57dff" }}>Builder</span>
