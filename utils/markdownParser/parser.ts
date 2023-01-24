@@ -4,16 +4,16 @@ import { AST, Node } from "./ast";
 /**
  * Simplified Markdown Grammar Rules
  * ---------------------------------
- * Bullet -> • Text | H1
- * H1 -> # Text | H2
- * H2 -> ## Text | H3
- * H3 -> ### Text | H4
- * H4 -> #### Text | H5
- * H5 -> ##### Text | H6
- * H6 -> ###### Text | Text
- * Text -> string Text | Bold
- * Bold -> ** Text | **end Text | Italic
- * Italic -> _ Text | _end Text | epsilon
+ * Bullet -> TOK_BULLET Text | H1
+ * H1 -> TOK_H1 Text | H2
+ * H2 -> TOK_H2 Text | H3
+ * H3 -> TOK_H3 Text | H4
+ * H4 -> TOK_H4 Text | H5
+ * H5 -> TOK_H5 Text | H6
+ * H6 -> TOK_H6 Text | Text
+ * Text -> TOK_STRING string Text | Bold
+ * Bold -> TOK_BOLD Text | TOK_BOLD_END Text | Italic
+ * Italic -> TOK_ITALIC Text | TOK_ITALIC_END Text | epsilon
  */
 
 /**
