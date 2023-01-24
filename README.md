@@ -1,37 +1,5 @@
 <div align="center">
-  <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24">
-    <g id="Group_9" data-name="Group 9" transform="translate(-159 -39)">
-      <g id="Rectangle_24" data-name="Rectangle 24" transform="translate(165 47)" fill="rgba(255,255,255,0)" stroke="#f57dff" stroke-width="1">
-        <rect width="16" height="16" rx="3" stroke="none" />
-        <rect x="0.5" y="0.5" width="15" height="15" rx="2.5" fill="none" />
-      </g>
-      <g id="Rectangle_22" data-name="Rectangle 22" transform="translate(159 44)" fill="rgba(100,255,218,0.5)" stroke="#64ffda" stroke-width="1">
-        <rect width="16" height="16" rx="3" stroke="none" />
-        <rect x="0.5" y="0.5" width="15" height="15" rx="2.5" fill="none" />
-      </g>
-      <g id="Rectangle_23" data-name="Rectangle 23" transform="translate(167 39)" fill="rgba(255,255,255,0)" stroke="#ffd34a" stroke-width="1">
-        <rect width="16" height="16" rx="3" stroke="none" />
-        <rect x="0.5" y="0.5" width="15" height="15" rx="2.5" fill="none" />
-      </g>
-      <g id="Ellipse_8" data-name="Ellipse 8" transform="translate(178 41)" fill="none" stroke="#64ffda" stroke-width="0.5">
-        <circle cx="1.5" cy="1.5" r="1.5" stroke="none" />
-        <circle cx="1.5" cy="1.5" r="1.25" fill="none" />
-      </g>
-      <g id="Ellipse_9" data-name="Ellipse 9" transform="translate(176 58)" fill="none" stroke="#ffd34a" stroke-width="0.5">
-        <circle cx="1.5" cy="1.5" r="1.5" stroke="none" />
-        <circle cx="1.5" cy="1.5" r="1.25" fill="none" />
-      </g>
-      <g id="Ellipse_10" data-name="Ellipse 10" transform="translate(161 47)" fill="rgba(245,125,255,0.5)" stroke="#f57dff" stroke-width="0.5">
-        <circle cx="1.5" cy="1.5" r="1.5" stroke="none" />
-        <circle cx="1.5" cy="1.5" r="1.25" fill="none" />
-      </g>
-      <g id="Ellipse_11" data-name="Ellipse 11" transform="translate(161 54)" fill="rgba(245,125,255,0.5)" stroke="#f57dff" stroke-width="0.5">
-        <circle cx="1.5" cy="1.5" r="1.5" stroke="none" />
-        <circle cx="1.5" cy="1.5" r="1.25" fill="none" />
-      </g>
-    </g>
-  </svg>
-
+  <img src="https://user-images.githubusercontent.com/33373459/214206680-febe194f-c361-4847-a258-55980b3540c5.svg" width="100"/>
   <h2 align="center">Resume Builder</h2>
   <p align="center">
     <br />
@@ -53,12 +21,11 @@
 
 ## 🎇 Inspiration:
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creating your resume is no easy task. Finding the perfect words to describe yourself and convey your experiences is already time consuming enough.
+Creating your resume is no easy task. Finding the perfect words to describe yourself and convey your experiences is already time consuming enough.
 <br /><br />
-<i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;So why waste time struggling to figure out how to format a resume?</i>
+<i>So why waste time struggling to figure out how to format a resume?</i>
 <br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Just bring your creativity, and the Resume Builder will take care of the rest.
-
+Just bring your creativity, and the Resume Builder will take care of the rest.
 <br />
 
 ## 📋 Features:
@@ -68,8 +35,6 @@
 1. Add headings, bullets, and bold/italic text using markdown-like syntax.
 1. Experiment with different layouts using the drag-and-drop feature.
 1. Make copies of your resumes to never lose your previous versions.
-
-<br />
 
 ## 📚 Accomplishments / What I Learned:
 
@@ -115,7 +80,6 @@ ex: "**Some** Text" =>
 > <p>While working with different npm packages, I frequently examined their type declaration files to gain a deeper understanding of the packages I used. As a result, I was able to always write highly strictly typed code, instead of resorting to bad practices like using the any type.</p>
 
 &nbsp;[My types file](/types.d.ts)
-
 <br />
 
 ## 🤖 Tech Stack:
@@ -146,7 +110,6 @@ Data Fetching: SWR
 PDF generator: jsPDF
 Styling Library: MUI
 ```
-
 <br />
 
 ## 💡 Future Ideas:
@@ -172,8 +135,6 @@ Styling Library: MUI
     - put resume reducer into context, so that commands can be sent from terminal.<br />
       (the terminal will probably only work for the current active resume).<br />
       (terminal cmds: open files/preview, CRUD for files/headers/sections/etc., save)
-
-<br />
 
 ## 🚀 Running the App:
 
@@ -214,8 +175,6 @@ Styling Library: MUI
     ```
 
 5. View app on localhost:3000.
-
-<br />
 <hr />
 
 ### Deployment:
