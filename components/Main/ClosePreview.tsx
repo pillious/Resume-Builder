@@ -14,8 +14,8 @@ const ClosePreview: React.FC<IProps> = (props) => {
                 height: "38px",
                 display: "flex",
                 gap: 0.5,
-                p: "6px 1rem",
-                pl: `${!props.isNavActive ? 5 : 1}`,
+                pl: `${!props.isNavActive ? "2.5rem" : "1rem"}`,
+                py: 1,
                 borderBottom: `1px solid ${theme.palette.divider}`,
             }}
         >

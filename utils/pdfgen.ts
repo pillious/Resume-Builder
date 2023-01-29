@@ -24,6 +24,9 @@ import lexer from "./markdownParser/lexer";
 import parser from "./markdownParser/parser";
 import { Node } from "./markdownParser/ast";
 
+/**
+ * Converts a resume object to its PDF representation.
+ */
 export class Pdf {
     private _doc: jsPDF;
     private _nextYPos: pt;
@@ -58,15 +61,20 @@ export class Pdf {
         this._doc.setProperties({ title: file.name });
         this._doc.setFont(FONT_FAMILY);
 
-        // Generate text
+        // Generate header fields (center alignment)
         this._buildHeader(file.header)._nextLine();
 
+        // Iterate over sections (sorted by order property)
         for (const sec of sortByOrder<ISection>(file.sections)) {
+            // Generate section title
             this._buildSectionTitle(sec.name)._nextLine();
 
+            // Iterate over experiences (sorted by order property)
             for (const exp of sortByOrder<IExperience>(sec.items)) {
+                // If a name was entered, generate the experience title.
                 this._buildExperienceTitle(exp.name);
 
+                // If dates were entered, generate the date (aligned to right of page).
                 let offset = 0;
                 if (exp.endDate) {
                     this._printLine(exp.endDate, "right", offset, undefined, {
@@ -87,7 +95,9 @@ export class Pdf {
 
                 if (exp.name || exp.endDate || exp.startDate) this._nextLine();
 
+                // Iterate over items (sorted by order property)
                 for (const item of sortByOrder<IItem>(exp.items)) {
+                    // Generate item text (may be bulleted)
                     this._buildItem(item.content)._nextLine();
                 }
             }

@@ -5,7 +5,6 @@ import {
     Box,
     Divider,
     Toolbar,
-    Typography,
     Container,
     IconButton,
     useTheme,
@@ -18,6 +17,7 @@ import UnauthenticatedMenu from "./UnauthenticatedMenu";
 import { useRouter } from "next/router";
 import AppContext from "../../store/AppContext";
 import { navHeight } from "../../utils/constants";
+import LogoName from "../UI/LogoName";
 
 const Navbar: React.FC = () => {
     const { data: session, status } = useSession();
@@ -63,22 +63,8 @@ const Navbar: React.FC = () => {
                                 <OpenInFullIcon />
                             </IconButton>
                             <Divider orientation="vertical" />
-                            <Typography
-                                variant="h6"
-                                noWrap
-                                component="a"
-                                href="/"
-                                sx={{
-                                    mx: 2,
-                                    fontFamily: "monospace",
-                                    fontWeight: 700,
-                                    letterSpacing: ".2rem",
-                                    color: theme.palette.info.main,
-                                    textDecoration: "none",
-                                }}
-                            >
-                                Resume App
-                            </Typography>
+
+                            <LogoName sx={{ mx: 2 }} />
 
                             <Box sx={{ flexGrow: 1 }} />
 

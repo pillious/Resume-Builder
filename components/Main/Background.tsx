@@ -7,7 +7,7 @@ import AppContext from "../../store/AppContext";
 import AuthContext from "../../store/AuthContext";
 import fetcher from "../../utils/fetcher";
 import { ActiveView } from "../../enums";
-import Image from "next/image";
+import Logo from "../UI/Logo";
 
 const Background: React.FC = () => {
     const { isNavActive, toggleNav, updateActiveSidebarView } =
@@ -58,9 +58,7 @@ const Background: React.FC = () => {
                     gap: 1,
                 }}
             >
-                <Image
-                    src="/logo.svg"
-                    alt="logo"
+                <Logo
                     height={128}
                     width={128}
                     style={{ marginBottom: "1.5rem" }}
@@ -69,7 +67,7 @@ const Background: React.FC = () => {
                     startIcon={
                         <OpenInNewIcon sx={{ transform: "rotate(-90deg)" }} />
                     }
-                    sx={{ textTransform: "capitalize" }}
+                    sx={{ textTransform: "unset" }}
                     color="info"
                     onClick={openFileViewer}
                 >
@@ -78,11 +76,11 @@ const Background: React.FC = () => {
                 <Divider flexItem />
                 <Button
                     startIcon={<AddIcon />}
-                    sx={{ textTransform: "capitalize" }}
                     color="info"
+                    sx={{ textTransform: "unset" }}
                     onClick={createNewResume}
                 >
-                    Create a new resume
+                    Create a New Resume
                 </Button>
             </Box>
         </Box>

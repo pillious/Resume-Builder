@@ -1,7 +1,7 @@
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { Box, Button, Typography } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
+import Logo from "./Logo";
 
 interface IProps {
     statusCode: number;
@@ -21,7 +21,7 @@ const ErrorPage: React.FC<IProps> = (props) => {
                 alignItems: "center",
             }}
         >
-            <Image src="/logo.svg" alt="logo" height={128} width={128} />
+            <Logo height={128} width={128} />
             <Typography
                 fontWeight="600"
                 fontSize="1.5rem"

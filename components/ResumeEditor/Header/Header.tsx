@@ -5,6 +5,7 @@ import { guid, IItem } from "../../../types";
 import HeaderButtonGroup from "./HeaderButtonGroup";
 import { sortByOrder } from "../../../utils/utils";
 import { Box, useTheme } from "@mui/material";
+import ConfirmationModal from "../../UI/ConfirmationModal";
 
 interface IProps {
     name: string;
@@ -28,6 +29,8 @@ const Header: React.FC<IProps> = ({
     const theme = useTheme();
 
     const [info, setInfo] = useState<JSX.Element[]>([]);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
     const addInfo = useCallback(
         (item: IItem) => {
             setInfo((prev) => [
@@ -51,62 +54,82 @@ const Header: React.FC<IProps> = ({
     }, [items, addInfo]);
 
     return (
-        <Box
-            sx={{
-                display: "flex",
-                flexDirection: "column",
-                flexWrap: "wrap",
-                alignItems: "center",
-                gap: 0.5,
-                mb: 1,
-            }}
-        >
-            <Box
-                sx={{
-                    width: "max(200px, 40%)",
-                    "& input": {
-                        textAlign: "center",
-                    },
-                }}
-            >
-                <DebouncedTextarea
-                    sx={{
-                        fontSize: "1.25rem",
-                        fontWeight: "600",
-                        width: "100%",
-                        borderBottom: `1px solid ${theme.palette.divider}`,
-                        "&:hover": {
-                            backgroundColor: theme.palette.overlay,
-                        },
-                        "& input": { textAlign: "center" },
-                    }}
-                    defaultValue={name}
-                    placeholder="Name"
-                    multiline={false}
-                    onChange={(value: string) => updateHeaderName(value)}
-                />
-            </Box>
+        <>
             <Box
                 sx={{
                     display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    flexDirection: "column",
                     flexWrap: "wrap",
-                    gap: "0.25rem",
-                    py: "0.5rem",
+                    alignItems: "center",
+                    gap: 0.5,
+                    mb: 1,
                 }}
             >
-                {[...info]}
-                {areToolsActive && (
-                    <HeaderButtonGroup
-                        addHeaderInfo={addHeaderInfo}
-                        deleteHeaderInfo={() =>
-                            deleteHeaderInfo(items[items.length - 1].id)
-                        }
+                <Box
+                    sx={{
+                        width: "max(200px, 40%)",
+                        "& input": {
+                            textAlign: "center",
+                        },
+                    }}
+                >
+                    <DebouncedTextarea
+                        sx={{
+                            fontSize: "1.25rem",
+                            fontWeight: "600",
+                            width: "100%",
+                            borderBottom: `1px solid ${theme.palette.divider}`,
+                            "&:hover": {
+                                backgroundColor: theme.palette.overlay,
+                            },
+                            "& input": { textAlign: "center" },
+                        }}
+                        defaultValue={name}
+                        placeholder="Name"
+                        multiline={false}
+                        onChange={(value: string) => updateHeaderName(value)}
                     />
-                )}
+                </Box>
+                <Box
+                    sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        flexWrap: "wrap",
+                        gap: "0.25rem",
+                        py: "0.5rem",
+                    }}
+                >
+                    {[...info]}
+                    {areToolsActive && (
+                        <HeaderButtonGroup
+                            addHeaderInfo={addHeaderInfo}
+                            deleteHeaderInfo={() => setIsModalOpen(true)}
+                        />
+                    )}
+                </Box>
             </Box>
-        </Box>
+
+            <ConfirmationModal
+                open={isModalOpen}
+                title="Delete Confirmation"
+                text={`Do you want to permanently delete "${
+                    items.length > 0
+                        ? items[items.length - 1].content.substring(0, 30)
+                        : "" 
+                }"${
+                    items.length > 0 &&
+                    items[items.length - 1].content.length > 30
+                        ? "..."
+                        : ""
+                }?`}
+                handleConfirm={() => {
+                    if (items.length > 0)
+                        deleteHeaderInfo(items[items.length - 1].id);
+                }}
+                handleClose={() => setIsModalOpen(false)}
+            />
+        </>
     );
 };
 

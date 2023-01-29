@@ -7,6 +7,7 @@ import DragIndicator from "../../UI/DragIndicator";
 import { useState } from "react";
 import Overlay from "../../UI/Overlay";
 import { Box, Divider, useTheme } from "@mui/material";
+import ConfirmationModal from "../../UI/ConfirmationModal";
 
 interface IProps {
     name: string;
@@ -23,74 +24,90 @@ const Section: React.FC<IProps> = (props) => {
     const theme = useTheme();
 
     const [showOverlay, setShowOverlay] = useState<boolean>(false);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     return (
-        <Reorder.Item
-            key={props.id}
-            value={props.id}
-            dragListener={false}
-            dragControls={controls}
-            style={{ listStyle: "none", position: "relative" }}
-        >
-            <Overlay show={showOverlay} styles={{ zIndex: 2 }} />
-            <Box
-                sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    mt: 1,
-                }}
+        <>
+            <Reorder.Item
+                key={props.id}
+                value={props.id}
+                dragListener={false}
+                dragControls={controls}
+                style={{ listStyle: "none", position: "relative" }}
             >
-                {props.areToolsActive && (
-                    <div
-                        onPointerDown={(e) => controls.start(e)}
-                        onPointerOver={() => setShowOverlay(true)}
-                        onPointerLeave={() => setShowOverlay(false)}
-                        style={{ zIndex: 3 }}
-                    >
-                        <DragIndicator />
-                    </div>
-                )}
-                <DebouncedTextarea
+                <Overlay show={showOverlay} styles={{ zIndex: 2 }} />
+                <Box
                     sx={{
-                        fontSize: "1.15rem",
-                        width: "max(225px, 35%)",
-                        px: "4px",
-                        borderBottom: `1px solid ${theme.palette.divider}`,
-                        "&:hover": {
-                            backgroundColor: theme.palette.overlay,
-                        },
-                        "& input": { textAlign: "center" },
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        mt: 1,
                     }}
-                    defaultValue={props.name}
-                    placeholder="SECTION"
-                    multiline={false}
-                    onChange={(name) => props.updateSectionName(props.id, name)}
-                />
+                >
+                    {props.areToolsActive && (
+                        <div
+                            onPointerDown={(e) => controls.start(e)}
+                            onPointerOver={() => setShowOverlay(true)}
+                            onPointerLeave={() => setShowOverlay(false)}
+                            style={{ zIndex: 3 }}
+                        >
+                            <DragIndicator />
+                        </div>
+                    )}
+                    <DebouncedTextarea
+                        sx={{
+                            fontSize: "1.15rem",
+                            width: "max(225px, 35%)",
+                            px: "4px",
+                            borderBottom: `1px solid ${theme.palette.divider}`,
+                            "&:hover": {
+                                backgroundColor: theme.palette.overlay,
+                            },
+                            "& input": { textAlign: "center" },
+                        }}
+                        defaultValue={props.name}
+                        placeholder="SECTION"
+                        multiline={false}
+                        onChange={(name) =>
+                            props.updateSectionName(props.id, name)
+                        }
+                    />
+
+                    {props.areToolsActive && (
+                        <div
+                            onPointerOver={() => setShowOverlay(true)}
+                            onPointerLeave={() => setShowOverlay(false)}
+                            style={{ zIndex: 3 }}
+                        >
+                            <DeleteSection
+                                deleteSection={() => setIsModalOpen(true)}
+                            />
+                        </div>
+                    )}
+                </Box>
+
+                {props.children}
 
                 {props.areToolsActive && (
-                    <div
-                        onPointerOver={() => setShowOverlay(true)}
-                        onPointerLeave={() => setShowOverlay(false)}
-                        style={{ zIndex: 3 }}
-                    >
-                        <DeleteSection
-                            deleteSection={() => props.deleteSection(props.id)}
-                        />
-                    </div>
+                    <AddExperience
+                        addExperience={() => props.addExperience(props.id)}
+                    />
                 )}
-            </Box>
 
-            {props.children}
+                <Divider sx={{ mt: 2 }} />
+            </Reorder.Item>
 
-            {props.areToolsActive && (
-                <AddExperience
-                    addExperience={() => props.addExperience(props.id)}
-                />
-            )}
-
-            <Divider sx={{ mt: 2 }} />
-        </Reorder.Item>
+            <ConfirmationModal
+                open={isModalOpen}
+                title="Delete Confirmation"
+                text={`Do you want to permanently delete "${props.name.substring(
+                    0,
+                    30
+                )}"${props.name.length > 30 ? "..." : ""}?`}
+                handleConfirm={() => props.deleteSection(props.id)}
+                handleClose={() => setIsModalOpen(false)}
+            />
+        </>
     );
 };
 

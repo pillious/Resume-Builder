@@ -40,20 +40,26 @@ const theme = createTheme({
             styleOverrides: `
                 @font-face {
                     font-family: SegoeUI;
+                    src: url(/fonts/Segoe-UI/segoe-ui-normal.eot);
                     src:
                         local("Segoe UI"),
-                        url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/normal/latest.woff2) format("woff2"),
-                        url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/normal/latest.woff) format("woff"),
-                        url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/normal/latest.ttf) format("truetype");
+                        url(/fonts/Segoe-UI/segoe-ui-normal.eot) format("embedded-opentype"),
+                        url(/fonts/Segoe-UI/segoe-ui-normal.woff2) format("woff2"),
+                        url(/fonts/Segoe-UI/segoe-ui-normal.woff) format("woff"),
+                        url(/fonts/Segoe-UI/segoe-ui-normal.ttf) format("truetype"),
+                        url(/fonts/Segoe-UI/segoe-ui-normal.otf) format("opentype");
                     font-weight: 400;
                 },
                 @font-face {
                     font-family: SegoeUI;
+                    src: url(/fonts/Segoe-UI/segoe-ui-semibold.eot);
                     src:
-                        local("Segoe UI Semibold"),
-                        url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/semibold/latest.woff2) format("woff2"),
-                        url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/semibold/latest.woff) format("woff"),
-                        url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/semibold/latest.ttf) format("truetype");
+                        local("Segoe UI"),
+                        url(/fonts/Segoe-UI/segoe-ui-semibold.eot) format("embedded-opentype"),
+                        url(/fonts/Segoe-UI/segoe-ui-semibold.ttf) format("truetype"),
+                        url(/fonts/Segoe-UI/segoe-ui-semibold.woff2) format("woff2"),
+                        url(/fonts/Segoe-UI/segoe-ui-semibold.woff) format("woff"),
+                        url(/fonts/Segoe-UI/segoe-ui-semibold.otf) format("opentype");
                     font-weight: 600;
                 }
         `,
