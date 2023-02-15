@@ -1,13 +1,13 @@
-import { guid } from "../../../types";
-import DebouncedTextarea from "../../UI/DebouncedTextarea";
-import DeleteSection from "./DeleteSection";
-import AddExperience from "./AddExperience";
-import { Reorder, useDragControls } from "framer-motion";
-import DragIndicator from "../../UI/DragIndicator";
-import { useState } from "react";
-import Overlay from "../../UI/Overlay";
 import { Box, Divider, useTheme } from "@mui/material";
+import { Reorder, useDragControls } from "framer-motion";
+import { useState } from "react";
+import { guid } from "../../../types";
 import ConfirmationModal from "../../UI/ConfirmationModal";
+import DebouncedTextarea from "../../UI/DebouncedTextarea";
+import DragIndicator from "../../UI/DragIndicator";
+import Overlay from "../../UI/Overlay";
+import AddExperience from "./AddExperience";
+import DeleteSection from "./DeleteSection";
 
 interface IProps {
     name: string;

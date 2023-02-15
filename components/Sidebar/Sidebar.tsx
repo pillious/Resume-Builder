@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { ActiveView } from "../../enums";
+import AppContext from "../../store/AppContext";
 import FileSystemView from "./FileSystemView/FileSystemView";
 import HomeView from "./HomeView/HomeView";
-import AppContext from "../../store/AppContext";
 
 const Sidebar: React.FC = () => {
     const { isNavActive, activeSidebarView, updateActiveSidebarView } =

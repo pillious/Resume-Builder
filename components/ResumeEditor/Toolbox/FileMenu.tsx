@@ -1,13 +1,13 @@
-import { useState, MouseEvent } from "react";
-import MenuItem from "./MenuItem";
-import InputModal from "../../UI/InputModal";
-import ConfirmationModal from "../../UI/ConfirmationModal";
-import SaveIcon from "@mui/icons-material/Save";
+import DeleteIcon from "@mui/icons-material/Delete";
+import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import FileCopyIcon from "@mui/icons-material/FileCopy";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { Button, Menu, Divider, useTheme } from "@mui/material";
+import SaveIcon from "@mui/icons-material/Save";
+import { Button, Divider, Menu, useTheme } from "@mui/material";
+import { MouseEvent, useState } from "react";
+import ConfirmationModal from "../../UI/ConfirmationModal";
+import InputModal from "../../UI/InputModal";
+import MenuItem from "./MenuItem";
 
 interface IProps {
     fileName: string;

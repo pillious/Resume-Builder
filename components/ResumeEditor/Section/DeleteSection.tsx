@@ -1,5 +1,5 @@
-import { IconButton } from "@mui/material";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { IconButton } from "@mui/material";
 
 interface IProps {
     deleteSection: () => void;

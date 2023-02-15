@@ -1,17 +1,17 @@
+import CloseIcon from "@mui/icons-material/Close";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
+import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { BULLET_ICON } from "../../../utils/constants";
 
@@ -48,7 +48,9 @@ const HelpMenu: React.FC<IProps> = (props) => {
                         <Table aria-label="formatting-tips-table" size="small">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell width={125}>Text Format</TableCell>
+                                    <TableCell width={125}>
+                                        Text Format
+                                    </TableCell>
                                     <TableCell align="left" width={125}>
                                         Usage
                                     </TableCell>
@@ -73,7 +75,7 @@ const HelpMenu: React.FC<IProps> = (props) => {
                                     </TableCell>
                                     <TableCell align="left">**text**</TableCell>
                                     <TableCell align="left">
-                                        <Typography fontWeight="bold">
+                                        <Typography fontWeight={700}>
                                             text
                                         </Typography>
                                     </TableCell>
@@ -96,7 +98,7 @@ const HelpMenu: React.FC<IProps> = (props) => {
                                     <TableCell align="left"># text</TableCell>
                                     <TableCell align="left">
                                         <Typography
-                                            fontWeight="bold"
+                                            fontWeight={700}
                                             fontSize="2rem"
                                         >
                                             text
@@ -110,7 +112,7 @@ const HelpMenu: React.FC<IProps> = (props) => {
                                     <TableCell align="left">## text</TableCell>
                                     <TableCell align="left">
                                         <Typography
-                                            fontWeight="bold"
+                                            fontWeight={700}
                                             fontSize="1.5rem"
                                         >
                                             text
@@ -124,7 +126,7 @@ const HelpMenu: React.FC<IProps> = (props) => {
                                     <TableCell align="left">### text</TableCell>
                                     <TableCell align="left">
                                         <Typography
-                                            fontWeight="bold"
+                                            fontWeight={700}
                                             fontSize="1.25rem"
                                         >
                                             text
@@ -140,7 +142,7 @@ const HelpMenu: React.FC<IProps> = (props) => {
                                     </TableCell>
                                     <TableCell align="left">
                                         <Typography
-                                            fontWeight="bold"
+                                            fontWeight={700}
                                             fontSize="1rem"
                                         >
                                             text
@@ -156,7 +158,7 @@ const HelpMenu: React.FC<IProps> = (props) => {
                                     </TableCell>
                                     <TableCell align="left">
                                         <Typography
-                                            fontWeight="bold"
+                                            fontWeight={700}
                                             fontSize="0.875rem"
                                         >
                                             text
@@ -178,7 +180,7 @@ const HelpMenu: React.FC<IProps> = (props) => {
                                     </TableCell>
                                     <TableCell align="left">
                                         <Typography
-                                            fontWeight="bold"
+                                            fontWeight={700}
                                             fontSize="0.85rem"
                                         >
                                             text

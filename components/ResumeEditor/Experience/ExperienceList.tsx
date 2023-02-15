@@ -1,7 +1,7 @@
 import { List } from "@mui/material";
-import Item from "./Item";
 import { Reorder, useDragControls } from "framer-motion";
 import { guid, IItem } from "../../../types";
+import Item from "./Item";
 
 interface IProps {
     items: IItem[];

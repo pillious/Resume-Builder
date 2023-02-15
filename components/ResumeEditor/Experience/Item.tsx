@@ -1,11 +1,11 @@
-import { useState } from "react";
-import DebouncedTextarea from "../../UI/DebouncedTextarea";
-import { guid, IItem } from "../../../types";
-import classes from "./Item.module.css";
-import DragIndicator from "../../UI/DragIndicator";
-import { DragControls } from "framer-motion";
 import { Box, ListItemIcon, useTheme } from "@mui/material";
+import { DragControls } from "framer-motion";
+import { useState } from "react";
+import { guid, IItem } from "../../../types";
 import ConfirmationModal from "../../UI/ConfirmationModal";
+import DebouncedTextarea from "../../UI/DebouncedTextarea";
+import DragIndicator from "../../UI/DragIndicator";
+import classes from "./Item.module.css";
 
 interface IProps {
     item: IItem;

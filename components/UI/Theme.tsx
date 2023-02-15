@@ -1,5 +1,6 @@
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import { grey } from "@mui/material/colors";
+import { Lato } from "@next/font/google";
 
 declare module "@mui/material/styles" {
     interface Palette {
@@ -14,6 +15,8 @@ declare module "@mui/material/styles" {
         white?: string;
     }
 }
+
+const lato = Lato({ weight: ["400", "700"], subsets: ["latin"] });
 
 const theme = createTheme({
     palette: {
@@ -33,37 +36,7 @@ const theme = createTheme({
         white: "#fff",
     },
     typography: {
-        fontFamily: "Segoe UI",
-    },
-    components: {
-        MuiCssBaseline: {
-            styleOverrides: `
-                @font-face {
-                    font-family: SegoeUI;
-                    src: url(/fonts/Segoe-UI/segoe-ui-normal.eot);
-                    src:
-                        local("Segoe UI"),
-                        url(/fonts/Segoe-UI/segoe-ui-normal.eot) format("embedded-opentype"),
-                        url(/fonts/Segoe-UI/segoe-ui-normal.woff2) format("woff2"),
-                        url(/fonts/Segoe-UI/segoe-ui-normal.woff) format("woff"),
-                        url(/fonts/Segoe-UI/segoe-ui-normal.ttf) format("truetype"),
-                        url(/fonts/Segoe-UI/segoe-ui-normal.otf) format("opentype");
-                    font-weight: 400;
-                },
-                @font-face {
-                    font-family: SegoeUI;
-                    src: url(/fonts/Segoe-UI/segoe-ui-semibold.eot);
-                    src:
-                        local("Segoe UI"),
-                        url(/fonts/Segoe-UI/segoe-ui-semibold.eot) format("embedded-opentype"),
-                        url(/fonts/Segoe-UI/segoe-ui-semibold.ttf) format("truetype"),
-                        url(/fonts/Segoe-UI/segoe-ui-semibold.woff2) format("woff2"),
-                        url(/fonts/Segoe-UI/segoe-ui-semibold.woff) format("woff"),
-                        url(/fonts/Segoe-UI/segoe-ui-semibold.otf) format("opentype");
-                    font-weight: 600;
-                }
-        `,
-        },
+        fontFamily: lato.style.fontFamily,
     },
 });
 

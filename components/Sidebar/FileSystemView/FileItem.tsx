@@ -1,11 +1,11 @@
-import { useContext, useMemo } from "react";
+import DescriptionIcon from "@mui/icons-material/Description";
 import {
     ListItem,
     ListItemButton,
     ListItemIcon,
-    Typography,
+    Typography
 } from "@mui/material";
-import DescriptionIcon from "@mui/icons-material/Description";
+import { useContext, useMemo } from "react";
 import AppContext from "../../../store/AppContext";
 import { guid } from "../../../types";
 import { buildHSLString, pastelHSLColor } from "../../../utils/utils";
@@ -65,7 +65,7 @@ const FileItem: React.FC<IProps> = ({
                             htmlColor={iconColor || HSLColor}
                         />
                     </ListItemIcon>
-                    <Typography fontWeight={600} fontSize="0.875rem">
+                    <Typography fontWeight={700} fontSize="0.875rem">
                         {name}
                     </Typography>
                 </ListItemButton>

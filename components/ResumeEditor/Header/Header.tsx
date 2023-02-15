@@ -1,11 +1,11 @@
-import { useState, useEffect, useCallback } from "react";
-import DebouncedTextarea from "../../UI/DebouncedTextarea";
-import Info from "./Info";
-import { guid, IItem } from "../../../types";
-import HeaderButtonGroup from "./HeaderButtonGroup";
-import { sortByOrder } from "../../../utils/utils";
 import { Box, useTheme } from "@mui/material";
+import { useCallback, useEffect, useState } from "react";
+import { guid, IItem } from "../../../types";
+import { sortByOrder } from "../../../utils/utils";
 import ConfirmationModal from "../../UI/ConfirmationModal";
+import DebouncedTextarea from "../../UI/DebouncedTextarea";
+import HeaderButtonGroup from "./HeaderButtonGroup";
+import Info from "./Info";
 
 interface IProps {
     name: string;
@@ -76,7 +76,6 @@ const Header: React.FC<IProps> = ({
                     <DebouncedTextarea
                         sx={{
                             fontSize: "1.25rem",
-                            fontWeight: "600",
                             width: "100%",
                             borderBottom: `1px solid ${theme.palette.divider}`,
                             "&:hover": {

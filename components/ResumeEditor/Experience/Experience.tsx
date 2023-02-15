@@ -1,15 +1,15 @@
-import AddListItem from "./AddListItem";
-import DebouncedTextarea from "../../UI/DebouncedTextarea";
-import { IItem, guid } from "../../../types";
-import DeleteExperience from "./DeleteExperience";
-import Date from "./Date";
-import ExperienceList from "./ExperienceList";
-import { Reorder, useDragControls } from "framer-motion";
-import Overlay from "../../UI/Overlay";
-import { useState } from "react";
-import DragIndicator from "../../UI/DragIndicator";
 import { Box, Card, Divider, useTheme } from "@mui/material";
+import { Reorder, useDragControls } from "framer-motion";
+import { useState } from "react";
+import { guid, IItem } from "../../../types";
 import ConfirmationModal from "../../UI/ConfirmationModal";
+import DebouncedTextarea from "../../UI/DebouncedTextarea";
+import DragIndicator from "../../UI/DragIndicator";
+import Overlay from "../../UI/Overlay";
+import AddListItem from "./AddListItem";
+import Date from "./Date";
+import DeleteExperience from "./DeleteExperience";
+import ExperienceList from "./ExperienceList";
 
 interface IProps {
     id: guid;

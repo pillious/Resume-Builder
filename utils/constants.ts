@@ -6,6 +6,8 @@ export const navHeight = 48;
 export const homeDrawerWidth = 48;
 export const filesDrawerWidth = 160;
 
+export const debounceDelay = 225;
+
 // GUID
 export const CHARACTER_SET =
     "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";

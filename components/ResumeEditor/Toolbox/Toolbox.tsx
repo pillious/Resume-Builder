@@ -1,21 +1,16 @@
 // import UndoIcon from "@mui/icons-material/Undo";
 // import RedoIcon from "@mui/icons-material/Redo";
-import { useContext, useState } from "react";
 import SaveIcon from "@mui/icons-material/Save";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import FileMenu from "./FileMenu";
-import AppContext from "../../../store/AppContext";
-import { AnimatePresence, motion } from "framer-motion";
 import {
-    Paper,
     Button,
-    Chip,
-    IconButton,
-    ToggleButton,
-    Divider,
-    useTheme,
+    Chip, Divider, IconButton, Paper, ToggleButton, useTheme
 } from "@mui/material";
+import { AnimatePresence, motion } from "framer-motion";
+import { useContext, useState } from "react";
+import AppContext from "../../../store/AppContext";
+import FileMenu from "./FileMenu";
 import HelpMenu from "./HelpMenu";
 
 interface IProps {

@@ -9,7 +9,7 @@
     <br />
     ➜ Drag & drop reordering
     <br /><br />
-    <a href="https://andrewzh.com/Bitcamp2022">Live Demo Link</a>
+    <a href="resume-app-one.vercel.app">Live Demo Link</a>
     
   </p>
 </div>

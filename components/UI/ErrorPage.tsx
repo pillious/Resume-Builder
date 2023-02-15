@@ -1,6 +1,6 @@
-import { useRouter } from "next/router";
-import { Box, Button, Typography } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
+import { Box, Button, Typography } from "@mui/material";
+import { useRouter } from "next/router";
 import Logo from "./Logo";
 
 interface IProps {
@@ -23,7 +23,7 @@ const ErrorPage: React.FC<IProps> = (props) => {
         >
             <Logo height={128} width={128} />
             <Typography
-                fontWeight="600"
+                fontWeight={700}
                 fontSize="1.5rem"
                 letterSpacing="0.05rem"
                 my="1rem"

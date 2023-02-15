@@ -1,16 +1,16 @@
-import { useRef, useContext, useEffect } from "react";
 import { Box, Divider, Paper, useTheme } from "@mui/material";
-import AddSection from "./Section/AddSection";
-import Experience from "./Experience/Experience";
-import Toolbox from "./Toolbox/Toolbox";
+import { Reorder } from "framer-motion";
+import { useContext, useEffect, useRef } from "react";
 import useResumeState from "../../hooks/use-resume-state";
 import AppContext from "../../store/AppContext";
-import Header from "./Header/Header";
-import Section from "./Section/Section";
 import AuthContext from "../../store/AuthContext";
-import { Reorder } from "framer-motion";
-import { ISection, IExperience, guid } from "../../types";
+import { guid, IExperience, ISection } from "../../types";
 import { sortByOrder } from "../../utils/utils";
+import Experience from "./Experience/Experience";
+import Header from "./Header/Header";
+import AddSection from "./Section/AddSection";
+import Section from "./Section/Section";
+import Toolbox from "./Toolbox/Toolbox";
 
 const ResumeEditor: React.FC = () => {
     const sectionRef = useRef<HTMLBaseElement>(null);

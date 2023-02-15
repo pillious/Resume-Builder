@@ -1,4 +1,4 @@
-import { Typography, SxProps } from "@mui/material";
+import { SxProps, Typography } from "@mui/material";
 
 interface IProps {
     sx?: SxProps;
