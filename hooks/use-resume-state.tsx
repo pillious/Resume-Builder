@@ -6,13 +6,12 @@ import {
     useReducer,
     useState
 } from "react";
-import { useSWRConfig } from "swr";
 import { ModState } from "../enums";
 import AppContext from "../store/AppContext";
 import AuthContext from "../store/AuthContext";
 import resumeReducer from "../store/ResumeReducer";
 import { guid, ModList } from "../types";
-import { debounceDelay } from '../utils/constants';
+import { debounceDelay } from "../utils/constants";
 import fetcher from "../utils/fetcher";
 import nanoid from "../utils/guid";
 import useResumeById from "./data/use-resume-by-id";
@@ -24,8 +23,6 @@ const resetModList = (): ModList => ({
 });
 
 const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
-    const { mutate } = useSWRConfig();
-
     const { activeResumeId, updateActiveResumeObj, updateHasUnsavedChanges } =
         useContext(AppContext);
     const { userId } = useContext(AuthContext);
@@ -62,15 +59,11 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
                 method: "POST",
                 body: JSON.stringify({ resume, modList, userId }),
             }).then(() => {
-                if (resume && "id" in resume)
-                    mutate(
-                        `/api/getResumeById?id=${resume.id}&userId=${userId}`
-                    );
+                setHasUnsavedChanges(false);
+                setModList(resetModList());
             });
-            setHasUnsavedChanges(false);
-            setModList(resetModList());
         }
-    }, [hasUnsavedChanges, modList, mutate, resume, userId]);
+    }, [hasUnsavedChanges, modList, resume, userId]);
 
     // override ctrl+s shortcut to save resume
     useEffect(() => {
