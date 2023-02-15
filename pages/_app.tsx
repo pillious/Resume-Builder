@@ -1,13 +1,13 @@
-import "../styles/normalize.css";
-import "../styles/globals.css";
-import type { AppProps } from "next/app";
-import { SessionProvider } from "next-auth/react";
-import type { Session } from "next-auth";
-import { AppContextProvider } from "../store/AppContext";
-import { AuthContextProvider } from "../store/AuthContext";
 import { Box } from "@mui/material";
+import type { Session } from "next-auth";
+import { SessionProvider } from "next-auth/react";
+import type { AppProps } from "next/app";
 import Navbar from "../components/Navbar/Navbar";
 import AppThemeProvider from "../components/UI/Theme";
+import { AppContextProvider } from "../store/AppContext";
+import { AuthContextProvider } from "../store/AuthContext";
+import "../styles/globals.css";
+import "../styles/normalize.css";
 
 const App = ({
     Component,
