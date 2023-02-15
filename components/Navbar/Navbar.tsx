@@ -1,23 +1,17 @@
-import { MouseEvent, useContext, useState } from "react";
-import { signIn, signOut } from "next-auth/react";
+import CloseFullscreenIcon from "@mui/icons-material/CloseFullscreen";
+import OpenInFullIcon from "@mui/icons-material/OpenInFull";
 import {
     AppBar,
-    Box,
-    Divider,
-    Toolbar,
-    Container,
-    IconButton,
-    useTheme,
+    Box, Container, Divider, IconButton, Toolbar, useTheme
 } from "@mui/material";
-import OpenInFullIcon from "@mui/icons-material/OpenInFull";
-import CloseFullscreenIcon from "@mui/icons-material/CloseFullscreen";
-import { useSession } from "next-auth/react";
-import AuthenticatedMenu from "./AuthenticatedMenu";
-import UnauthenticatedMenu from "./UnauthenticatedMenu";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { MouseEvent, useContext, useState } from "react";
 import AppContext from "../../store/AppContext";
 import { navHeight } from "../../utils/constants";
 import LogoName from "../UI/LogoName";
+import AuthenticatedMenu from "./AuthenticatedMenu";
+import UnauthenticatedMenu from "./UnauthenticatedMenu";
 
 const Navbar: React.FC = () => {
     const { data: session, status } = useSession();

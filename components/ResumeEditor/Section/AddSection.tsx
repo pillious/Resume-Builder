@@ -1,6 +1,6 @@
-import React from "react";
-import { Fab, Tooltip } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import { Fab, Tooltip } from "@mui/material";
+import React from "react";
 import classes from "./AddSection.module.css";
 
 interface IProps {

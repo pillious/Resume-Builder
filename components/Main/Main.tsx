@@ -1,10 +1,10 @@
-import { useContext } from "react";
 import { Box, useMediaQuery } from "@mui/material";
 import dynamic from "next/dynamic";
-import ResumeEditor from "../ResumeEditor/ResumeEditor";
+import { useContext } from "react";
 import AppContext from "../../store/AppContext";
-import ClosePreview from "./ClosePreview";
+import ResumeEditor from "../ResumeEditor/ResumeEditor";
 import Background from "./Background";
+import ClosePreview from "./ClosePreview";
 
 const Previewer = dynamic(import("../Previewer/Previewer"), {
     ssr: false,

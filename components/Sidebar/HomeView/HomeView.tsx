@@ -1,7 +1,7 @@
 import { Box, Drawer, List } from "@mui/material";
+import { homeDrawerWidth, navHeight } from "../../../utils/constants";
 import CreateButton from "./CreateButton";
 import FileSystemButton from "./FileSystemButton";
-import { homeDrawerWidth, navHeight } from "../../../utils/constants";
 
 interface IProps {
     openFileSystem: () => void;

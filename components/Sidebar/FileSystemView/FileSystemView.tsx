@@ -1,12 +1,12 @@
-import { useContext } from "react";
-import { Box, Button, Divider, Drawer, List, ListItem } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import { guid } from "../../../types";
+import { Box, Button, Divider, Drawer, List, ListItem } from "@mui/material";
+import { useContext } from "react";
 import useResumeIds from "../../../hooks/data/use-resume-ids";
-import FileItem from "./FileItem";
 import AppContext from "../../../store/AppContext";
 import AuthContext from "../../../store/AuthContext";
+import { guid } from "../../../types";
 import { filesDrawerWidth, navHeight } from "../../../utils/constants";
+import FileItem from "./FileItem";
 
 interface IProps {
     close: () => void;

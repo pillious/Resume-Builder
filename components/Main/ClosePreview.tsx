@@ -1,4 +1,4 @@
-import { useTheme, Box, Button, Divider } from "@mui/material";
+import { Box, Button, Divider, useTheme } from "@mui/material";
 
 interface IProps {
     closePreview: () => void;

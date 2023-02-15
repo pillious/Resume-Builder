@@ -1,7 +1,6 @@
 import {
-    MenuItem as MuiMenuItem,
     ListItemIcon,
-    ListItemText,
+    ListItemText, MenuItem as MuiMenuItem
 } from "@mui/material";
 import { ReactElement } from "react";
 
