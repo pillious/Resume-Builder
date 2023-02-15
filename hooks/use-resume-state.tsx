@@ -4,17 +4,18 @@ import {
     useContext,
     useEffect,
     useReducer,
-    useState,
+    useState
 } from "react";
 import { useSWRConfig } from "swr";
-import { guid, ModList } from "../types";
 import { ModState } from "../enums";
-import resumeReducer from "../store/ResumeReducer";
-import nanoid from "../utils/guid";
 import AppContext from "../store/AppContext";
-import useResumeById from "./data/use-resume-by-id";
-import fetcher from "../utils/fetcher";
 import AuthContext from "../store/AuthContext";
+import resumeReducer from "../store/ResumeReducer";
+import { guid, ModList } from "../types";
+import { debounceDelay } from '../utils/constants';
+import fetcher from "../utils/fetcher";
+import nanoid from "../utils/guid";
+import useResumeById from "./data/use-resume-by-id";
 
 const resetModList = (): ModList => ({
     header: {},
@@ -86,7 +87,7 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
                 ) {
                     identifier = setTimeout(() => {
                         saveChanges();
-                    }, 275);
+                    }, debounceDelay);
                 }
             }
         };

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { SxProps, Input } from "@mui/material";
 import useInput from "../../hooks/use-input";
+import { debounceDelay } from "../../utils/constants";
 
 interface IProps {
     sx?: SxProps;
@@ -24,14 +25,14 @@ const Textarea: React.FC<IProps> = ({
         reset(defaultValue ?? "");
     }, [reset, defaultValue]);
 
-    // Debounce saving to reducer.
+    // Debounced - saving to reducer.
     useEffect(() => {
         let identifier: NodeJS.Timeout;
         if (typeof onChange === "function" && value !== prevValue) {
             identifier = setTimeout(() => {
                 onChange(value);
                 setPrevValue(value);
-            }, 275);
+            }, debounceDelay);
         }
 
         return () => {
