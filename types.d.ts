@@ -37,7 +37,6 @@ export interface PDFItemProps {
 export interface IFile {
     userId: mongoose.Schema.Types.ObjectId;
     name: string;
-    categories: { id: guid; name: string }[]; // add
     sections: ISection[];
     header: IHeader;
     id: guid;
@@ -77,6 +76,14 @@ export interface IUser {
     email: string;
     image: string;
     _id: guid;
+}
+
+// same as an IFile except doesn't have an userId attached
+export interface ITemplate {
+    name: string;
+    sections: ISection[];
+    header: IHeader;
+    id: guid;
 }
 
 // API

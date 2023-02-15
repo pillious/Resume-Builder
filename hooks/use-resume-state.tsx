@@ -59,11 +59,12 @@ const useResumeState = (sectionRef: RefObject<HTMLBaseElement>) => {
                 method: "POST",
                 body: JSON.stringify({ resume, modList, userId }),
             }).then(() => {
+                updateActiveResumeObj(resume);
                 setHasUnsavedChanges(false);
                 setModList(resetModList());
             });
         }
-    }, [hasUnsavedChanges, modList, resume, userId]);
+    }, [hasUnsavedChanges, modList, resume, updateActiveResumeObj, userId]);
 
     // override ctrl+s shortcut to save resume
     useEffect(() => {

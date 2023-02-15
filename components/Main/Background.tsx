@@ -1,12 +1,12 @@
-import { useContext } from "react";
-import { Box, Button, Divider } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import { Box, Button, Divider } from "@mui/material";
+import { useContext } from "react";
 import { useSWRConfig } from "swr";
+import { ActiveView } from "../../enums";
 import AppContext from "../../store/AppContext";
 import AuthContext from "../../store/AuthContext";
 import fetcher from "../../utils/fetcher";
-import { ActiveView } from "../../enums";
 import Logo from "../UI/Logo";
 
 const Background: React.FC = () => {
@@ -17,11 +17,15 @@ const Background: React.FC = () => {
     const { userId } = useContext(AuthContext);
     const { updateActiveResumeId } = useContext(AppContext);
 
-    const createNewResume = async () => {
+    const createNewResume = async (useTemplate: boolean) => {
         try {
             await fetcher(`/api/createResume`, {
                 method: "POST",
-                body: JSON.stringify({ fileName: "Untitled Resume", userId }),
+                body: JSON.stringify({
+                    fileName: "Untitled Resume",
+                    userId,
+                    useTemplate,
+                }),
             }).then(async (resp) => {
                 await mutate(`/api/getResumeIds?userId=${userId}`);
                 if ("data" in resp && "id" in resp.data) {
@@ -71,16 +75,25 @@ const Background: React.FC = () => {
                     color="info"
                     onClick={openFileViewer}
                 >
-                    Open File Viewer
+                    Open file viewer
                 </Button>
                 <Divider flexItem />
                 <Button
                     startIcon={<AddIcon />}
                     color="info"
                     sx={{ textTransform: "unset" }}
-                    onClick={createNewResume}
+                    onClick={() => createNewResume(true)}
                 >
-                    Create a New Resume
+                    Create resume from template
+                </Button>
+                <Divider flexItem />
+                <Button
+                    startIcon={<AddIcon />}
+                    color="info"
+                    sx={{ textTransform: "unset" }}
+                    onClick={() => createNewResume(false)}
+                >
+                    Create blank resume
                 </Button>
             </Box>
         </Box>

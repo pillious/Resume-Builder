@@ -1,13 +1,14 @@
+import mongoose, { HydratedDocument } from "mongoose";
 import { NextApiRequest, NextApiResponse } from "next";
 import { unstable_getServerSession } from "next-auth";
-import { authOptions } from "./auth/[...nextauth]";
 import FileModel from "../../models/FileModel.model";
+import HeaderModel from "../../models/HeaderModel.model";
+import TemplateModel from "../../models/TemplateModel.model";
+import { ApiResponse, IFile, ITemplate } from "../../types";
+import { FILE_GUID_LEN } from "../../utils/constants";
 import dbConnect from "../../utils/database";
 import guid from "../../utils/guid";
-import { ApiResponse, IFile } from "../../types";
-import HeaderModel from "../../models/HeaderModel.model";
-import mongoose, { HydratedDocument } from "mongoose";
-import { FILE_GUID_LEN } from "../../utils/constants";
+import { authOptions } from "./auth/[...nextauth]";
 
 const handler = async (
     req: NextApiRequest,
@@ -24,7 +25,9 @@ const handler = async (
 
                 if (session) {
                     await dbConnect();
-                    const { fileName, userId } = JSON.parse(req.body);
+                    const { fileName, userId, useTemplate } = JSON.parse(
+                        req.body
+                    );
 
                     if (
                         fileName === undefined ||
@@ -37,14 +40,40 @@ const handler = async (
                         });
                     }
 
-                    const doc: HydratedDocument<IFile> = new FileModel({
-                        userId: new mongoose.Types.ObjectId(userId),
-                        name: fileName || "Untitled Resume",
-                        id: guid(FILE_GUID_LEN),
-                        header: new HeaderModel({
-                            id: guid(),
-                        }),
-                    });
+                    let doc: HydratedDocument<IFile>;
+
+                    if (useTemplate === true) {
+                        // There's only 1 template to choose from currently.
+                        const template = await TemplateModel.findOne({
+                            id: "g9VNEugiSt4vacd6TTM6",
+                        });
+
+                        if (template === null) {
+                            return res.status(404).json({
+                                error: {
+                                    code: 404,
+                                    message: "Failed to create file.",
+                                },
+                            });
+                        }
+
+                        doc = new FileModel({
+                            userId: new mongoose.Types.ObjectId(userId),
+                            name: fileName || "Untitled Resume",
+                            id: guid(FILE_GUID_LEN),
+                            header: (template as ITemplate).header,
+                            sections: (template as ITemplate).sections,
+                        });
+                    } else {
+                        doc = new FileModel({
+                            userId: new mongoose.Types.ObjectId(userId),
+                            name: fileName || "Untitled Resume",
+                            id: guid(FILE_GUID_LEN),
+                            header: new HeaderModel({
+                                id: guid(),
+                            }),
+                        });
+                    }
 
                     await doc
                         .save()
